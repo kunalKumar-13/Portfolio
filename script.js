@@ -160,14 +160,30 @@
       measure(); this._slotMeasure = measure;
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); });
       window.addEventListener('resize', measure);
+      if (this.slotClip && !this.RM) {
+        this.slotClip.style.cursor = 'pointer';
+        this.slotClip.addEventListener('click', () => {
+          if (!this.gsap) return;
+          this.advanceSlot(true);
+          if (this._slotIv) { clearInterval(this._slotIv); this._slotIv = setInterval(() => this.advanceSlot(false), 2500); }
+        });
+      }
+    }
+    advanceSlot(springy) {
+      const g = this.gsap; if (!g || !this.slotTrack || !this.slotLineH) return;
+      const n = this.slotTrack.children.length - 1;
+      this.slotI = (this.slotI || 0) + 1;
+      g.to(this.slotTrack, { y: -this.slotLineH * this.slotI, duration: springy ? .55 : .7, ease: springy ? 'back.out(1.6)' : 'cubic-bezier(.76,0,.24,1)', overwrite: true, onComplete: () => { if (this.slotI >= n) { this.slotI = 0; g.set(this.slotTrack, { y: 0 }); } } });
+      if (springy) {
+        const w = this.slotTrack.children[Math.min(this.slotI, n)];
+        const dot = w && w.querySelector('[data-dot]');
+        if (dot) { g.fromTo(dot, { scale: 1 }, { scale: 1.55, duration: .13, yoyo: true, repeat: 1, ease: 'power2.out' }); }
+      }
     }
     startSlot() {
       if (this.RM || !this.slotTrack) return;
-      const g = this.gsap; this.slotI = 0; const n = this.slotTrack.children.length - 1;
-      this._slotIv = setInterval(() => {
-        this.slotI++;
-        g.to(this.slotTrack, { y: -this.slotLineH * this.slotI, duration: .7, ease: 'cubic-bezier(.76,0,.24,1)', onComplete: () => { if (this.slotI >= n) { this.slotI = 0; g.set(this.slotTrack, { y: 0 }); } } });
-      }, 2500);
+      this.slotI = 0;
+      this._slotIv = setInterval(() => this.advanceSlot(false), 2500);
     }
 
     // 4. Hero / giant name parallax
@@ -193,6 +209,10 @@
         card.addEventListener('mouseenter', () => { label.textContent = 'EXPLORE'; g.to(ring, { scale: 2.4, duration: .3, background: '#0D0D12', borderColor: '#0D0D12' }); label.style.opacity = 1; });
         card.addEventListener('mouseleave', () => { g.to(ring, { scale: 1, duration: .3, background: 'rgba(0,0,0,0)', borderColor: '#0D0D12' }); label.style.opacity = 0; });
       });
+      if (this.slotClip) {
+        this.slotClip.addEventListener('mouseenter', () => { label.textContent = 'ROLL'; g.to(ring, { scale: 2.1, duration: .3, background: '#0D0D12', borderColor: '#0D0D12' }); label.style.opacity = 1; });
+        this.slotClip.addEventListener('mouseleave', () => { g.to(ring, { scale: 1, duration: .3, background: 'rgba(0,0,0,0)', borderColor: '#0D0D12' }); label.style.opacity = 0; });
+      }
     }
 
     // 6. Velocity ribbons
