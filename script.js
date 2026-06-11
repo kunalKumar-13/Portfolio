@@ -99,7 +99,7 @@
       this.setupStats();
       this.setupCards();
       this.setupHueDrift();
-      if (!this.TOUCH) { this.setupCursor(); this.setupMagnetics(); this.setupTilt(); this.setupExpHover(); }
+      if (!this.TOUCH) { this.setupCursor(); this.setupMagnetics(); this.setupTilt(); this.setupExpHover(); this.setupCardFX(); }
       else { this.setupExpHover(); }
       ST.refresh();
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ST.refresh());
@@ -341,6 +341,33 @@
       else { window.addEventListener('scroll', () => handler(window.scrollY)); }
       const cta = nav.querySelector('[data-cta]');
       if (cta) { cta.addEventListener('mouseenter', () => cta.style.background = '#2438FF'); cta.addEventListener('mouseleave', () => cta.style.background = '#0D0D12'); }
+    }
+
+    // v3 1.1 — card 3D depth + glare
+    setupCardFX() {
+      if (this.RM) return; const g = this.gsap;
+      this.q('[data-card]').forEach(card => {
+        const inner = card.firstElementChild; if (!inner) return;
+        card.style.perspective = '1400px';
+        const glare = inner.querySelector('[data-glare]');
+        const left = inner.querySelector(':scope > div:not([data-glare])');
+        const layers = [];
+        const h3 = inner.querySelector('h3'); if (h3) layers.push({ el: h3, d: 40 });
+        const stat = inner.querySelector('[data-plate] > div:last-child'); if (stat) layers.push({ el: stat, d: 60 });
+        if (left && left.children[3]) layers.push({ el: left.children[3], d: 20 });
+        card.addEventListener('mousemove', (e) => {
+          const r = card.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
+          g.to(inner, { rotationY: px * 4, rotationX: -py * 4, transformPerspective: 1400, duration: .5, ease: 'power2.out' });
+          layers.forEach(L => g.to(L.el, { x: px * L.d * .5, y: py * L.d * .5, duration: .5, ease: 'power2.out' }));
+          if (glare) { glare.style.opacity = 1; glare.style.background = 'radial-gradient(340px circle at ' + (e.clientX - r.left) + 'px ' + (e.clientY - r.top) + 'px, rgba(255,255,255,.10), transparent 62%)'; }
+        });
+        card.addEventListener('mouseleave', () => {
+          g.to(inner, { rotationX: 0, rotationY: 0, duration: .8, ease: 'elastic.out(1,.5)' });
+          layers.forEach(L => g.to(L.el, { x: 0, y: 0, duration: .8, ease: 'elastic.out(1,.5)' }));
+          if (glare) glare.style.opacity = 0;
+        });
+      });
     }
 
     // v3 1.8 — time-aware greeting (Bengaluru)
