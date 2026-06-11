@@ -102,6 +102,7 @@
       this.setupHueDrift();
       if (!this.TOUCH) { this.setupCursor(); this.setupMagnetics(); this.setupTilt(); this.setupExpHover(); this.setupCardFX(); }
       else { this.setupExpHover(); }
+      this.setupScramble();
       this.setupCopyEmail();
       ST.refresh();
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ST.refresh());
@@ -344,6 +345,36 @@
       else { window.addEventListener('scroll', () => handler(window.scrollY)); }
       const cta = nav.querySelector('[data-cta]');
       if (cta) { cta.addEventListener('mouseenter', () => cta.style.background = '#2438FF'); cta.addEventListener('mouseleave', () => cta.style.background = '#0D0D12'); }
+    }
+
+    // v3 1.6 — scramble-in mono labels (once per load)
+    setupScramble() {
+      const ST = this.ST; const CH = '█▓▒░<>/*\\';
+      if (!ST) return;
+      this.q('[data-scramble]').forEach(el => {
+        if (this.RM) return;
+        const orig = el.textContent;
+        ST.create({
+          trigger: el, start: 'top 88%', once: true, onEnter: () => {
+            const t0 = performance.now(); const D = 500;
+            const tick = () => {
+              if (this.dead) return;
+              const p = Math.min(1, (performance.now() - t0) / D); const n = Math.floor(orig.length * p);
+              let s = orig.slice(0, n);
+              for (let i = n; i < orig.length; i++) { s += orig[i] === ' ' ? ' ' : CH[Math.floor(Math.random() * CH.length)]; }
+              el.textContent = s;
+              if (p < 1) requestAnimationFrame(tick); else el.textContent = orig;
+            };
+            tick();
+          }
+        });
+      });
+      const nav = this.one('[data-nav-clock]');
+      if (nav && !this.RM) {
+        const t0 = performance.now();
+        const tick = () => { if (this.dead) return; const p = Math.min(1, (performance.now() - t0) / 500); const n = Math.floor(3 * p); let pre = 'BLR'.slice(0, n); for (let i = n; i < 3; i++) pre += CH[Math.floor(Math.random() * CH.length)]; nav.textContent = pre + nav.textContent.slice(3); if (p < 1) requestAnimationFrame(tick); };
+        tick();
+      }
     }
 
     // v3 1.5 — scroll progress hairline
