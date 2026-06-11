@@ -80,11 +80,12 @@
       // anchor smooth scroll
       this.q('a[href^="#"]').forEach(a => a.addEventListener('click', (e) => {
         const id = a.getAttribute('href');
+        if (!id || id.length < 2 || a.hasAttribute('data-top')) { if (id === '#') e.preventDefault(); return; }
         const t = this.one(id) || document.querySelector(id);
         if (t) {
           e.preventDefault();
           if (this.lenis) this.lenis.scrollTo(t, { offset: -90 });
-          else t.scrollIntoView({ behavior: 'smooth' });
+          else window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' });
         }
       }));
 
@@ -104,6 +105,7 @@
       else { this.setupExpHover(); }
       this.setupScramble();
       this.setupCopyEmail();
+      this.setupBackToTop();
       ST.refresh();
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ST.refresh());
     }
@@ -444,6 +446,12 @@
         const d = 40 + Math.random() * 55;
         g.to(p, { x: Math.cos(a) * d, y: Math.sin(a) * d - 22, rotation: '+=200', opacity: 0, scale: .35, duration: .6, ease: 'power2.out', onComplete: () => p.remove() });
       }
+    }
+
+    // v3 1.10 — back to top
+    setupBackToTop() {
+      const btn = this.one('[data-top]'); if (!btn) return;
+      btn.addEventListener('click', (e) => { e.preventDefault(); if (this.lenis) this.lenis.scrollTo(0, { duration: 2, easing: (t) => 1 - Math.pow(1 - t, 4) }); else window.scrollTo({ top: 0, behavior: 'smooth' }); });
     }
 
     // v3 1.1 — card 3D depth + glare
