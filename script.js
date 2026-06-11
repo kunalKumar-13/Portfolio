@@ -1,0 +1,356 @@
+/* Kunal Kumar — "Continuity Ribbon" portfolio
+   Ported from the Claude Design prototype (Kunal Kumar.dc.html).
+   Stack: GSAP + ScrollTrigger + Lenis (CDN), vanilla JS. */
+
+(function () {
+  'use strict';
+
+  class Site {
+    constructor(root) {
+      this.rootEl = root;
+      this.vel = 0;
+      this.rafs = [];
+      this.RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      this.TOUCH = matchMedia('(hover: none), (pointer: coarse)').matches;
+      this.buildChips();
+      this.startClock();
+      this.waitFor(() => window.gsap && window.ScrollTrigger && window.Lenis, () => this.init(), 60);
+    }
+
+    waitFor(cond, cb, tries) {
+      if (cond()) { cb(); return; }
+      if (tries <= 0) { this.fallback(); return; }
+      setTimeout(() => this.waitFor(cond, cb, tries - 1), 90);
+    }
+    q(sel) { return Array.from(this.rootEl.querySelectorAll(sel)); }
+    one(sel) { return this.rootEl.querySelector(sel); }
+
+    fallback() { const p = this.one('[data-preloader]'); if (p) p.style.display = 'none'; }
+
+    buildChips() {
+      const data = {
+        '#2438FF': ['Python', 'TypeScript', 'C++', 'SQL'],
+        '#7A2BF5': ['Reinforcement Learning', 'GRPO', 'Semantic Search', 'Prompt Defense', 'Memory Systems'],
+        '#0CAF9B': ['LlamaIndex', 'TRL', 'FastAPI', 'Qt', 'React'],
+        '#FFAA00': ['Docker', 'Linux daemons', 'BM25', 'Vector DBs']
+      };
+      this.q('[data-chips]').forEach(box => {
+        const c = box.getAttribute('data-chips');
+        (data[c] || []).forEach(t => {
+          const el = document.createElement('span');
+          el.textContent = t;
+          el.style.cssText = "font-family:'JetBrains Mono',monospace;font-size:12px;padding:9px 13px;border-radius:999px;border:1px solid rgba(251,250,247,.16);color:#FBFAF7;cursor:default;transition:transform .35s cubic-bezier(.76,0,.24,1),background .35s ease,border-color .35s ease,color .35s ease;";
+          if (!this.TOUCH) {
+            el.addEventListener('mouseenter', () => { el.style.transform = 'translateY(-4px)'; el.style.background = c; el.style.borderColor = c; el.style.color = c === '#FFAA00' ? '#0D0D12' : '#FBFAF7'; });
+            el.addEventListener('mouseleave', () => { el.style.transform = 'translateY(0)'; el.style.background = 'transparent'; el.style.borderColor = 'rgba(251,250,247,.16)'; el.style.color = '#FBFAF7'; });
+          }
+          box.appendChild(el);
+        });
+      });
+    }
+
+    startClock() {
+      const fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+      const tick = () => {
+        const t = fmt.format(new Date());
+        const n = this.one('[data-nav-clock]'); const f = this.one('[data-foot-clock]');
+        if (n) n.textContent = 'BLR — ' + t;
+        if (f) f.textContent = 'Bengaluru — ' + t + ' IST';
+      };
+      tick(); this._clk = setInterval(tick, 1000);
+    }
+
+    init() {
+      const gsap = window.gsap, ST = window.ScrollTrigger;
+      gsap.registerPlugin(ST);
+      this.gsap = gsap; this.ST = ST;
+
+      // Lenis smooth scroll
+      if (!this.RM) {
+        const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+        this.lenis = lenis;
+        lenis.on('scroll', (e) => { this.vel = e.velocity || 0; ST.update(); });
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+      }
+      // anchor smooth scroll
+      this.q('a[href^="#"]').forEach(a => a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        const t = this.one(id) || document.querySelector(id);
+        if (t) {
+          e.preventDefault();
+          if (this.lenis) this.lenis.scrollTo(t, { offset: -90 });
+          else t.scrollIntoView({ behavior: 'smooth' });
+        }
+      }));
+
+      this.setupSlot();
+      this.setupFooterReveal();
+      this.setupNav();
+      if (this.RM) { this.staticReveal(); this.fallback(); }
+      else { this.preloader(); }
+      this.setupHeroParallax();
+      this.setupRibbons();
+      this.setupManifesto();
+      this.setupStats();
+      this.setupCards();
+      this.setupHueDrift();
+      if (!this.TOUCH) { this.setupCursor(); this.setupMagnetics(); this.setupTilt(); this.setupExpHover(); }
+      else { this.setupExpHover(); }
+      ST.refresh();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ST.refresh());
+    }
+
+    staticReveal() { const g = this.gsap; this.q('[data-hero-el],[data-hero-content]').forEach(e => g.set(e, { opacity: 1, y: 0 })); }
+
+    // 1. Preloader
+    preloader() {
+      const g = this.gsap;
+      const panel = this.one('[data-preloader]'); const track = this.one('[data-pre-track]'); const count = this.one('[data-pre-count]');
+      if (!panel) { return; }
+      if (this.lenis) this.lenis.stop();
+      const lineH = track.children[0].getBoundingClientRect().height;
+      const tl = g.timeline({ onComplete: () => { if (this.lenis) this.lenis.start(); this.heroEntrance(); } });
+      const counter = { v: 0 };
+      tl.to(counter, { v: 100, duration: 2.2, ease: 'none', onUpdate: () => { count.textContent = String(Math.round(counter.v)).padStart(3, '0'); } }, 0);
+      for (let i = 1; i < track.children.length; i++) {
+        tl.to(track, { y: -lineH * i, duration: .5, ease: 'cubic-bezier(.76,0,.24,1)' }, .1 + i * 0.42);
+      }
+      tl.to(panel, { yPercent: -100, duration: .9, ease: 'expo.inOut' }, '+=0.35');
+      tl.set(panel, { display: 'none' });
+    }
+
+    // 2. Hero entrance
+    heroEntrance() {
+      const g = this.gsap;
+      // split chars
+      this.q('[data-hero-h1] [data-split]').forEach(el => {
+        const text = el.textContent; el.textContent = '';
+        [...text].forEach(ch => {
+          const wrap = document.createElement('span'); wrap.style.cssText = 'display:inline-block;overflow:hidden;vertical-align:bottom;';
+          const inner = document.createElement('span'); inner.style.cssText = 'display:inline-block;will-change:transform;'; inner.textContent = ch === ' ' ? ' ' : ch;
+          wrap.appendChild(inner); el.appendChild(wrap);
+        });
+      });
+      const chars = this.q('[data-hero-h1] [data-split] span span');
+      g.set(chars, { yPercent: 115, rotate: 6 });
+      const slot = this.one('[data-slot]'); g.set(slot, { opacity: 0, y: 20 });
+      const els = this.q('[data-hero-el]'); g.set(els, { opacity: 0, y: 24 });
+      const giant = this.one('[data-giant-name]'); g.set(giant, { opacity: 0, yPercent: 18 });
+
+      const tl = g.timeline();
+      tl.to(chars, { yPercent: 0, rotate: 0, duration: 1.05, ease: 'expo.out', stagger: 0.016 })
+        .to(slot, { opacity: 1, y: 0, duration: .7, ease: 'expo.out' }, '-=0.7')
+        .to(els, { opacity: 1, y: 0, duration: .9, ease: 'expo.out', stagger: 0.08 }, '-=0.6')
+        .to(giant, { opacity: 1, yPercent: 0, duration: 1.2, ease: 'expo.out' }, '-=0.8');
+      this.startSlot();
+    }
+
+    // 3. Slot verb
+    setupSlot() {
+      this.slotTrack = this.one('[data-slot-track]'); this.slotClip = this.one('[data-slot]');
+      const measure = () => { if (!this.slotTrack) return; const h = this.slotTrack.children[0].getBoundingClientRect().height; this.slotLineH = h; this.slotClip.style.height = h + 'px'; };
+      measure(); this._slotMeasure = measure;
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); });
+      window.addEventListener('resize', measure);
+    }
+    startSlot() {
+      if (this.RM || !this.slotTrack) return;
+      const g = this.gsap; this.slotI = 0; const n = this.slotTrack.children.length - 1;
+      this._slotIv = setInterval(() => {
+        this.slotI++;
+        g.to(this.slotTrack, { y: -this.slotLineH * this.slotI, duration: .7, ease: 'cubic-bezier(.76,0,.24,1)', onComplete: () => { if (this.slotI >= n) { this.slotI = 0; g.set(this.slotTrack, { y: 0 }); } } });
+      }, 2500);
+    }
+
+    // 4. Hero / giant name parallax
+    setupHeroParallax() {
+      if (this.RM) return; const g = this.gsap;
+      const hero = this.q('section')[0]; const content = this.one('[data-hero-content]'); const giant = this.one('[data-giant-name]');
+      g.to(content, { yPercent: -12, opacity: .3, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
+      g.to(giant, { yPercent: 22, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
+    }
+
+    // 5. Custom cursor
+    setupCursor() {
+      const dot = this.one('[data-cursor-dot]'), ring = this.one('[data-cursor-ring]'), label = this.one('[data-cursor-label]');
+      if (!dot) return; const g = this.gsap;
+      g.set([dot, ring], { opacity: 1 });
+      const rx = g.quickTo(ring, 'x', { duration: .35, ease: 'power3' }), ry = g.quickTo(ring, 'y', { duration: .35, ease: 'power3' });
+      const dx = g.quickTo(dot, 'x', { duration: .05 }), dy = g.quickTo(dot, 'y', { duration: .05 });
+      window.addEventListener('mousemove', e => { rx(e.clientX); ry(e.clientY); dx(e.clientX); dy(e.clientY); });
+      const grow = () => g.to(ring, { scale: 1.7, duration: .3 }), shrink = () => g.to(ring, { scale: 1, duration: .3 });
+      this.q('a,button,[data-magnetic]').forEach(el => { el.addEventListener('mouseenter', grow); el.addEventListener('mouseleave', shrink); });
+      this.q('[data-card]').forEach(card => {
+        card.addEventListener('mouseenter', () => { g.to(ring, { scale: 2.4, duration: .3, background: '#0D0D12', borderColor: '#0D0D12' }); label.style.opacity = 1; });
+        card.addEventListener('mouseleave', () => { g.to(ring, { scale: 1, duration: .3, background: 'rgba(0,0,0,0)', borderColor: '#0D0D12' }); label.style.opacity = 0; });
+      });
+    }
+
+    // 6. Velocity ribbons
+    setupRibbons() {
+      if (this.RM) return;
+      this.q('[data-ribbon]').forEach(rib => {
+        const track = rib.querySelector('[data-ribbon-track]');
+        const original = track.children[0];
+        for (let i = 0; i < 3; i++) { track.appendChild(original.cloneNode(true)); }
+        const dir = track.getAttribute('data-dir') === '-1' ? -1 : 1;
+        let half = original.getBoundingClientRect().width;
+        const remeasure = () => { half = original.getBoundingClientRect().width; };
+        window.addEventListener('resize', remeasure);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
+        let x = 0; const base = (rib.getAttribute('data-ribbon') === '2' ? 95 : 75) * dir;
+        let lt;
+        const loop = (t) => {
+          const dt = lt ? (t - lt) / 1000 : 0.016; lt = t;
+          const v = this.vel || 0;
+          const speed = base + dir * Math.abs(v) * 14;
+          x -= speed * dt;
+          if (half > 0) { if (x <= -half) x += half; if (x >= 0) x -= half; }
+          const skew = Math.max(-7, Math.min(7, -v * 0.9));
+          track.style.transform = 'translate3d(' + x + 'px,0,0) skewX(' + skew + 'deg)';
+          this.rafs.push(requestAnimationFrame(loop));
+        };
+        this.rafs.push(requestAnimationFrame(loop));
+      });
+    }
+
+    // 7. Manifesto scroll-fill
+    setupManifesto() {
+      const g = this.gsap; const p = this.one('[data-manifesto]'); if (!p) return;
+      const units = [];
+      const walk = (node) => {
+        [...node.childNodes].forEach(n => {
+          if (n.nodeType === 3) {
+            const words = n.textContent.split(/(\s+)/);
+            const frag = document.createDocumentFragment();
+            words.forEach(w => {
+              if (w.trim() === '') { frag.appendChild(document.createTextNode(w)); }
+              else { const s = document.createElement('span'); s.textContent = w; s.style.display = 'inline-block'; frag.appendChild(s); units.push(s); }
+            });
+            node.replaceChild(frag, n);
+          } else if (n.nodeType === 1) { n.style.display = 'inline-block'; units.push(n); }
+        });
+      };
+      walk(p);
+      if (this.RM) { units.forEach(u => u.style.opacity = 1); return; }
+      units.forEach(u => u.style.opacity = 0.13);
+      g.to(units, { opacity: 1, ease: 'none', stagger: { each: 0.4 }, scrollTrigger: { trigger: p, start: 'top 78%', end: 'bottom 55%', scrub: 0.6 } });
+    }
+
+    // 8. Stats
+    setupStats() {
+      const g = this.gsap, ST = this.ST;
+      this.q('[data-stats] [data-count]').forEach((el) => {
+        const to = parseInt(el.getAttribute('data-to'), 10), suf = el.getAttribute('data-suffix') || '';
+        const tick = el.parentElement.querySelector('[data-tick]');
+        ST.create({
+          trigger: el, start: 'top 85%', once: true, onEnter: () => {
+            if (this.RM) { el.textContent = to + suf; if (tick) tick.style.transform = 'scaleY(1)'; return; }
+            if (tick) g.to(tick, { scaleY: 1, duration: .8, ease: 'expo.out' });
+            const o = { v: 0 }; g.to(o, { v: to, duration: 1.6, ease: 'expo.out', onUpdate: () => { el.textContent = Math.round(o.v) + suf; } });
+          }
+        });
+      });
+    }
+
+    // 9. Stacking cards
+    setupCards() {
+      if (this.RM) return; const g = this.gsap;
+      const cards = this.q('[data-card]');
+      cards.forEach((card, i) => {
+        const inner = card.firstElementChild;
+        if (i < cards.length - 1) {
+          const next = cards[i + 1];
+          g.to(inner, { scale: .94, filter: 'brightness(.965)', ease: 'none', transformOrigin: 'top center', scrollTrigger: { trigger: next, start: 'top bottom', end: 'top top+=120', scrub: true } });
+        }
+        const ghost = card.querySelector('[data-ghost]');
+        if (ghost) {
+          card.addEventListener('mousemove', (e) => { const r = card.getBoundingClientRect(); const dx = (e.clientX - r.left - r.width / 2) / r.width; g.to(ghost, { x: dx * 30, y: (e.clientY - r.top - r.height / 2) / r.height * 20, duration: .6 }); });
+          card.addEventListener('mouseleave', () => g.to(ghost, { x: 0, y: 0, duration: .8 }));
+        }
+      });
+    }
+
+    // 10. Experience hover
+    setupExpHover() {
+      this.q('[data-exp-row]').forEach(row => {
+        const bar = row.querySelector('[data-exp-bar]');
+        row.addEventListener('mouseenter', () => { if (!this.TOUCH) { row.style.transform = 'translateX(14px)'; row.style.background = '#FBFAF7'; } bar.style.transform = 'scaleY(1)'; });
+        row.addEventListener('mouseleave', () => { row.style.transform = 'translateX(0)'; row.style.background = 'transparent'; bar.style.transform = 'scaleY(0)'; });
+      });
+    }
+
+    // 12. Honors tilt
+    setupTilt() {
+      const g = this.gsap;
+      this.q('[data-tilt]').forEach(card => {
+        card.addEventListener('mousemove', (e) => { const r = card.getBoundingClientRect(); const px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5; g.to(card, { rotationY: px * 9, rotationX: -py * 9, transformPerspective: 800, duration: .4, ease: 'power2.out' }); });
+        card.addEventListener('mouseleave', () => { g.to(card, { rotationX: 0, rotationY: 0, duration: .7, ease: 'elastic.out(1,.5)' }); });
+      });
+    }
+
+    // 13. Background hue drift
+    setupHueDrift() {
+      const g = this.gsap, ST = this.ST; const main = this.one('[data-main]');
+      const work = this.one('#work');
+      if (work) ST.create({ trigger: work, start: 'top 60%', end: 'bottom 40%', onEnter: () => g.to(main, { backgroundColor: '#F7F8FF', duration: .8 }), onLeave: () => g.to(main, { backgroundColor: '#FBFAF7', duration: .8 }), onEnterBack: () => g.to(main, { backgroundColor: '#F7F8FF', duration: .8 }), onLeaveBack: () => g.to(main, { backgroundColor: '#FBFAF7', duration: .8 }) });
+      const island = this.one('[data-island]'); const honorsSection = island ? island.closest('section').nextElementSibling : null;
+      if (honorsSection) ST.create({ trigger: honorsSection, start: 'top 60%', onEnter: () => g.to(main, { backgroundColor: '#FDF8EF', duration: .8 }), onLeaveBack: () => g.to(main, { backgroundColor: '#FBFAF7', duration: .8 }) });
+    }
+
+    // 14. Footer reveal
+    setupFooterReveal() {
+      const ST = this.ST; const main = this.one('[data-main]'); const footer = this.one('[data-footer]'); const giant = this.one('[data-foot-giant]'); const headline = this.one('[data-foot-headline]');
+      const apply = () => {
+        const fh = footer.getBoundingClientRect().height;
+        if (this.RM || window.innerWidth <= 520 || fh > window.innerHeight * 0.96) {
+          main.style.marginBottom = '0'; footer.style.position = 'relative'; footer.style.zIndex = '1';
+          return;
+        }
+        footer.style.position = 'fixed';
+        main.style.marginBottom = fh + 'px';
+        main.style.borderBottomLeftRadius = '26px'; main.style.borderBottomRightRadius = '26px';
+        main.style.boxShadow = '0 40px 80px rgba(13,13,18,.18)';
+        if (this.ST) { ST.create({ trigger: main, start: 'bottom bottom', end: 'bottom top', scrub: true, onUpdate: (self) => { if (giant) giant.style.transform = 'translateY(' + (1 - self.progress) * 40 + '%)'; } }); }
+      };
+      apply();
+      window.addEventListener('resize', () => { if (this.ST) this.ST.refresh(); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+        if (footer.style.position === 'fixed') { main.style.marginBottom = footer.getBoundingClientRect().height + 'px'; if (this.ST) this.ST.refresh(); }
+      });
+      // headline per-letter roll on hover
+      if (headline && !this.TOUCH) {
+        const txt = headline.textContent; headline.textContent = '';
+        [...txt].forEach(ch => { const w = document.createElement('span'); w.style.cssText = 'display:inline-block;overflow:hidden;vertical-align:bottom;'; const inner = document.createElement('span'); inner.style.cssText = 'display:inline-block;transition:transform .4s cubic-bezier(.76,0,.24,1);'; inner.textContent = ch === ' ' ? ' ' : ch; w.appendChild(inner); headline.appendChild(w); });
+        const inners = headline.querySelectorAll('span span');
+        headline.addEventListener('mouseenter', () => { inners.forEach((s, i) => setTimeout(() => { s.style.transform = 'translateY(-100%)'; setTimeout(() => { s.style.transition = 'none'; s.style.transform = 'translateY(100%)'; requestAnimationFrame(() => { s.style.transition = 'transform .4s cubic-bezier(.76,0,.24,1)'; s.style.transform = 'translateY(0)'; }); }, 220); }, i * 14)); });
+      }
+    }
+
+    // 16. Nav hide/show
+    setupNav() {
+      const nav = this.one('[data-nav]'); if (!nav) return; let last = 0;
+      const handler = (y) => { if (y > 500 && y > last) { nav.style.transform = 'translateX(-50%) translateY(-150%)'; } else { nav.style.transform = 'translateX(-50%) translateY(0)'; } last = y; };
+      nav.style.transition = 'transform .5s cubic-bezier(.76,0,.24,1),background .35s ease';
+      if (this.lenis) { this.lenis.on('scroll', (e) => handler(e.scroll)); }
+      else { window.addEventListener('scroll', () => handler(window.scrollY)); }
+      const cta = nav.querySelector('[data-cta]');
+      if (cta) { cta.addEventListener('mouseenter', () => cta.style.background = '#2438FF'); cta.addEventListener('mouseleave', () => cta.style.background = '#0D0D12'); }
+    }
+
+    // 17. Magnetics
+    setupMagnetics() {
+      const g = this.gsap;
+      this.q('[data-magnetic]').forEach(el => {
+        const xTo = g.quickTo(el, 'x', { duration: .4, ease: 'power3' }), yTo = g.quickTo(el, 'y', { duration: .4, ease: 'power3' });
+        el.addEventListener('mousemove', (e) => { const r = el.getBoundingClientRect(); xTo((e.clientX - (r.left + r.width / 2)) * 0.25); yTo((e.clientY - (r.top + r.height / 2)) * 0.35); });
+        el.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
+      });
+    }
+  }
+
+  const boot = () => { new Site(document.getElementById('kk-root')); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
