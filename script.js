@@ -228,11 +228,17 @@
         window.addEventListener('resize', remeasure);
         if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
         let x = 0; const base = (rib.getAttribute('data-ribbon') === '2' ? 95 : 75) * dir;
-        let lt;
+        let lt = 0, mult = 1, multT = 1;
+        rib.addEventListener('mouseenter', () => { multT = .3; });
+        rib.addEventListener('mouseleave', () => { multT = 1; });
+        track.addEventListener('mouseover', (e) => { const s = e.target.closest('[data-mq]'); if (s) s.style.color = s.getAttribute('data-mq'); });
+        track.addEventListener('mouseout', (e) => { const s = e.target.closest('[data-mq]'); if (s) s.style.color = s.hasAttribute('data-stroke') ? 'transparent' : ''; });
         const loop = (t) => {
-          const dt = lt ? (t - lt) / 1000 : 0.016; lt = t;
+          if (this.dead) return;
+          const dt = lt ? Math.min(0.05, (t - lt) / 1000) : 0.016; lt = t;
           const v = this.vel || 0;
-          const speed = base + dir * Math.abs(v) * 14;
+          mult += (multT - mult) * 0.08;
+          const speed = (base + dir * Math.abs(v) * 14) * mult;
           x -= speed * dt;
           if (half > 0) { if (x <= -half) x += half; if (x >= 0) x -= half; }
           const skew = Math.max(-7, Math.min(7, -v * 0.9));
