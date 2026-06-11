@@ -454,13 +454,16 @@
       });
     }
 
-    // 17. Magnetics
+    // 17. Magnetics (+v3 1.4: rotate toward cursor, squish on press)
     setupMagnetics() {
       const g = this.gsap;
       this.q('[data-magnetic]').forEach(el => {
         const xTo = g.quickTo(el, 'x', { duration: .4, ease: 'power3' }), yTo = g.quickTo(el, 'y', { duration: .4, ease: 'power3' });
-        el.addEventListener('mousemove', (e) => { const r = el.getBoundingClientRect(); xTo((e.clientX - (r.left + r.width / 2)) * 0.25); yTo((e.clientY - (r.top + r.height / 2)) * 0.35); });
-        el.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
+        const rTo = g.quickTo(el, 'rotation', { duration: .4, ease: 'power3' });
+        el.addEventListener('mousemove', (e) => { const r = el.getBoundingClientRect(); const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2); xTo(dx * 0.25); yTo(dy * 0.35); rTo(Math.max(-3, Math.min(3, dx / r.width * 6))); });
+        el.addEventListener('mouseleave', () => { xTo(0); yTo(0); rTo(0); });
+        el.addEventListener('mousedown', () => { g.to(el, { scale: .95, duration: .15, ease: 'power2.out' }); });
+        el.addEventListener('mouseup', () => { g.to(el, { scale: 1, duration: .7, ease: 'elastic.out(1.2,.45)' }); });
       });
     }
   }
