@@ -17,6 +17,7 @@
       this.buildChips();
       this.applyPack();
       this.setGreeting();
+      this.setupTitle();
       this.startClock();
       this.waitFor(() => window.gsap && window.ScrollTrigger && window.Lenis, () => this.init(), 200);
     }
@@ -115,6 +116,7 @@
       this.setupCopyEmail();
       this.setupBackToTop();
       this.setupRibbon3D();
+      this.setupParty();
       ST.refresh();
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ST.refresh());
     }
@@ -538,6 +540,40 @@
         try { renderer.render(scene, cam); } catch (err) { }
       };
       this._r3dTick = tick;
+    }
+
+    // v3 Tier 3 — party mode (press K twice)
+    setupParty() {
+      if (this.RM) return;
+      let lastK = 0;
+      window.addEventListener('keydown', (e) => {
+        if (this.dead) return;
+        if ((e.key || '').toLowerCase() !== 'k') return;
+        const now = Date.now();
+        if (now - lastK < 600) { lastK = 0; this.party(); } else lastK = now;
+      });
+    }
+    party() {
+      const g = this.gsap; if (!g) return;
+      const giant = this.one('[data-giant-name]');
+      const colors = ['#2438FF', '#7A2BF5', '#0CAF9B', '#FFAA00', '#FF4D5E'];
+      let r = giant ? giant.getBoundingClientRect() : null;
+      if (!r || r.bottom < 0 || r.top > window.innerHeight) { r = { left: window.innerWidth * .15, top: window.innerHeight * .45, width: window.innerWidth * .7, height: 80 }; }
+      for (let i = 0; i < 36; i++) {
+        const p = document.createElement('div'); const sz = 6 + Math.random() * 8;
+        p.style.cssText = 'position:fixed;z-index:10004;pointer-events:none;width:' + sz + 'px;height:' + sz + 'px;background:' + colors[i % 5] + ';transform:rotate(45deg);left:' + (r.left + Math.random() * r.width) + 'px;top:' + (r.top + Math.random() * Math.max(40, r.height * .5)) + 'px;';
+        document.body.appendChild(p);
+        g.to(p, { x: (Math.random() - .5) * 320, y: -(120 + Math.random() * 220), rotation: '+=' + Math.round(Math.random() * 360), duration: .7, ease: 'power2.out' });
+        g.to(p, { y: '+=' + (300 + Math.random() * 220), opacity: 0, duration: 1.3, delay: .7, ease: 'power1.in', onComplete: () => p.remove() });
+      }
+      const logo = this.one('nav a[href="#top"]');
+      if (logo) { logo.style.display = 'inline-block'; g.fromTo(logo, { rotation: 0 }, { rotation: 360, duration: 1, ease: 'expo.inOut' }); }
+    }
+
+    // v3 Tier 3 — dynamic tab title
+    setupTitle() {
+      this._title = document.title || 'Kunal Kumar';
+      document.addEventListener('visibilitychange', () => { if (this.dead) return; document.title = document.hidden ? '← still here. — Kunal' : this._title; });
     }
 
     // v3 1.8 — time-aware greeting (Bengaluru)
