@@ -89,6 +89,7 @@
       }));
 
       this.setupSlot();
+      this.setupProgress();
       this.setupFooterReveal();
       this.setupNav();
       if (this.RM) { this.staticReveal(); this.fallback(); }
@@ -343,6 +344,15 @@
       else { window.addEventListener('scroll', () => handler(window.scrollY)); }
       const cta = nav.querySelector('[data-cta]');
       if (cta) { cta.addEventListener('mouseenter', () => cta.style.background = '#2438FF'); cta.addEventListener('mouseleave', () => cta.style.background = '#0D0D12'); }
+    }
+
+    // v3 1.5 — scroll progress hairline
+    setupProgress() {
+      const bar = this.one('[data-progress]'); if (!bar) return;
+      const upd = (y) => { const max = document.documentElement.scrollHeight - window.innerHeight; bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, Math.max(0, y / max)) : 0) + ')'; };
+      if (this.lenis) this.lenis.on('scroll', (e) => upd(e.scroll));
+      else window.addEventListener('scroll', () => upd(window.scrollY), { passive: true });
+      upd(window.scrollY || 0);
     }
 
     // v3 1.3 — email copy with feedback
