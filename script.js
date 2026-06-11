@@ -18,7 +18,7 @@
       this.applyPack();
       this.setGreeting();
       this.startClock();
-      this.waitFor(() => window.gsap && window.ScrollTrigger && window.Lenis, () => this.init(), 60);
+      this.waitFor(() => window.gsap && window.ScrollTrigger && window.Lenis, () => this.init(), 200);
     }
 
     waitFor(cond, cb, tries) {
@@ -74,9 +74,17 @@
         const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
         this.lenis = lenis;
         lenis.on('scroll', (e) => { this.vel = e.velocity || 0; ST.update(); });
-        gsap.ticker.add((time) => lenis.raf(time * 1000));
-        gsap.ticker.lagSmoothing(0);
       }
+      gsap.ticker.lagSmoothing(0);
+      // master loop: drive lenis + gsap + webgl from one rAF (gsap's internal ticker can stall in embedded contexts; updateRoot is time-based so double-driving is harmless)
+      const master = (t) => {
+        if (this.dead) return;
+        try { if (this.lenis) this.lenis.raf(t); } catch (err) { }
+        try { gsap.updateRoot(t / 1000); } catch (err) { }
+        try { if (this._r3dTick) this._r3dTick(); } catch (err) { }
+        requestAnimationFrame(master);
+      };
+      requestAnimationFrame(master);
       // anchor smooth scroll
       this.q('a[href^="#"]').forEach(a => a.addEventListener('click', (e) => {
         const id = a.getAttribute('href');
@@ -106,6 +114,7 @@
       this.setupScramble();
       this.setupCopyEmail();
       this.setupBackToTop();
+      this.setupRibbon3D();
       ST.refresh();
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ST.refresh());
     }
@@ -479,6 +488,56 @@
           if (glare) glare.style.opacity = 0;
         });
       });
+    }
+
+    // v3 Tier 2 Option A — the Memory Ribbon (WebGL, guarded)
+    setupRibbon3D() {
+      const ok = !this.RM && !this.TOUCH && window.innerWidth >= 900 && (navigator.hardwareConcurrency || 8) >= 4;
+      if (!ok) return;
+      const holder = this.one('[data-ribbon3d]'); if (!holder) return;
+      const boot = () => { try { this.buildRibbon3D(holder); } catch (err) { } };
+      if (window.THREE) { boot(); return; }
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+      s.onload = boot; s.onerror = () => { };
+      document.head.appendChild(s);
+    }
+    buildRibbon3D(holder) {
+      const THREE = window.THREE;
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power', preserveDrawingBuffer: true });
+      this._renderer = renderer;
+      renderer.setPixelRatio(Math.min(1.5, window.devicePixelRatio || 1));
+      const scene = new THREE.Scene();
+      const cam = new THREE.PerspectiveCamera(40, 1, .1, 100); cam.position.set(0, 0, 11);
+      const geo = new THREE.PlaneGeometry(34, 5.2, 200, 30);
+      const uni = { uTime: { value: 0 }, uMouse: { value: new THREE.Vector2(0, 0) } };
+      const mat = new THREE.ShaderMaterial({
+        uniforms: uni, transparent: true, depthWrite: false, side: THREE.DoubleSide,
+        vertexShader: 'varying vec2 vUv; varying float vW; uniform float uTime; uniform vec2 uMouse;\nvoid main(){ vUv=uv; vec3 p=position; float t=uTime*0.6;\n float w=sin(p.x*0.42+t)*0.85+sin(p.x*0.17-t*0.7)*1.25;\n w+=uMouse.y*sin(p.x*0.31+t)*0.9;\n p.y+=w*0.5;\n p.z+=sin(p.x*0.28+t*1.25)*1.1+uMouse.x*sin(p.x*0.21)*0.9;\n vW=w;\n gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0); }',
+        fragmentShader: 'varying vec2 vUv; varying float vW; uniform float uTime;\nvec3 pal(float x){ vec3 c1=vec3(0.141,0.219,1.0); vec3 c2=vec3(0.478,0.169,0.961); vec3 c3=vec3(0.047,0.686,0.608); vec3 c4=vec3(1.0,0.667,0.0); x=fract(x);\n if(x<0.33) return mix(c1,c2,x/0.33);\n if(x<0.66) return mix(c2,c3,(x-0.33)/0.33);\n return mix(c3,c4,(x-0.66)/0.34); }\nvoid main(){ float x=vUv.x+uTime*0.02; vec3 col=pal(x);\n float edge=smoothstep(0.0,0.18,vUv.y)*(1.0-smoothstep(0.82,1.0,vUv.y));\n float a=0.55*edge*(0.75+0.25*sin(vW*2.0));\n gl_FragColor=vec4(col,a); }'
+      });
+      const mesh = new THREE.Mesh(geo, mat); mesh.rotation.x = -0.28; mesh.rotation.z = -0.10; mesh.position.y = 0.6; mesh.frustumCulled = false; scene.add(mesh);
+      renderer.domElement.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;';
+      holder.appendChild(renderer.domElement);
+      const size = () => { const w = holder.clientWidth || 1, h = holder.clientHeight || 1; renderer.setSize(w, h); cam.aspect = w / h; cam.updateProjectionMatrix(); };
+      size(); window.addEventListener('resize', size);
+      let visible = true;
+      if ('IntersectionObserver' in window) { new IntersectionObserver((en) => { visible = en[0].isIntersecting; }).observe(holder); }
+      const mT = { x: 0, y: 0 };
+      window.addEventListener('mousemove', (e) => { mT.x = (e.clientX / window.innerWidth - .5) * 2; mT.y = (e.clientY / window.innerHeight - .5) * 2; });
+      let prog = 0;
+      const hero = holder.closest('section');
+      if (this.ST && hero) this.ST.create({ trigger: hero, start: 'top top', end: 'bottom top', scrub: true, onUpdate: (s) => { prog = s.progress; } });
+      const tick = () => {
+        if (this.dead || !visible || document.hidden) return;
+        uni.uTime.value += 0.016;
+        uni.uMouse.value.x += (mT.x - uni.uMouse.value.x) * 0.04;
+        uni.uMouse.value.y += (mT.y - uni.uMouse.value.y) * 0.04;
+        mesh.rotation.z = -0.10 - prog * 0.17;
+        mesh.position.y = 0.6 - prog * 2.6;
+        try { renderer.render(scene, cam); } catch (err) { }
+      };
+      this._r3dTick = tick;
     }
 
     // v3 1.8 — time-aware greeting (Bengaluru)
