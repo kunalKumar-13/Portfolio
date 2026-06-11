@@ -16,6 +16,7 @@
       this.TOUCH = matchMedia('(hover: none), (pointer: coarse)').matches;
       this.buildChips();
       this.applyPack();
+      this.setGreeting();
       this.startClock();
       this.waitFor(() => window.gsap && window.ScrollTrigger && window.Lenis, () => this.init(), 60);
     }
@@ -340,6 +341,14 @@
       else { window.addEventListener('scroll', () => handler(window.scrollY)); }
       const cta = nav.querySelector('[data-cta]');
       if (cta) { cta.addEventListener('mouseenter', () => cta.style.background = '#2438FF'); cta.addEventListener('mouseleave', () => cta.style.background = '#0D0D12'); }
+    }
+
+    // v3 1.8 — time-aware greeting (Bengaluru)
+    setGreeting() {
+      const el = this.one('[data-greet]'); if (!el) return;
+      let h = 12;
+      try { h = parseInt(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', hour12: false }).format(new Date()), 10); } catch (e) { }
+      el.textContent = (h >= 5 && h < 12) ? 'Good morning' : (h >= 12 && h < 17) ? 'Good afternoon' : (h >= 17 && h < 22) ? 'Good evening' : "It's late in Bengaluru — still shipping";
     }
 
     // v3 copy pack — heroVariants (single source of truth)
