@@ -8,11 +8,14 @@
   class Site {
     constructor(root) {
       this.rootEl = root;
+      this.dead = false;
       this.vel = 0;
       this.rafs = [];
+      this.heroPack = 'worth-remembering'; // one-line swap: see getPacks()
       this.RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
       this.TOUCH = matchMedia('(hover: none), (pointer: coarse)').matches;
       this.buildChips();
+      this.applyPack();
       this.startClock();
       this.waitFor(() => window.gsap && window.ScrollTrigger && window.Lenis, () => this.init(), 60);
     }
@@ -149,7 +152,7 @@
     // 3. Slot verb
     setupSlot() {
       this.slotTrack = this.one('[data-slot-track]'); this.slotClip = this.one('[data-slot]');
-      const measure = () => { if (!this.slotTrack) return; const h = this.slotTrack.children[0].getBoundingClientRect().height; this.slotLineH = h; this.slotClip.style.height = h + 'px'; };
+      const measure = () => { if (!this.slotTrack || !this.slotTrack.children.length) return; const h = this.slotTrack.children[0].getBoundingClientRect().height; this.slotLineH = h; this.slotClip.style.height = h + 'px'; };
       measure(); this._slotMeasure = measure;
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); });
       window.addEventListener('resize', measure);
@@ -337,6 +340,46 @@
       else { window.addEventListener('scroll', () => handler(window.scrollY)); }
       const cta = nav.querySelector('[data-cta]');
       if (cta) { cta.addEventListener('mouseenter', () => cta.style.background = '#2438FF'); cta.addEventListener('mouseleave', () => cta.style.background = '#0D0D12'); }
+    }
+
+    // v3 copy pack — heroVariants (single source of truth)
+    getPacks() {
+      const C = { cobalt: '#2438FF', violet: '#7A2BF5', teal: '#0CAF9B', amber: '#FFAA00', coral: '#FF4D5E' };
+      return {
+        'worth-remembering': { l1: 'Building software', l2: 'worth ', l3: '', slots: [{ t: 'remembering', c: C.cobalt, dot: true }, { t: 'talking about', c: C.violet, dot: true }, { t: 'coming back to', c: C.teal, dot: true }], sub: null },
+        'feels-alive': { l1: 'I build software', l2: 'that feels ', l3: '', slots: [{ t: 'alive', c: C.coral, dot: true }, { t: 'inevitable', c: C.cobalt, dot: true }, { t: 'effortless', c: C.teal, dot: true }], sub: null },
+        'design-build-ship': { l1: 'I ', l2: '', l3: ' intelligent software.', slots: [{ t: 'design', c: C.violet, dot: false }, { t: 'build', c: C.cobalt, dot: false }, { t: 'ship', c: C.teal, dot: false }, { t: 'obsess over', c: C.coral, dot: false }], sub: 'From ambitious idea to deployed system — frontend, backend, and the AI in between.' },
+        'engineer-by-training': { l1: 'Engineer by training,', l2: '', l3: ' by nature.', slots: [{ t: 'builder', c: C.cobalt, dot: false }, { t: 'storyteller', c: C.violet, dot: false }, { t: 'perfectionist', c: C.teal, dot: false }], sub: null },
+        'original': { l1: 'I build AI systems', l2: 'that ', l3: '', slots: [{ t: 'remember', c: C.cobalt, dot: true }, { t: 'reason', c: C.violet, dot: true }, { t: 'negotiate', c: C.teal, dot: true }], sub: null }
+      };
+    }
+    applyPack() {
+      const key = this.heroPack ?? 'worth-remembering';
+      if (key === 'worth-remembering' && !this._packApplied) { this._packApplied = key; return; }
+      const packs = this.getPacks();
+      const p = packs[key] || packs['worth-remembering'];
+      this._packApplied = key;
+      const l1 = this.one('[data-l1]'), l2 = this.one('[data-l2]'), l3 = this.one('[data-l3]');
+      if (l1) { l1.textContent = p.l1; l1.style.display = p.l1 ? 'block' : 'none'; }
+      if (l2) l2.textContent = p.l2;
+      if (l3) l3.textContent = p.l3;
+      const track = this.one('[data-slot-track]');
+      if (track) {
+        track.innerHTML = '';
+        const mk = (s) => { const d = document.createElement('span'); d.style.cssText = 'display:block;white-space:nowrap;color:' + s.c + ';'; d.textContent = s.t; if (s.dot) { const dot = document.createElement('span'); dot.setAttribute('data-dot', ''); dot.style.cssText = 'display:inline-block;color:#FF4D5E;'; dot.textContent = '.'; d.appendChild(dot); } return d; };
+        p.slots.forEach(s => track.appendChild(mk(s)));
+        track.appendChild(mk(p.slots[0]));
+        if (this._slotMeasure) this._slotMeasure();
+        this.slotI = 0; if (this.gsap) this.gsap.set(track, { y: 0 });
+      }
+      if (p.sub) { const sub = this.one('[data-hero-sub]'); if (sub) sub.textContent = p.sub + ' Recent proof: a memory engine for unfinished work, a support agent that passes 132/132 tests, and 100k episodes of machines learning to negotiate.'; }
+      const pre = this.one('[data-pre-track]');
+      if (pre) { const ws = pre.querySelectorAll('[data-pre-w]'); for (let i = 0; i < Math.min(3, p.slots.length, ws.length); i++) { ws[i].textContent = p.slots[i].t; ws[i].style.color = p.slots[i].c; } }
+      this.q('[data-ribbon="2"] [data-mq]').forEach((el, i) => {
+        const k = i % 4; const s = k < 3 ? p.slots[Math.min(k, p.slots.length - 1)] : null;
+        el.textContent = (s ? s.t : 'ship') + '.';
+        el.setAttribute('data-mq', s ? s.c : '#FFAA00');
+      });
     }
 
     // 17. Magnetics
