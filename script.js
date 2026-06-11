@@ -101,6 +101,7 @@
       this.setupHueDrift();
       if (!this.TOUCH) { this.setupCursor(); this.setupMagnetics(); this.setupTilt(); this.setupExpHover(); this.setupCardFX(); }
       else { this.setupExpHover(); }
+      this.setupCopyEmail();
       ST.refresh();
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ST.refresh());
     }
@@ -180,13 +181,14 @@
       const dot = this.one('[data-cursor-dot]'), ring = this.one('[data-cursor-ring]'), label = this.one('[data-cursor-label]');
       if (!dot) return; const g = this.gsap;
       g.set([dot, ring], { opacity: 1 });
+      this._ring = ring; this._ringLabel = label;
       const rx = g.quickTo(ring, 'x', { duration: .35, ease: 'power3' }), ry = g.quickTo(ring, 'y', { duration: .35, ease: 'power3' });
       const dx = g.quickTo(dot, 'x', { duration: .05 }), dy = g.quickTo(dot, 'y', { duration: .05 });
       window.addEventListener('mousemove', e => { rx(e.clientX); ry(e.clientY); dx(e.clientX); dy(e.clientY); });
       const grow = () => g.to(ring, { scale: 1.7, duration: .3 }), shrink = () => g.to(ring, { scale: 1, duration: .3 });
       this.q('a,button,[data-magnetic]').forEach(el => { el.addEventListener('mouseenter', grow); el.addEventListener('mouseleave', shrink); });
       this.q('[data-card]').forEach(card => {
-        card.addEventListener('mouseenter', () => { g.to(ring, { scale: 2.4, duration: .3, background: '#0D0D12', borderColor: '#0D0D12' }); label.style.opacity = 1; });
+        card.addEventListener('mouseenter', () => { label.textContent = 'EXPLORE'; g.to(ring, { scale: 2.4, duration: .3, background: '#0D0D12', borderColor: '#0D0D12' }); label.style.opacity = 1; });
         card.addEventListener('mouseleave', () => { g.to(ring, { scale: 1, duration: .3, background: 'rgba(0,0,0,0)', borderColor: '#0D0D12' }); label.style.opacity = 0; });
       });
     }
@@ -341,6 +343,40 @@
       else { window.addEventListener('scroll', () => handler(window.scrollY)); }
       const cta = nav.querySelector('[data-cta]');
       if (cta) { cta.addEventListener('mouseenter', () => cta.style.background = '#2438FF'); cta.addEventListener('mouseleave', () => cta.style.background = '#0D0D12'); }
+    }
+
+    // v3 1.3 — email copy with feedback
+    setupCopyEmail() {
+      const link = this.one('a[href^="mailto:"]'); if (!link) return; const g = this.gsap;
+      const hint = this.one('[data-copy-hint]');
+      let last = 0;
+      link.addEventListener('click', (e) => {
+        const now = Date.now();
+        if (now - last < 3000) { last = 0; return; }
+        e.preventDefault(); last = now;
+        try { if (navigator.clipboard) navigator.clipboard.writeText('kunalsain0324@gmail.com'); } catch (err) { }
+        if (g && !this.RM) { g.fromTo(link, { scale: .96 }, { scale: 1, duration: .6, ease: 'elastic.out(1,.4)', transformOrigin: 'left center' }); }
+        if (this._ringLabel && this._ring && g) {
+          this._ringLabel.textContent = 'COPIED ✓'; this._ringLabel.style.opacity = 1;
+          g.to(this._ring, { scale: 2.2, background: '#0D0D12', borderColor: '#FBFAF7', duration: .25 });
+          setTimeout(() => { if (this._ringLabel) this._ringLabel.style.opacity = 0; if (g && this._ring) g.to(this._ring, { scale: 1, background: 'rgba(0,0,0,0)', borderColor: '#0D0D12', duration: .3 }); }, 1200);
+        }
+        if (hint) { hint.style.opacity = 1; setTimeout(() => { hint.style.opacity = 0; }, 3000); }
+        this.burst(e.clientX, e.clientY);
+        setTimeout(() => { last = 0; }, 3100);
+      });
+    }
+    burst(x, y) {
+      if (this.RM || !this.gsap) return; const g = this.gsap;
+      const colors = ['#2438FF', '#7A2BF5', '#0CAF9B', '#FFAA00'];
+      for (let i = 0; i < 8; i++) {
+        const p = document.createElement('div');
+        p.style.cssText = 'position:fixed;left:' + x + 'px;top:' + y + 'px;width:8px;height:8px;z-index:10005;pointer-events:none;background:' + colors[i % 4] + ';transform:rotate(45deg);';
+        document.body.appendChild(p);
+        const a = (i / 8) * Math.PI * 2 + Math.random() * .5;
+        const d = 40 + Math.random() * 55;
+        g.to(p, { x: Math.cos(a) * d, y: Math.sin(a) * d - 22, rotation: '+=200', opacity: 0, scale: .35, duration: .6, ease: 'power2.out', onComplete: () => p.remove() });
+      }
     }
 
     // v3 1.1 — card 3D depth + glare
