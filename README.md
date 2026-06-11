@@ -22,11 +22,17 @@ python3 -m http.server 8000
 ## Editing content
 
 Everything visible is in `index.html` (hero copy, projects, experience rows, honors, footer
-links). Two things live in `script.js`:
+links). Three things live in `script.js`:
 
 - **Toolkit chips** — the `data` map in `buildChips()` (keyed by accent color)
-- **Slot verbs** — markup in `index.html` under `[data-slot-track]`; the last entry must
-  duplicate the first for the seamless loop
+- **Hero copy packs** — `getPacks()` holds all five hero variants (slot verbs, headline
+  lines, preloader words, verb marquee). Swap packs by changing `this.heroPack` in the
+  constructor — one line. Shipped default: `worth-remembering`.
+- **Project links** — each card has `Code ↗` / `Live ↗` pills in `index.html`; replace the
+  `data-live` placeholder `#` with real URLs
+
+Easter eggs: press **K** twice for party mode; the slot verb is clickable; clicking the
+footer email copies it (second click within 3s opens the mail app).
 
 The résumé button points at `kunal-kumar-resume.pdf` in the repo root — replace that file to
 update it.
