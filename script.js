@@ -124,7 +124,7 @@ class Site {
     ST.refresh();
   }
 
-  staticReveal(){ const g=this.gsap; this.q('[data-hero-el],[data-hero-content]').forEach(e=>g.set(e,{opacity:1,y:0})); }
+  staticReveal(){ const g=this.gsap; this.q('[data-hero-el],[data-hero-content]').forEach(e=>g.set(e,{opacity:1,y:0})); this.showWelcomeBack(); }
 
   // 1. Preloader
   preloader(){
@@ -167,7 +167,7 @@ class Site {
       .to(els,{ opacity:1, y:0, duration:.9, ease:'expo.out', stagger:0.08 },'-=0.6')
       .to(giant,{ opacity:1, yPercent:0, duration:1.2, ease:'expo.out' },'-=0.8');
     // E.5 — load hands off into the charge effect as one settling ripple, after the char-rise
-    if(!this.RM){ tl.eventCallback('onComplete',()=>{ this._velTarget=0.9; }); }
+    if(!this.RM){ tl.eventCallback('onComplete',()=>{ this._velTarget=0.9; this.showWelcomeBack(); }); }
     this.startSlot();
   }
 
@@ -1163,10 +1163,15 @@ class Site {
     try{ returning = localStorage.getItem('kk_seen')==='1'; localStorage.setItem('kk_seen','1'); }catch(e){}
     this._returning=returning;
     if(!returning) return; // first visit unchanged
-    const greet=this.one('[data-greet]');
-    if(greet){ const settled=greet.textContent; greet.textContent='welcome back'; setTimeout(()=>{ if(!this.dead) greet.textContent=settled; },4000); }
     const so=this.one('[data-signoff]');
     if(so) so.textContent='you made it back — thanks.';
+    // the hero greeting swap is deferred to showWelcomeBack() — fired once the hero is actually visible (it's behind the preloader at mount)
+  }
+  showWelcomeBack(){
+    if(!this._returning || this._welcomedBack) return; this._welcomedBack=true;
+    const greet=this.one('[data-greet]'); if(!greet) return;
+    const settled=greet.textContent; greet.textContent='welcome back';
+    setTimeout(()=>{ if(!this.dead) greet.textContent=settled; },4000);
   }
 
   // v3 copy pack — heroVariants (single source of truth)
