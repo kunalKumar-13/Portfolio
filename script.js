@@ -634,9 +634,9 @@ class Site {
     } else { run(); }
   }
   armIdle(){
-    if(this.RM || this.dead) return;
+    if(this.dead) return; // 2.4: also runs under reduced motion (line appears statically)
     try{ if(sessionStorage.getItem('kk_idle')) return; }catch(e){}
-    let t; const reset=()=>{ clearTimeout(t); t=setTimeout(()=>this.idleLine(),30000); };
+    let t; const reset=()=>{ clearTimeout(t); t=setTimeout(()=>this.idleLine(),20000); };
     ['mousemove','scroll','keydown','touchstart','wheel'].forEach(ev=>window.addEventListener(ev,reset,{passive:true}));
     reset();
   }
@@ -646,9 +646,9 @@ class Site {
     const box=this.one('[data-log-lines]'); const now=this.one('[data-log-now]'); if(!box||!now) return;
     const line=document.createElement('div');
     line.setAttribute('style', now.getAttribute('style'));
-    line.innerHTML='<span style="color:rgba(251,250,247,.38);flex:none;width:72px;">[ now  ]</span><span style="width:6px;height:6px;border-radius:50%;background:#FFAA00;flex:none;align-self:center;"></span><span>still here? i like you already</span>';
+    line.innerHTML='<span style="color:rgba(251,250,247,.38);flex:none;width:72px;">[ now  ]</span><span style="width:6px;height:6px;border-radius:50%;background:#FFAA00;flex:none;align-self:center;"></span><span>still reading? take your time.</span>';
     line.style.opacity='0'; box.appendChild(line);
-    if(this.gsap) this.gsap.fromTo(line,{ opacity:0, y:8 },{ opacity:1, y:0, duration:.6, ease:'expo.out' }); else line.style.opacity='1';
+    if(this.gsap && !this.RM) this.gsap.fromTo(line,{ opacity:0, y:8 },{ opacity:1, y:0, duration:.6, ease:'expo.out' }); else line.style.opacity='1';
   }
 
   // v4 — HOW I BUILD pipeline (traveling pulse)
