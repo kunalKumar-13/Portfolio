@@ -29,6 +29,14 @@
   @property --kkang{syntax:'<angle>';inherits:false;initial-value:0deg}
   @keyframes kk-ang{to{--kkang:360deg}}
   @media (prefers-reduced-motion: reduce){[data-glow] [data-glow-ring],[data-glow] [data-glow-bloom]{animation:none !important}}
+  /* #4 — meet the 44px touch target on mobile without changing the visual size or desktop layout */
+  @media (max-width:640px){
+    .navlink,[data-phase-dial],[data-cmdk],[data-sound],[data-top]{position:relative}
+    .navlink::after,[data-phase-dial]::after,[data-cmdk]::after,[data-sound]::after,[data-top]::after{
+      content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+      width:100%;height:100%;min-width:44px;min-height:44px;
+    }
+  }
 </style>
 </head>
 <body>
