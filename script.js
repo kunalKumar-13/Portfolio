@@ -423,6 +423,8 @@ class Site {
     const hexToRgb=(h)=>{ const n=parseInt(h.slice(1),16); return [n>>16,(n>>8)&255,n&255]; };
     let curRGB=hexToRgb('#2438FF'), tgt='#2438FF';
     const main=this.one('[data-main]');
+    // 2.2 — section-aware nav: the logo's sign dot adopts the active zone's accent (reuses the spine signal)
+    const navDot=this.one('nav a[href="#top"] span'); if(navDot) navDot.style.transition='color .5s cubic-bezier(.76,0,.24,1)';
     const upd=(y)=>{
       const max=document.documentElement.scrollHeight-window.innerHeight;
       bar.style.transform='scaleX('+(max>0?Math.min(1,Math.max(0,y/max)):0)+')';
@@ -432,7 +434,7 @@ class Site {
       let acc=best?best.getAttribute('data-accent'):'#2438FF';
       // D.3 — inside Work, let the active project card own the spine colour
       if(best && best.getAttribute('data-screen-label')==='Work'){ for(const c of this.q('[data-card]')){ const r=c.getBoundingClientRect(); if(r.top<=window.innerHeight*0.5 && r.bottom>=window.innerHeight*0.5){ acc=c.getAttribute('data-accent')||acc; } } }
-      if(acc!==tgt){ tgt=acc; bar.style.background=acc; if(this._marknow) this._marknow(acc); }
+      if(acc!==tgt){ tgt=acc; bar.style.background=acc; if(navDot) navDot.style.color=acc; if(this._marknow) this._marknow(acc); }
     };
     if(this.lenis) this.lenis.on('scroll',(e)=>upd(e.scroll));
     else window.addEventListener('scroll',()=>upd(window.scrollY),{passive:true});
