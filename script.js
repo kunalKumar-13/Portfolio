@@ -792,7 +792,7 @@ class Site {
     this._syncDial(mode,name);
     const de=document.documentElement;
     const grain=this.one('[data-grain]');
-    const counter=[this.one('[data-aurora-canvas]')].concat(this.q('canvas[data-sim]'));
+    const counter=[this.one('[data-aurora-canvas]'), this.one('[data-story-canvas]')].concat(this.q('canvas[data-sim]'));
     if(name==='night'){
       de.style.filter='invert(1) hue-rotate(180deg)';
       de.style.background='#FBFAF7';
