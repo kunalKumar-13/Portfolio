@@ -8,6 +8,7 @@ class Site {
     this.TOUCH = matchMedia('(hover: none), (pointer: coarse)').matches;
     this.applyPack();
     this.setGreeting();
+    this.setupReturning();
     this.setupTitle();
     this.startClock();
     this.waitFor(() => window.gsap && window.ScrollTrigger && window.Lenis, () => this.init(), 200);
@@ -123,7 +124,7 @@ class Site {
     ST.refresh();
   }
 
-  staticReveal(){ const g=this.gsap; this.q('[data-hero-el],[data-hero-content]').forEach(e=>g.set(e,{opacity:1,y:0})); }
+  staticReveal(){ const g=this.gsap; this.q('[data-hero-el],[data-hero-content]').forEach(e=>g.set(e,{opacity:1,y:0})); this.showWelcomeBack(); }
 
   // 1. Preloader
   preloader(){
@@ -166,7 +167,7 @@ class Site {
       .to(els,{ opacity:1, y:0, duration:.9, ease:'expo.out', stagger:0.08 },'-=0.6')
       .to(giant,{ opacity:1, yPercent:0, duration:1.2, ease:'expo.out' },'-=0.8');
     // E.5 — load hands off into the charge effect as one settling ripple, after the char-rise
-    if(!this.RM){ tl.eventCallback('onComplete',()=>{ this._velTarget=0.9; }); }
+    if(!this.RM){ tl.eventCallback('onComplete',()=>{ this._velTarget=0.9; this.showWelcomeBack(); }); }
     this.startSlot();
   }
 
@@ -360,6 +361,7 @@ class Site {
       const fh=footer.getBoundingClientRect().height;
       if(this.RM || window.innerWidth<=520 || fh > window.innerHeight*0.96){
         main.style.marginBottom='0'; footer.style.position='relative'; footer.style.zIndex='1';
+        if(main.nextElementSibling!==footer) main.after(footer); // #1: footer follows the hero in normal flow (mobile / reduced-motion / short viewports)
         return;
       }
       footer.style.position='fixed';
@@ -421,6 +423,8 @@ class Site {
     const hexToRgb=(h)=>{ const n=parseInt(h.slice(1),16); return [n>>16,(n>>8)&255,n&255]; };
     let curRGB=hexToRgb('#2438FF'), tgt='#2438FF';
     const main=this.one('[data-main]');
+    // 2.2 — section-aware nav: the logo's sign dot adopts the active zone's accent (reuses the spine signal)
+    const navDot=this.one('nav a[href="#top"] span'); if(navDot) navDot.style.transition='color .5s cubic-bezier(.76,0,.24,1)';
     const upd=(y)=>{
       const max=document.documentElement.scrollHeight-window.innerHeight;
       bar.style.transform='scaleX('+(max>0?Math.min(1,Math.max(0,y/max)):0)+')';
@@ -430,7 +434,7 @@ class Site {
       let acc=best?best.getAttribute('data-accent'):'#2438FF';
       // D.3 — inside Work, let the active project card own the spine colour
       if(best && best.getAttribute('data-screen-label')==='Work'){ for(const c of this.q('[data-card]')){ const r=c.getBoundingClientRect(); if(r.top<=window.innerHeight*0.5 && r.bottom>=window.innerHeight*0.5){ acc=c.getAttribute('data-accent')||acc; } } }
-      if(acc!==tgt){ tgt=acc; bar.style.background=acc; if(this._marknow) this._marknow(acc); }
+      if(acc!==tgt){ tgt=acc; bar.style.background=acc; if(navDot) navDot.style.color=acc; if(this._marknow) this._marknow(acc); }
     };
     if(this.lenis) this.lenis.on('scroll',(e)=>upd(e.scroll));
     else window.addEventListener('scroll',()=>upd(window.scrollY),{passive:true});
@@ -630,9 +634,9 @@ class Site {
     } else { run(); }
   }
   armIdle(){
-    if(this.RM || this.dead) return;
+    if(this.dead) return; // 2.4: also runs under reduced motion (line appears statically)
     try{ if(sessionStorage.getItem('kk_idle')) return; }catch(e){}
-    let t; const reset=()=>{ clearTimeout(t); t=setTimeout(()=>this.idleLine(),30000); };
+    let t; const reset=()=>{ clearTimeout(t); t=setTimeout(()=>this.idleLine(),20000); };
     ['mousemove','scroll','keydown','touchstart','wheel'].forEach(ev=>window.addEventListener(ev,reset,{passive:true}));
     reset();
   }
@@ -642,9 +646,9 @@ class Site {
     const box=this.one('[data-log-lines]'); const now=this.one('[data-log-now]'); if(!box||!now) return;
     const line=document.createElement('div');
     line.setAttribute('style', now.getAttribute('style'));
-    line.innerHTML='<span style="color:rgba(251,250,247,.38);flex:none;width:72px;">[ now  ]</span><span style="width:6px;height:6px;border-radius:50%;background:#FFAA00;flex:none;align-self:center;"></span><span>still here? i like you already</span>';
+    line.innerHTML='<span style="color:rgba(251,250,247,.38);flex:none;width:72px;">[ now  ]</span><span style="width:6px;height:6px;border-radius:50%;background:#FFAA00;flex:none;align-self:center;"></span><span>still reading? take your time.</span>';
     line.style.opacity='0'; box.appendChild(line);
-    if(this.gsap) this.gsap.fromTo(line,{ opacity:0, y:8 },{ opacity:1, y:0, duration:.6, ease:'expo.out' }); else line.style.opacity='1';
+    if(this.gsap && !this.RM) this.gsap.fromTo(line,{ opacity:0, y:8 },{ opacity:1, y:0, duration:.6, ease:'expo.out' }); else line.style.opacity='1';
   }
 
   // v4 — HOW I BUILD pipeline (traveling pulse)
@@ -770,6 +774,8 @@ class Site {
     }catch(e){}
     this._phaseMode=mode;
     this.applyPhase();
+    // 2.5 — cross-fade the paper/grain between phases (enabled after the initial paint so first load doesn't animate). The night invert is left as an instant toggle on purpose: animating invert() passes through a washed-out gray midpoint that reads worse than a clean swap.
+    if(!this.RM) requestAnimationFrame(()=>{ if(this.dead) return; document.documentElement.style.transition='background-color .6s ease'; const grain=this.one('[data-grain]'); if(grain) grain.style.transition='opacity .6s ease'; });
     const dial=this.one('[data-phase-dial]');
     if(dial) dial.addEventListener('click',()=>{
       const order=['auto','dawn','day','dusk','night'];
@@ -791,7 +797,7 @@ class Site {
     this._syncDial(mode,name);
     const de=document.documentElement;
     const grain=this.one('[data-grain]');
-    const counter=[this.one('[data-aurora-canvas]')].concat(this.q('canvas[data-sim]'));
+    const counter=[this.one('[data-aurora-canvas]'), this.one('[data-story-canvas]')].concat(this.q('canvas[data-sim]'));
     if(name==='night'){
       de.style.filter='invert(1) hue-rotate(180deg)';
       de.style.background='#FBFAF7';
@@ -831,7 +837,7 @@ class Site {
       ['go','elsewhere','#2438FF',()=>this.goAnchor('#elsewhere')],
       ['go','contact','#2438FF',()=>this.goAnchor('#contact')],
       ['do','copy email','#0CAF9B',()=>{ try{ if(navigator.clipboard) navigator.clipboard.writeText('kunalsain0324@gmail.com'); }catch(e){} this.burst(window.innerWidth/2,window.innerHeight*.4); }],
-      ['do','download résumé','#0CAF9B',()=>window.open('kunal-kumar-resume.pdf','_blank')],
+      ['do','download résumé','#0CAF9B',()=>window.open('kunal-kumar-resume.pdf','_blank','noopener')],
       ['do','open github','#0CAF9B',()=>window.open('https://github.com/kunalKumar-13','_blank')],
       ['do','open linkedin','#0CAF9B',()=>window.open('https://linkedin.com/in/sainkunal','_blank')],
       ['play','cycle phase ☀ ☾','#FFAA00',()=>this.cyclePhase()],
@@ -840,6 +846,7 @@ class Site {
     ];
     const sheet=this.TOUCH;
     const ov=document.createElement('div');
+    ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true'); ov.setAttribute('aria-label','command palette'); // #3
     ov.style.cssText='position:fixed;inset:0;z-index:10010;background:rgba(13,13,18,.34);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:none;opacity:0;';
     const panel=document.createElement('div');
     panel.style.cssText='position:absolute;'+(sheet?'left:0;right:0;bottom:0;border-radius:22px 22px 0 0;':'left:50%;top:16vh;transform:translateX(-50%);width:min(92vw,560px);border-radius:22px;')+'background:#FBFAF7;border:1px solid rgba(13,13,18,.14);box-shadow:0 26px 64px rgba(13,13,18,.11);overflow:hidden;';
@@ -871,6 +878,7 @@ class Site {
     const run=(i)=>{ const r=rows[i]; if(!r) return; close(); setTimeout(()=>{ try{ r._act[3](); }catch(e){} },140); };
     const openFn=()=>{
       if(open) return; open=true;
+      this._palettePrevFocus = document.activeElement; // #3: remember trigger to restore focus on close
       ov.style.display='block'; inp.value=''; render();
       if(this.lenis) this.lenis.stop(); document.body.style.overflow='hidden';
       const g=this.gsap;
@@ -884,6 +892,7 @@ class Site {
       const g=this.gsap;
       if(g&&!this.RM) g.to(ov,{ opacity:0, duration:.2, ease:'expo.in', onComplete:fin }); else { ov.style.opacity=0; fin(); }
       if(this.lenis) this.lenis.start(); document.body.style.overflow='';
+      const pf=this._palettePrevFocus; if(pf && pf.focus){ try{ pf.focus({preventScroll:true}); }catch(e){ pf.focus(); } } // #3: restore focus to trigger
     };
     this.openPalette=openFn;
     ov.addEventListener('click',(e)=>{ if(e.target===ov) close(); });
@@ -1146,6 +1155,23 @@ class Site {
     let h=12;
     try{ h=parseInt(new Intl.DateTimeFormat('en-GB',{ timeZone:'Asia/Kolkata', hour:'2-digit', hour12:false }).format(new Date()),10); }catch(e){}
     el.textContent = (h>=5&&h<12)?'good morning':(h>=12&&h<17)?'good afternoon':(h>=17&&h<22)?'good evening':"it's late in bengaluru — still shipping";
+  }
+
+  // 2.1 — returning-visitor memory (the brand's "remember", made real). Private-mode safe.
+  setupReturning(){
+    let returning=false;
+    try{ returning = localStorage.getItem('kk_seen')==='1'; localStorage.setItem('kk_seen','1'); }catch(e){}
+    this._returning=returning;
+    if(!returning) return; // first visit unchanged
+    const so=this.one('[data-signoff]');
+    if(so) so.textContent='you made it back — thanks.';
+    // the hero greeting swap is deferred to showWelcomeBack() — fired once the hero is actually visible (it's behind the preloader at mount)
+  }
+  showWelcomeBack(){
+    if(!this._returning || this._welcomedBack) return; this._welcomedBack=true;
+    const greet=this.one('[data-greet]'); if(!greet) return;
+    const settled=greet.textContent; greet.textContent='welcome back';
+    setTimeout(()=>{ if(!this.dead) greet.textContent=settled; },4000);
   }
 
   // v3 copy pack — heroVariants (single source of truth)
