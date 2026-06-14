@@ -8,6 +8,7 @@ class Site {
     this.TOUCH = matchMedia('(hover: none), (pointer: coarse)').matches;
     this.applyPack();
     this.setGreeting();
+    this.setupReturning();
     this.setupTitle();
     this.startClock();
     this.waitFor(() => window.gsap && window.ScrollTrigger && window.Lenis, () => this.init(), 200);
@@ -1150,6 +1151,18 @@ class Site {
     let h=12;
     try{ h=parseInt(new Intl.DateTimeFormat('en-GB',{ timeZone:'Asia/Kolkata', hour:'2-digit', hour12:false }).format(new Date()),10); }catch(e){}
     el.textContent = (h>=5&&h<12)?'good morning':(h>=12&&h<17)?'good afternoon':(h>=17&&h<22)?'good evening':"it's late in bengaluru — still shipping";
+  }
+
+  // 2.1 — returning-visitor memory (the brand's "remember", made real). Private-mode safe.
+  setupReturning(){
+    let returning=false;
+    try{ returning = localStorage.getItem('kk_seen')==='1'; localStorage.setItem('kk_seen','1'); }catch(e){}
+    this._returning=returning;
+    if(!returning) return; // first visit unchanged
+    const greet=this.one('[data-greet]');
+    if(greet){ const settled=greet.textContent; greet.textContent='welcome back'; setTimeout(()=>{ if(!this.dead) greet.textContent=settled; },4000); }
+    const so=this.one('[data-signoff]');
+    if(so) so.textContent='you made it back — thanks.';
   }
 
   // v3 copy pack — heroVariants (single source of truth)
