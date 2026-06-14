@@ -360,6 +360,7 @@ class Site {
       const fh=footer.getBoundingClientRect().height;
       if(this.RM || window.innerWidth<=520 || fh > window.innerHeight*0.96){
         main.style.marginBottom='0'; footer.style.position='relative'; footer.style.zIndex='1';
+        if(main.nextElementSibling!==footer) main.after(footer); // #1: footer follows the hero in normal flow (mobile / reduced-motion / short viewports)
         return;
       }
       footer.style.position='fixed';
