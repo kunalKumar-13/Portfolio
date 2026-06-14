@@ -837,7 +837,7 @@ class Site {
       ['go','elsewhere','#2438FF',()=>this.goAnchor('#elsewhere')],
       ['go','contact','#2438FF',()=>this.goAnchor('#contact')],
       ['do','copy email','#0CAF9B',()=>{ try{ if(navigator.clipboard) navigator.clipboard.writeText('kunalsain0324@gmail.com'); }catch(e){} this.burst(window.innerWidth/2,window.innerHeight*.4); }],
-      ['do','download résumé','#0CAF9B',()=>window.open('kunal-kumar-resume.pdf','_blank')],
+      ['do','download résumé','#0CAF9B',()=>window.open('kunal-kumar-resume.pdf','_blank','noopener')],
       ['do','open github','#0CAF9B',()=>window.open('https://github.com/kunalKumar-13','_blank')],
       ['do','open linkedin','#0CAF9B',()=>window.open('https://linkedin.com/in/sainkunal','_blank')],
       ['play','cycle phase ☀ ☾','#FFAA00',()=>this.cyclePhase()],
