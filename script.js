@@ -774,6 +774,8 @@ class Site {
     }catch(e){}
     this._phaseMode=mode;
     this.applyPhase();
+    // 2.5 — cross-fade the paper/grain between phases (enabled after the initial paint so first load doesn't animate). The night invert is left as an instant toggle on purpose: animating invert() passes through a washed-out gray midpoint that reads worse than a clean swap.
+    if(!this.RM) requestAnimationFrame(()=>{ if(this.dead) return; document.documentElement.style.transition='background-color .6s ease'; const grain=this.one('[data-grain]'); if(grain) grain.style.transition='opacity .6s ease'; });
     const dial=this.one('[data-phase-dial]');
     if(dial) dial.addEventListener('click',()=>{
       const order=['auto','dawn','day','dusk','night'];
