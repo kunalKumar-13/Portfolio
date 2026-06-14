@@ -37,6 +37,12 @@
       width:100%;height:100%;min-width:44px;min-height:44px;
     }
   }
+  /* #5 — nav content is ~499px wide; on phones it overflowed (overflow-x:clip hid it), pushing the "Say hello" CTA and the ⌘k chip off-screen. Tighten the nav and drop the (redundant) clock so everything stays reachable. !important is required to beat the inline gaps/padding. */
+  @media (max-width:640px){
+    [data-nav-clock]{display:none!important}
+    [data-nav]{gap:7px!important;padding:7px 10px!important}
+    [data-nav-links]{gap:8px!important}
+  }
 </style>
 </head>
 <body>
