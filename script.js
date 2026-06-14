@@ -841,6 +841,7 @@ class Site {
     ];
     const sheet=this.TOUCH;
     const ov=document.createElement('div');
+    ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true'); ov.setAttribute('aria-label','command palette'); // #3
     ov.style.cssText='position:fixed;inset:0;z-index:10010;background:rgba(13,13,18,.34);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:none;opacity:0;';
     const panel=document.createElement('div');
     panel.style.cssText='position:absolute;'+(sheet?'left:0;right:0;bottom:0;border-radius:22px 22px 0 0;':'left:50%;top:16vh;transform:translateX(-50%);width:min(92vw,560px);border-radius:22px;')+'background:#FBFAF7;border:1px solid rgba(13,13,18,.14);box-shadow:0 26px 64px rgba(13,13,18,.11);overflow:hidden;';
@@ -872,6 +873,7 @@ class Site {
     const run=(i)=>{ const r=rows[i]; if(!r) return; close(); setTimeout(()=>{ try{ r._act[3](); }catch(e){} },140); };
     const openFn=()=>{
       if(open) return; open=true;
+      this._palettePrevFocus = document.activeElement; // #3: remember trigger to restore focus on close
       ov.style.display='block'; inp.value=''; render();
       if(this.lenis) this.lenis.stop(); document.body.style.overflow='hidden';
       const g=this.gsap;
@@ -885,6 +887,7 @@ class Site {
       const g=this.gsap;
       if(g&&!this.RM) g.to(ov,{ opacity:0, duration:.2, ease:'expo.in', onComplete:fin }); else { ov.style.opacity=0; fin(); }
       if(this.lenis) this.lenis.start(); document.body.style.overflow='';
+      const pf=this._palettePrevFocus; if(pf && pf.focus){ try{ pf.focus({preventScroll:true}); }catch(e){ pf.focus(); } } // #3: restore focus to trigger
     };
     this.openPalette=openFn;
     ov.addEventListener('click',(e)=>{ if(e.target===ov) close(); });
