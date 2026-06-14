@@ -1,44 +1,74 @@
-# Kunal Kumar — Portfolio
+# Kunal Kumar — Portfolio (v14)
 
-"Continuity Ribbon" — a single-page portfolio implemented from the Claude Design prototype
-(`Kunal Kumar.dc.html`). Static site: no build step, no framework.
+A single-page portfolio implemented from the Claude Design prototype (`Kunal Kumar.dc.html`,
+revision v14 — "Fill the Gaps, Add the Glow"). Static site: no build step, no framework.
+
+The design medium was a Claude Design Component (a small React-runtime `.dc.html`). This repo is
+a **byte-faithful vanilla port**: the markup and all behavior are reproduced exactly; only the
+Design-Component wrapper (`<x-dc>` / `DCLogic` / React ref) was rewritten to a plain
+`class Site` mounted on `#kk-root`.
 
 ## Stack
 
-- Plain HTML + inline design tokens ([index.html](index.html))
+- Plain HTML with inline design tokens ([index.html](index.html))
 - [GSAP 3.12](https://gsap.com) + ScrollTrigger + [Lenis](https://lenis.darkroom.engineering) smooth scroll (CDN)
 - Fonts: Bricolage Grotesque · Archivo · Instrument Serif · JetBrains Mono (Google Fonts)
-- All motion behaviors live in [script.js](script.js)
+- All behavior lives in one class in [script.js](script.js)
 
 ## Run it
 
-Fonts and CDN scripts need an HTTP origin, so serve the folder:
+Fonts, CDN libraries, and the GitHub fetch need an HTTP origin, so serve the folder:
 
 ```sh
 python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
+## What's on the page
+
+- **Hero** — preloader, char-split entrance, clickable rolling slot verb, living aurora canvas,
+  and a velocity-reactive "charge" effect (RGB split) on the giant name.
+- **Roles** strip · velocity **mono ribbon** · scroll-fill **manifesto**.
+- **The Log** — a `tail -f life.log` terminal that streams in, shows commit tooltips on hover,
+  and appends an idle line if you go quiet.
+- **Recall.me story** — a pinned, scroll-scrubbed canvas (memory scattering → reassembling).
+- **Work** — three stacking project cards with living-sim canvases; the top progress spine
+  takes on the active project's accent.
+- **Experience** — a 2×2 grid (Emergent · Ostrius · Teaching Assistant · Apple Developer Academy).
+- **Bento** — live Bengaluru clock, live GitHub commit count, and the **MATS** tile with a
+  rotating 4-color conic glow ring.
+- **Showcase** rail (drag, arrow keys, wheel) · **"How I build"** pipeline · **contact** end-card.
+
+### Interactions / affordances
+
+- **⌘K** (or the `⌘k` nav button) — command palette: navigate, copy email, open résumé/GitHub,
+  cycle phase, spin the verb, party mode.
+- **Phase dial** (`☀`/`☾` in the nav) — cycles auto → dawn → day → dusk → night. Defaults to
+  `auto`, which follows real Bengaluru time (night mode inverts the page). Persisted for a day.
+- **Sound** toggle (footer) — off by default, soft WebAudio ticks on section enter.
+- Press **K** twice for party-mode confetti. Footer email click copies (second click opens mail).
+
 ## Editing content
 
-Everything visible is in `index.html` (hero copy, projects, experience rows, honors, footer
-links). Three things live in `script.js`:
+Almost everything is plain text in [index.html](index.html) — hero copy, roles, the log lines,
+projects, experience cells, bento tiles, showcase cards, pipeline, contact.
 
-- **Toolkit chips** — the `data` map in `buildChips()` (keyed by accent color)
-- **Hero copy packs** — `getPacks()` holds all five hero variants (slot verbs, headline
-  lines, preloader words, verb marquee). Swap packs by changing `this.heroPack` in the
-  constructor — one line. Shipped default: `worth-remembering`.
-- **Project links** — each card has `Code ↗` / `Live ↗` pills in `index.html`; replace the
-  `data-live` placeholder `#` with real URLs
+In [script.js](script.js):
 
-Easter eggs: press **K** twice for party mode; the slot verb is clickable; clicking the
-footer email copies it (second click within 3s opens the mail app).
+- **Hero copy packs** — `getPacks()` holds five hero variants. Swap by setting `this.heroPack`
+  in the constructor (default `worth-remembering`).
+- **GitHub tile** — `fetchGithub()` counts public push events in the last 30 days for
+  `kunalKumar-13`; it falls back gracefully if the API is unavailable.
+- **Project `Code ↗` links** point at the GitHub profile — replace with per-repo URLs in the
+  markup when ready.
 
-The résumé button points at `kunal-kumar-resume.pdf` in the repo root — replace that file to
-update it.
+The résumé button serves `kunal-kumar-resume.pdf` from the repo root.
 
 ## Accessibility / degradation
 
-- `prefers-reduced-motion` disables the preloader, smooth scroll and all scroll choreography
-- Touch / coarse pointers skip the custom cursor, magnetics and tilt
-- If the GSAP/Lenis CDNs fail, the preloader hides itself and the page renders fully static
+- `prefers-reduced-motion` disables the preloader, smooth scroll, canvases, and scroll
+  choreography; content renders statically.
+- Touch / coarse pointers skip the custom cursor, magnetics, tilt, and hover-only effects.
+- If GSAP/Lenis fail to load, the preloader hides itself and the page renders fully.
+- Heavy canvases (aurora, sims, story) are IntersectionObserver-gated, ~30fps-capped, and pause
+  on `document.hidden`.
