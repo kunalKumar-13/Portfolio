@@ -1,4 +1,4 @@
-# Kunal Kumar — Portfolio (v14)
+# Kunal Kumar — Portfolio
 
 A single-page portfolio implemented from the Claude Design prototype (`Kunal Kumar.dc.html`,
 revision v14 — "Fill the Gaps, Add the Glow"). Static site: no build step, no framework.
