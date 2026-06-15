@@ -28,15 +28,19 @@ python3 -m http.server 8000
 
 - **Hero** — preloader, char-split entrance, clickable rolling slot verb, living aurora canvas,
   and a velocity-reactive "charge" effect (RGB split) on the giant name.
-- **Roles** strip · velocity **mono ribbon** · scroll-fill **manifesto**.
+- **Currently / the ledger** — editorial role rows that expand on hover (keyline draw-in) plus an
+  availability pill that rolls to "let's talk →". Velocity **mono ribbon** · scroll-fill **manifesto**.
 - **The Log** — a `tail -f life.log` terminal that streams in, shows commit tooltips on hover,
   and appends an idle line if you go quiet.
 - **Recall.me story** — a pinned, scroll-scrubbed canvas (memory scattering → reassembling).
 - **Work** — three stacking project cards with living-sim canvases; the top progress spine
   takes on the active project's accent.
-- **Experience** — a 2×2 grid (Emergent · Ostrius · Teaching Assistant · Apple Developer Academy).
-- **Bento** — live Bengaluru clock, live GitHub commit count, and the **MATS** tile with a
-  rotating 4-color conic glow ring.
+- **Experience** — a 2-col grid (Emergent · Ostrius · Teaching Assistant · Apple Developer Academy),
+  collapsing to one column ≤680px.
+- **Bento** — live Bengaluru clock + uptime, a GitHub 14-day commit **sparkline**, an **"ask me"**
+  tile that opens the palette, a focus bar, the **MATS** tile with a rotating 4-color conic glow,
+  and a monogram "KK" canvas that reassembles from scattered dots.
+- **Memory** — a fading 4-color cursor trail, and a returning-visitor "welcome back" greeting.
 - **Showcase** rail (drag, arrow keys, wheel) · **"How I build"** pipeline · **contact** end-card.
 
 ### Interactions / affordances
