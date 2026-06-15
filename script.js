@@ -841,13 +841,11 @@ class Site {
       de.style.background='#FBFAF7';
       if(grain){ grain.style.opacity='.3'; grain.style.filter='invert(1) hue-rotate(180deg)'; }
       counter.forEach(c=>{ if(c) c.style.filter=(c.hasAttribute('data-aurora-canvas')?'blur(54px) ':'')+'invert(1) hue-rotate(180deg)'; });
-      this.nightLine(true);
     } else {
       de.style.filter='';
       de.style.background=T.paper;
       if(grain){ grain.style.opacity='.45'; grain.style.filter=''; }
       counter.forEach(c=>{ if(c) c.style.filter= c.hasAttribute('data-aurora-canvas')?'blur(54px)':''; });
-      this.nightLine(false);
       const main=this.one('[data-main]');
       if(main){ if(this.gsap&&!this.RM) this.gsap.to(main,{ backgroundColor:T.paper, duration:.8 }); else main.style.backgroundColor=T.paper; }
     }
@@ -1007,7 +1005,7 @@ class Site {
     const box=this.one('[data-log-lines]'), panel=this.one('[data-log]'); if(!box||!panel) return;
     if(this.TOUCH) return;
     const lines=this.q('[data-log-line]');
-    const COMMITS=['a1c0de · feat(community): join hack club · +3 events','b2f4a7 · chore(events): kept the wifi and the pizza coming','c3e9d2 · feat(ai): activate fellowship · indias first cohort, 1 of 15','d4a1b8 · tag: apple-dev-init · cosmetic, still proud','e5f7c3 · fix(triage): stopped it guessing','f6b2a9 · perf(watershed): ran till alliances formed','a7c4e1 · tag: hpair-harvard · passport stamped','b8d3f5 · feat(ostrius): ship auth end to end · 0 regressions','c9e2a6 · merge(ai): joined emergent · fast-forward','d0f1b4 · feat(community): became lead · signed off','a5b1c8 · feat(relations): took over externals · handshakes++','eeeeee · HEAD -> main · reading you, live'];
+    const COMMITS=['a1c0de · feat(community): join hack club · bengaluru ops','b2f4a7 · tag: hpair-harvard · passport stamped','c3e9d2 · feat(ai): activate fellowship · 1 of 15','d4a1b8 · feat(ostrius): ship auth end to end · 0 regressions','c9e2a6 · merge(ai): joined emergent · fast-forward','d0f1b4 · feat(community): operations lead · signed off','a5b1c8 · feat(ai): mats round 2 · advanced','eeeeee · HEAD -> main · reading you, live'];
     const tip=document.createElement('div'); tip.style.cssText='position:absolute;z-index:30;pointer-events:none;font-family:JetBrains Mono,monospace;font-size:11px;color:#0D0D12;background:#FBFAF7;border:1px solid #0D0D12;border-radius:12px;padding:6px 9px;white-space:nowrap;opacity:0;transition:opacity .18s ease;transform:translate(0,-118%);'; panel.appendChild(tip);
     lines.forEach((l,i)=>{ const txt=COMMITS[i]; if(!txt) return; l.addEventListener('mouseenter',()=>{ tip.textContent=txt; const r=l.getBoundingClientRect(), pr=panel.getBoundingClientRect(); tip.style.left=(r.left-pr.left+60)+'px'; tip.style.top=(r.top-pr.top+8)+'px'; tip.style.opacity=1; }); l.addEventListener('mouseleave',()=>{ tip.style.opacity=0; }); });
   }
