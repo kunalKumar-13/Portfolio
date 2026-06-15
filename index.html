@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kunal Kumar — building software worth remembering</title>
-<meta name="description" content="CS @ BITS Pilani, shipping at a YC-backed AI startup. A memory engine for unfinished work, an agent that refuses to hallucinate, and an arena where machines learn to negotiate.">
+<meta name="description" content="CS @ BITS Pilani, shipping at Emergent (YC S24), going deep on AI safety. A memory engine for unfinished work, an agent that refuses to hallucinate, and an arena where machines learn to negotiate.">
 <meta name="author" content="Kunal Kumar">
 <meta name="theme-color" content="#FBFAF7">
 <meta property="og:title" content="Kunal Kumar — building software worth remembering">
@@ -31,7 +31,9 @@
   @property --kkang{syntax:'<angle>';inherits:false;initial-value:0deg}
   @keyframes kk-ang{to{--kkang:360deg}}
   @media (prefers-reduced-motion: reduce){[data-glow] [data-glow-ring],[data-glow] [data-glow-bloom]{animation:none !important}}
-  /* #4 — meet the 44px touch target on mobile without changing the visual size or desktop layout */
+  @media (max-width:680px){[data-exp-grid]{grid-template-columns:1fr !important}}
+
+  /* #4 — 44px touch targets on mobile (invisible hit-area; visuals unchanged) */
   @media (max-width:640px){
     .navlink,[data-phase-dial],[data-cmdk],[data-sound],[data-top]{position:relative}
     .navlink::after,[data-phase-dial]::after,[data-cmdk]::after,[data-sound]::after,[data-top]::after{
@@ -39,7 +41,7 @@
       width:100%;height:100%;min-width:44px;min-height:44px;
     }
   }
-  /* #5 — nav content is ~499px wide; on phones it overflowed (overflow-x:clip hid it), pushing the "Say hello" CTA and the ⌘k chip off-screen. Tighten the nav and drop the (redundant) clock so everything stays reachable. !important is required to beat the inline gaps/padding. */
+  /* #5 — keep the nav from overflowing on phones (hide redundant clock + tighten) */
   @media (max-width:640px){
     [data-nav-clock]{display:none!important}
     [data-nav]{gap:7px!important;padding:7px 10px!important}
@@ -107,25 +109,25 @@
         <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#3a3a46;letter-spacing:.1em;">© 2026 kunal kumar</span>
       </div>
     </div>
-    <div data-signoff style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#3a3a46;text-transform:uppercase;margin-top:14px;">log running · phase tracked · nothing forgotten</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#3a3a46;text-transform:uppercase;margin-top:14px;">log running · phase tracked · <span data-foot-signoff>nothing forgotten</span></div>
     <div data-foot-giant aria-hidden="true" style="position:absolute;left:0;right:0;bottom:-2vw;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18vw;line-height:.8;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1px rgba(251,250,247,.10);white-space:nowrap;text-align:center;pointer-events:none;">KUNAL KUMAR</div>
   </footer>
 
   <main data-main id="top" style="position:relative;z-index:1;background:#FBFAF7;will-change:transform;">
 
     <!-- ===== HERO ===== -->
-    <section data-screen-label="Hero" data-accent="#2438FF" style="position:relative;min-height:100vh;padding:clamp(120px,16vh,200px) clamp(20px,5vw,80px) 0;display:flex;flex-direction:column;justify-content:center;overflow:hidden;">
+    <section data-screen-label="Hero" data-accent="#2438FF" style="position:relative;min-height:100vh;padding:clamp(110px,15vh,180px) clamp(20px,5vw,80px) clamp(130px,17vw,220px);display:flex;flex-direction:column;justify-content:center;overflow:hidden;">
       <div data-hero-aurora style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;"></div>
       <div data-hero-content style="position:relative;z-index:2;max-width:1240px;margin:0 auto;width:100%;">
         <div data-hero-el style="display:inline-flex;align-items:center;gap:9px;padding:8px 14px;border:1px solid rgba(13,13,18,.14);border-radius:12px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:#3a3a46;margin-bottom:clamp(20px,3vw,34px);max-width:100%;">
           <span style="width:7px;height:7px;border-radius:50%;background:#0CAF9B;flex:none;"></span>
-          <span style="line-height:1.6;"><span data-greet>hello</span> · frontend intern @ emergent (yc s24)</span>
+          <span style="line-height:1.6;"><span data-greet>hello</span> · frontend engineering intern @ emergent</span>
         </div>
-        <h1 data-hero-h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(38px,7.6vw,108px);line-height:.98;letter-spacing:-.03em;margin:0;text-wrap:balance;">
+        <h1 data-hero-h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(33px,6.3vw,84px);line-height:1.02;letter-spacing:-.03em;margin:0;text-wrap:balance;max-width:100%;">
           <span data-split data-l1 style="display:block;">Building software</span>
           <span style="display:block;">
-            <span data-split data-l2 style="display:inline;">worth&nbsp;</span><span data-slot style="display:inline-block;overflow:hidden;vertical-align:bottom;">
-              <span data-slot-track style="display:block;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;">
+            <span data-split data-l2 style="display:inline;">worth&nbsp;</span><span data-slot style="display:inline-block;overflow:hidden;vertical-align:bottom;line-height:1;">
+              <span data-slot-track style="display:block;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;line-height:1;">
                 <span style="display:block;color:#2438FF;white-space:nowrap;">remembering<span data-dot style="display:inline-block;color:#FF4D5E;">.</span></span>
                 <span style="display:block;color:#7A2BF5;white-space:nowrap;">talking about<span data-dot style="display:inline-block;color:#FF4D5E;">.</span></span>
                 <span style="display:block;color:#0CAF9B;white-space:nowrap;">coming back to<span data-dot style="display:inline-block;color:#FF4D5E;">.</span></span>
@@ -135,11 +137,8 @@
           </span>
         </h1>
         <p data-hero-el data-hero-sub style="max-width:620px;margin:clamp(22px,3vw,34px) 0 0;font-size:clamp(15px,1.5vw,19px);line-height:1.55;color:#4a4a55;">
-          CS @ BITS Pilani, shipping at a YC-backed AI startup. I work where memory, retrieval and reinforcement learning meet things that actually ship — and try to leave each one a little more alive than I found it.
+          CS @ BITS Pilani · shipping at Emergent (YC S24) · going deep on AI safety. I work where memory, retrieval and reinforcement learning meet things that actually ship — and try to leave each one a little more alive than I found it.
         </p>
-        <div data-hero-el style="display:flex;flex-wrap:wrap;gap:10px;margin:clamp(20px,2.6vw,30px) 0 0;">
-          <span style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;padding:7px 12px;border-radius:999px;background:rgba(36,56,255,.08);color:#2438FF;"><span style="width:6px;height:6px;border-radius:50%;background:#2438FF;"></span>frontend @ emergent (yc s24)</span>
-        </div>
         <div data-hero-el style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:clamp(28px,3.4vw,42px) 0 0;">
           <a href="#work" data-magnetic style="display:inline-flex;align-items:center;gap:9px;font-family:'Archivo',sans-serif;font-weight:600;font-size:15px;text-decoration:none;color:#FBFAF7;background:#0D0D12;padding:14px 22px;border-radius:999px;">See the work <span style="font-family:'JetBrains Mono',monospace;font-size:12px;">↓</span></a>
           <a href="kunal-kumar-resume.pdf" target="_blank" rel="noopener" data-magnetic data-roll style="display:inline-flex;align-items:center;gap:9px;font-family:'Archivo',sans-serif;font-weight:600;font-size:15px;text-decoration:none;color:#0D0D12;background:transparent;padding:14px 22px;border-radius:999px;border:1px solid rgba(13,13,18,.18);">Résumé ↗</a>
@@ -149,7 +148,7 @@
           Now — wrapping up my second year
         </div>
       </div>
-      <div data-giant-name aria-hidden="true" style="position:absolute;left:0;right:0;bottom:clamp(-2vw,-1vw,0);z-index:1;display:flex;align-items:baseline;justify-content:center;gap:.18em;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:15vw;line-height:.82;letter-spacing:-.04em;white-space:nowrap;pointer-events:none;user-select:none;">
+      <div data-giant-name aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;z-index:1;opacity:.3;display:flex;align-items:baseline;justify-content:center;gap:.18em;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:13vw;line-height:.82;letter-spacing:-.04em;white-space:nowrap;pointer-events:none;user-select:none;">
         <span style="color:#0D0D12;">KUNAL</span>
         <span data-stroke style="color:transparent;-webkit-text-stroke:1.5px #0D0D12;">KUMAR</span>
         <span style="font-family:'JetBrains Mono',monospace;font-weight:400;font-size:.12em;color:#9a9aa3;align-self:flex-start;letter-spacing:0;">©26</span>
@@ -159,39 +158,54 @@
     <!-- ===== ROLES STRIP (v9 1.2) ===== -->
     <section data-screen-label="Roles" data-accent="#2438FF" data-reveal style="padding:clamp(96px,12vh,144px) clamp(20px,5vw,80px);">
       <div style="max-width:1240px;margin:0 auto;">
-        <div data-scramble style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:lowercase;color:#9a9aa3;margin-bottom:clamp(20px,2.5vw,28px);">roles</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(14px,1.6vw,20px);">
-          <div data-pos data-accent="#2438FF" style="position:relative;padding:22px 22px 22px 26px;border:1px solid rgba(13,13,18,.12);border-radius:22px;background:#FBFAF7;box-shadow:0 12px 32px rgba(13,13,18,.07);transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
-            <span style="position:absolute;left:0;top:18px;bottom:18px;width:3px;border-radius:3px;background:#2438FF;"></span>
-            <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px;"><span style="width:6px;height:6px;border-radius:50%;background:#0CAF9B;animation:kk-pulse 2s ease-out infinite;"></span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#0CAF9B;">current</span></div>
-            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(20px,2.1vw,26px);letter-spacing:-.02em;line-height:1.05;">Frontend Engineer</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#6b6b78;margin-top:8px;">Emergent · YC S24</div>
-          </div>
-          <div data-pos data-accent="#0CAF9B" style="position:relative;padding:22px 22px 22px 26px;border:1px solid rgba(13,13,18,.12);border-radius:22px;background:#FBFAF7;box-shadow:0 12px 32px rgba(13,13,18,.07);transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
-            <span style="position:absolute;left:0;top:18px;bottom:18px;width:3px;border-radius:3px;background:#0CAF9B;"></span>
-            <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px;"><span style="width:6px;height:6px;border-radius:50%;background:#0CAF9B;animation:kk-pulse 2s ease-out infinite;"></span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#0CAF9B;">current</span></div>
-            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(20px,2.1vw,26px);letter-spacing:-.02em;line-height:1.05;">Operations Lead</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#6b6b78;margin-top:8px;">Open Source Club · Scaler School of Technology</div>
-          </div>
-          <div data-pos data-accent="#FFAA00" style="position:relative;padding:22px 22px 22px 26px;border:1px solid rgba(13,13,18,.12);border-radius:22px;background:#FBFAF7;box-shadow:0 12px 32px rgba(13,13,18,.07);transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
-            <span style="position:absolute;left:0;top:18px;bottom:18px;width:3px;border-radius:3px;background:#FFAA00;"></span>
-            <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px;"><span style="width:6px;height:6px;border-radius:50%;background:#0CAF9B;animation:kk-pulse 2s ease-out infinite;"></span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#0CAF9B;">current</span></div>
-            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(20px,2.1vw,26px);letter-spacing:-.02em;line-height:1.05;">Head of Immersions</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#6b6b78;margin-top:8px;">Aspirants Relations Club · Scaler School of Technology</div>
-          </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,48px);">
+          <div data-scramble style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:lowercase;color:#9a9aa3;">currently</div>
+          <a href="mailto:kunalsain0324@gmail.com" data-avail style="display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border:1px solid rgba(12,175,155,.4);border-radius:999px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;color:#0CAF9B;transition:background .25s ease,border-color .25s ease;">
+            <span style="width:6px;height:6px;border-radius:50%;background:#0CAF9B;animation:kk-pulse 2s ease-out infinite;flex:none;"></span><span data-avail-label>open to opportunities</span>
+          </a>
         </div>
-        <div style="margin-top:clamp(16px,2vw,22px);padding:13px 18px;border:1px solid rgba(13,13,18,.1);border-radius:999px;display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;max-width:100%;">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#9a9aa3;flex:none;">currently</span>
-          <span style="width:5px;height:5px;border-radius:50%;background:#0CAF9B;flex:none;"></span>
-          <span data-ticker-clip style="display:inline-block;overflow:hidden;height:1.4em;vertical-align:bottom;font-family:'JetBrains Mono',monospace;font-size:13px;color:#0D0D12;">
-            <span data-ticker-track style="display:block;">
-              <span style="display:block;height:1.4em;line-height:1.4em;white-space:nowrap;">frontend <span style="color:#2438FF;">@ emergent</span></span>
-              <span style="display:block;height:1.4em;line-height:1.4em;white-space:nowrap;">learning <span style="color:#0CAF9B;">ai safety</span></span>
-              <span style="display:block;height:1.4em;line-height:1.4em;white-space:nowrap;">reading <span style="color:#7A2BF5;">the pragmatic programmer</span></span>
-              <span style="display:block;height:1.4em;line-height:1.4em;white-space:nowrap;"><span style="color:#FFAA00;">open</span> to opportunities</span>
-              <span style="display:block;height:1.4em;line-height:1.4em;white-space:nowrap;">frontend <span style="color:#2438FF;">@ emergent</span></span>
-            </span>
-          </span>
+
+        <div data-ledger style="border-top:1px solid rgba(13,13,18,.14);">
+
+          <div data-ledger-row data-accent="#2438FF" style="position:relative;display:grid;grid-template-columns:1.5fr 1fr auto;align-items:center;gap:clamp(16px,3vw,40px);padding:clamp(22px,3.2vw,40px) clamp(8px,2vw,24px);border-bottom:1px solid rgba(13,13,18,.14);cursor:default;transition:transform .4s cubic-bezier(.76,0,.24,1),background .35s ease;">
+            <span data-keyline style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#2438FF;transform:scaleY(1);transform-origin:top;"></span>
+            <div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(24px,3.4vw,40px);letter-spacing:-.025em;line-height:1.02;">Frontend Engineering Intern</div>
+              <div data-sub style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.02em;color:#6b6b78;margin-top:10px;">↳ building product &amp; frontend systems</div>
+            </div>
+            <div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:clamp(16px,1.7vw,21px);letter-spacing:-.01em;color:#0D0D12;">Emergent</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9aa3;margin-top:7px;">yc s24 · jun 2026 —</div>
+            </div>
+            <div style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#0CAF9B;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#0CAF9B;flex:none;"></span>current</div>
+          </div>
+
+          <div data-ledger-row data-accent="#0CAF9B" style="position:relative;display:grid;grid-template-columns:1.5fr 1fr auto;align-items:center;gap:clamp(16px,3vw,40px);padding:clamp(22px,3.2vw,40px) clamp(8px,2vw,24px);border-bottom:1px solid rgba(13,13,18,.14);cursor:default;transition:transform .4s cubic-bezier(.76,0,.24,1),background .35s ease;">
+            <span data-keyline style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#0CAF9B;transform:scaleY(1);transform-origin:top;"></span>
+            <div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(24px,3.4vw,40px);letter-spacing:-.025em;line-height:1.02;">Operations Lead</div>
+              <div data-sub style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.02em;color:#6b6b78;margin-top:10px;">↳ running the club's engineering ops</div>
+            </div>
+            <div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:clamp(16px,1.7vw,21px);letter-spacing:-.01em;color:#0D0D12;">Open Source Club</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9aa3;margin-top:7px;">scaler sst</div>
+            </div>
+            <div style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#0CAF9B;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#0CAF9B;flex:none;"></span>current</div>
+          </div>
+
+          <div data-ledger-row data-accent="#FFAA00" style="position:relative;display:grid;grid-template-columns:1.5fr 1fr auto;align-items:center;gap:clamp(16px,3vw,40px);padding:clamp(22px,3.2vw,40px) clamp(8px,2vw,24px);border-bottom:1px solid rgba(13,13,18,.14);cursor:default;transition:transform .4s cubic-bezier(.76,0,.24,1),background .35s ease;">
+            <span data-keyline style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#FFAA00;transform:scaleY(1);transform-origin:top;"></span>
+            <div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(24px,3.4vw,40px);letter-spacing:-.025em;line-height:1.02;">Head of Immersions</div>
+              <div data-sub style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.02em;color:#6b6b78;margin-top:10px;">↳ external programs &amp; immersions</div>
+            </div>
+            <div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:clamp(16px,1.7vw,21px);letter-spacing:-.01em;color:#0D0D12;">Aspirants Relations</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9aa3;margin-top:7px;">scaler sst</div>
+            </div>
+            <div style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#0CAF9B;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#0CAF9B;flex:none;"></span>current</div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -208,7 +222,7 @@
       <div style="max-width:1240px;margin:0 auto;">
         <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#9a9aa3;margin-bottom:clamp(28px,5vw,56px);" data-scramble>[ 00 — the thesis ]</div>
         <p data-manifesto style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:clamp(26px,4.4vw,62px);line-height:1.18;letter-spacing:-.02em;text-wrap:balance;">
-          I build systems that reach <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#2438FF;">production</em> — not demos. I've shipped a <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#2438FF;">memory engine</em> for unfinished work, an agent that <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#7A2BF5;">refuses to hallucinate</em>, and an arena where machines <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#0CAF9B;">learn to negotiate.</em> Software that doesn't just run — it stays <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#FFAA00;">alive.</em>
+          I build systems that reach <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#2438FF;">production</em> — not demos. I've shipped a <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#2438FF;">memory engine</em> for unfinished work, an agent that <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#7A2BF5;">refuses to hallucinate</em>, and an arena where machines <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#0CAF9B;">learn to negotiate.</em> Lately I'm chasing what makes them <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#7A2BF5;">safe.</em>
         </p>
       </div>
     </section>
@@ -241,6 +255,7 @@
             <div data-log-line style="display:flex;gap:14px;align-items:baseline;line-height:2;font-family:'JetBrains Mono',monospace;font-size:clamp(12px,1.3vw,14px);color:rgba(251,250,247,.85);"><span style="color:rgba(251,250,247,.38);flex:none;width:72px;">[2026]</span><span style="width:6px;height:6px;border-radius:50%;background:#7A2BF5;flex:none;align-self:center;"></span><span>ta for dsa — helped a batch get unstuck on algorithms</span></div>
             <div data-log-line style="display:flex;gap:14px;align-items:baseline;line-height:2;font-family:'JetBrains Mono',monospace;font-size:clamp(12px,1.3vw,14px);color:rgba(251,250,247,.85);"><span style="color:rgba(251,250,247,.38);flex:none;width:72px;">[2026]</span><span style="width:6px;height:6px;border-radius:50%;background:#0CAF9B;flex:none;align-self:center;"></span><span>advanced to round 2 — mats (ml alignment theory scholars)</span></div>
             <div data-log-line style="display:flex;gap:14px;align-items:baseline;line-height:2;font-family:'JetBrains Mono',monospace;font-size:clamp(12px,1.3vw,14px);color:rgba(251,250,247,.85);"><span style="color:rgba(251,250,247,.38);flex:none;width:72px;">[ now  ]</span><span style="width:6px;height:6px;border-radius:50%;background:#FFAA00;flex:none;align-self:center;"></span><span>going deeper on ai safety</span></div>
+            <div data-log-line style="display:flex;gap:14px;align-items:baseline;line-height:2;font-family:'JetBrains Mono',monospace;font-size:clamp(12px,1.3vw,14px);color:rgba(251,250,247,.85);"><span style="color:rgba(251,250,247,.38);flex:none;width:72px;">[ now  ]</span><span style="width:6px;height:6px;border-radius:50%;background:#FFAA00;flex:none;align-self:center;"></span><span>still polishing this very page</span></div>
             <div data-log-line data-log-now style="display:flex;gap:14px;align-items:baseline;line-height:2;font-family:'JetBrains Mono',monospace;font-size:clamp(12px,1.3vw,14px);color:rgba(251,250,247,.85);"><span style="color:rgba(251,250,247,.38);flex:none;width:72px;">[ now  ]</span><span style="width:6px;height:6px;border-radius:50%;background:#FBFAF7;flex:none;align-self:center;"></span><span>reading: you, on this portfolio<span data-log-cursor style="display:inline-block;width:9px;height:15px;background:#FBFAF7;margin-left:7px;vertical-align:middle;"></span></span></div>
           </div>
         </div>
@@ -404,7 +419,7 @@
       <div style="max-width:1240px;margin:0 auto;">
         <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(28px,4vw,52px);letter-spacing:-.02em;margin-bottom:clamp(40px,5.5vw,64px);" data-vel-skew>What I'm building <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#2438FF;">now.</em></h2>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:1px;background:rgba(13,13,18,.12);border:1px solid rgba(13,13,18,.12);border-radius:22px;overflow:hidden;">
+        <div data-exp-grid style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(13,13,18,.12);border:1px solid rgba(13,13,18,.12);border-radius:22px;overflow:hidden;">
           <div style="background:#FBFAF7;padding:clamp(32px,4vw,48px);display:flex;flex-direction:column;gap:16px;">
             <div style="display:flex;align-items:center;gap:8px;">
               <span style="width:7px;height:7px;border-radius:50%;background:#0CAF9B;animation:kk-pulse 2s ease-out infinite;"></span>
@@ -445,9 +460,9 @@
             </div>
             <div>
               <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(24px,3vw,34px);letter-spacing:-.02em;line-height:1.04;">Apple Developer Academy</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.04em;color:#6b6b78;margin-top:8px;">application in progress</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.04em;color:#6b6b78;margin-top:8px;">applying · 2027 cohort</div>
             </div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#9a9aa3;margin-top:auto;">2026 cohort</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#9a9aa3;margin-top:auto;">2027 cohort</div>
           </div>
         </div>
 
@@ -460,13 +475,17 @@
     <!-- ===== BENTO — the shape of me (v9 2.1) ===== -->
     <section data-screen-label="About" data-accent="#0CAF9B" style="padding:clamp(96px,12vh,144px) clamp(20px,5vw,80px);">
       <div style="max-width:1240px;margin:0 auto;">
-        <div data-scramble style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:lowercase;color:#9a9aa3;margin-bottom:clamp(28px,3.5vw,44px);">the shape of me</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:clamp(28px,3.5vw,44px);">
+          <div data-scramble style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:lowercase;color:#9a9aa3;">the shape of me</div>
+          <div style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#0CAF9B;"><span style="width:6px;height:6px;border-radius:50%;background:#0CAF9B;animation:kk-pulse 2s ease-out infinite;flex:none;"></span>all systems nominal</div>
+        </div>
         <div data-bento style="display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.4vw,18px);grid-auto-rows:minmax(150px,auto);grid-auto-flow:row dense;">
 
           <div data-tile data-accent="#2438FF" style="grid-column:span 2;grid-row:span 2;position:relative;padding:clamp(26px,3vw,40px);border:1px solid rgba(13,13,18,.12);border-radius:22px;background:#FBFAF7;box-shadow:0 12px 32px rgba(13,13,18,.07);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
             <span data-key style="position:absolute;left:0;top:24px;bottom:24px;width:3px;border-radius:3px;background:#2438FF;transform:scaleY(0);transform-origin:top;transition:transform .3s cubic-bezier(.76,0,.24,1);"></span>
             <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:lowercase;color:#9a9aa3;">who</span>
-            <p style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(24px,3vw,40px);line-height:1.1;letter-spacing:-.02em;text-wrap:balance;">I build systems that remember <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#2438FF;">why</em> they were built — and try to leave each one a little more alive.</p>
+            <p style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(24px,3vw,40px);line-height:1.1;letter-spacing:-.02em;text-wrap:balance;margin:0;">I build systems that remember <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#2438FF;">why</em> they were built — and try to leave each one a little more alive.</p>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;color:#9a9aa3;">uptime: 2nd year · bengaluru · <span data-bento-uptime style="color:#6b6b78;">00:00</span></div>
           </div>
 
           <div data-tile data-accent="#0CAF9B" style="position:relative;padding:clamp(20px,2.2vw,28px);border:1px solid rgba(13,13,18,.12);border-radius:22px;background:#FBFAF7;box-shadow:0 12px 32px rgba(13,13,18,.07);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
@@ -480,38 +499,40 @@
 
           <div data-tile data-accent="#7A2BF5" style="position:relative;padding:clamp(20px,2.2vw,28px);border:1px solid rgba(13,13,18,.12);border-radius:22px;background:#FBFAF7;box-shadow:0 12px 32px rgba(13,13,18,.07);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
             <span data-key style="position:absolute;left:0;top:20px;bottom:20px;width:3px;border-radius:3px;background:#7A2BF5;transform:scaleY(0);transform-origin:top;transition:transform .3s cubic-bezier(.76,0,.24,1);"></span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a9aa3;">now building</span>
+            <div style="display:flex;align-items:center;gap:7px;"><span style="width:6px;height:6px;border-radius:50%;background:#0CAF9B;flex:none;animation:kk-pulse 2s ease-out infinite;"></span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a9aa3;">now building</span></div>
             <div>
               <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(20px,2.1vw,26px);letter-spacing:-.02em;">Emergent</div>
               <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#6b6b78;margin-top:5px;">frontend · yc s24</div>
             </div>
           </div>
 
-          <div data-tile data-accent="#FFAA00" style="position:relative;padding:clamp(20px,2.2vw,28px);border:1px solid rgba(13,13,18,.12);border-radius:22px;background:#FBFAF7;box-shadow:0 12px 32px rgba(13,13,18,.07);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
+          <div data-tile data-accent="#FFAA00" style="grid-column:span 2;position:relative;padding:clamp(20px,2.2vw,28px);border:1px solid rgba(13,13,18,.12);border-radius:22px;background:#FBFAF7;box-shadow:0 12px 32px rgba(13,13,18,.07);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
             <span data-key style="position:absolute;left:0;top:20px;bottom:20px;width:3px;border-radius:3px;background:#FFAA00;transform:scaleY(0);transform-origin:top;transition:transform .3s cubic-bezier(.76,0,.24,1);"></span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a9aa3;">github</span>
-            <div data-gh>
-              <div data-gh-num style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(24px,2.6vw,34px);letter-spacing:-.02em;">·</div>
-              <div data-gh-label style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#6b6b78;margin-top:4px;">@kunalKumar-13</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a9aa3;">github · @kunalKumar-13</span>
+              <span data-gh-num style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;color:#6b6b78;">·</span>
             </div>
-          </div>
-
-          <div data-tile data-accent="#0CAF9B" style="grid-column:span 2;position:relative;padding:clamp(20px,2.2vw,28px);border:1px solid rgba(13,13,18,.12);border-radius:22px;background:#FBFAF7;box-shadow:0 12px 32px rgba(13,13,18,.07);display:flex;flex-direction:column;gap:14px;overflow:hidden;transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
-            <span data-key style="position:absolute;left:0;top:20px;bottom:20px;width:3px;border-radius:3px;background:#0CAF9B;transform:scaleY(0);transform-origin:top;transition:transform .3s cubic-bezier(.76,0,.24,1);"></span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a9aa3;">also leading</span>
-            <div style="display:flex;gap:clamp(18px,3vw,40px);flex-wrap:wrap;">
-              <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(18px,1.9vw,23px);letter-spacing:-.02em;">Operations Lead</div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#6b6b78;margin-top:4px;">open source club · scaler</div></div>
-              <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(18px,1.9vw,23px);letter-spacing:-.02em;">Head of Immersions</div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#6b6b78;margin-top:4px;">aspirants relations club · scaler</div></div>
-            </div>
+            <div data-gh-spark style="display:flex;align-items:flex-end;gap:clamp(3px,0.7vw,6px);height:54px;margin-top:14px;"></div>
+            <div data-gh-label style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#9a9aa3;margin-top:12px;">last 14 days</div>
           </div>
 
           <div data-tile data-accent="#FF4D5E" style="position:relative;padding:clamp(20px,2.2vw,28px);border:1px solid rgba(13,13,18,.12);border-radius:22px;background:#FBFAF7;box-shadow:0 12px 32px rgba(13,13,18,.07);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
             <span data-key style="position:absolute;left:0;top:20px;bottom:20px;width:3px;border-radius:3px;background:#FF4D5E;transform:scaleY(0);transform-origin:top;transition:transform .3s cubic-bezier(.76,0,.24,1);"></span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a9aa3;">currently learning</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a9aa3;">focus</span>
             <div>
               <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(22px,2.3vw,30px);letter-spacing:-.02em;">AI safety</div>
+              <div style="height:2px;border-radius:2px;background:rgba(13,13,18,.1);margin-top:12px;overflow:hidden;"><div data-focus-fill style="height:100%;width:30%;background:#FF4D5E;border-radius:2px;"></div></div>
             </div>
           </div>
+
+          <button data-tile data-ask data-accent="#7A2BF5" style="text-align:left;font:inherit;cursor:pointer;position:relative;padding:clamp(20px,2.2vw,28px);border:1px solid rgba(13,13,18,.12);border-radius:22px;background:rgba(122,43,245,.05);box-shadow:0 12px 32px rgba(13,13,18,.07);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
+            <span data-key style="position:absolute;left:0;top:20px;bottom:20px;width:3px;border-radius:3px;background:#7A2BF5;transform:scaleY(0);transform-origin:top;transition:transform .3s cubic-bezier(.76,0,.24,1);"></span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a9aa3;">ask me</span>
+            <div>
+              <div data-ask-q style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(18px,1.9vw,23px);letter-spacing:-.02em;line-height:1.1;">anything you want</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#7A2BF5;margin-top:8px;">press ⌘k →</div>
+            </div>
+          </button>
 
           <div data-tile data-accent="#0CAF9B" data-glow style="position:relative;border:none;background:transparent;box-shadow:none;border-radius:22px;display:flex;transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
             <div data-glow-bloom aria-hidden="true" style="position:absolute;inset:-8px;border-radius:28px;background:conic-gradient(from var(--kkang,0deg),#2438FF,#7A2BF5,#0CAF9B,#FFAA00,#2438FF);filter:blur(15px);opacity:.42;animation:kk-ang 8s linear infinite;z-index:0;pointer-events:none;"></div>
@@ -526,9 +547,10 @@
             </div>
           </div>
 
-          <div data-tile data-accent="#2438FF" style="grid-column:span 1;position:relative;padding:clamp(20px,2.2vw,28px) clamp(20px,2.2vw,28px) 0;border:1px solid rgba(13,13,18,.12);border-radius:22px;background:rgba(36,56,255,.05);box-shadow:0 12px 32px rgba(13,13,18,.07);display:flex;flex-direction:column;overflow:hidden;transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:#2438FF;">memory, reassembling</span>
-            <canvas data-sim="recall" style="flex:1 1 auto;width:100%;min-height:110px;display:block;margin-top:8px;"></canvas>
+          <div data-tile data-accent="#2438FF" style="grid-column:span 1;position:relative;padding:clamp(20px,2.2vw,28px);border:1px solid rgba(13,13,18,.12);border-radius:22px;background:rgba(36,56,255,.05);box-shadow:0 12px 32px rgba(13,13,18,.07);display:flex;flex-direction:column;overflow:hidden;transition:transform .25s cubic-bezier(.76,0,.24,1),box-shadow .25s ease;">
+            <span data-key style="position:absolute;left:0;top:20px;bottom:20px;width:3px;border-radius:3px;background:#2438FF;transform:scaleY(0);transform-origin:top;transition:transform .3s cubic-bezier(.76,0,.24,1);"></span>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:#2438FF;">memory</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:#9a9aa3;">recall.me</span></div>
+            <canvas data-sim="monogram" style="flex:1 1 auto;width:100%;min-height:118px;display:block;margin-top:12px;"></canvas>
           </div>
 
         </div>
