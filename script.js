@@ -8,12 +8,11 @@ class Site {
     this.TOUCH = matchMedia('(hover: none), (pointer: coarse)').matches;
     this.applyPack();
     this.setGreeting();
-    this.setupReturning();
     this.setupTitle();
     this.startClock();
     this.waitFor(() => window.gsap && window.ScrollTrigger && window.Lenis, () => this.init(), 200);
   }
-  componentWillUnmount(){ this.dead = true; (this.rafs||[]).forEach(id=>cancelAnimationFrame(id)); if(this.lenis) this.lenis.destroy(); if(window.ScrollTrigger) ScrollTrigger.getAll().forEach(t=>t.kill()); clearInterval(this._clk); clearInterval(this._slotIv); clearInterval(this._wd); clearInterval(this._phaseIv); clearInterval(this._bentoClk); if(this._pipeTween) this._pipeTween.kill(); (this._roleIvs||[]).forEach(iv=>clearInterval(iv)); if(this._r3dTick&&window.gsap) window.gsap.ticker.remove(this._r3dTick); if(this._renderer){ try{ this._renderer.dispose(); }catch(e){} } }
+  componentWillUnmount(){ this.dead = true; (this.rafs||[]).forEach(id=>cancelAnimationFrame(id)); if(this.lenis) this.lenis.destroy(); if(window.ScrollTrigger) ScrollTrigger.getAll().forEach(t=>t.kill()); clearInterval(this._clk); clearInterval(this._slotIv); clearInterval(this._wd); clearInterval(this._phaseIv); clearInterval(this._bentoClk); clearInterval(this._askIv); if(this._pipeTween) this._pipeTween.kill(); (this._roleIvs||[]).forEach(iv=>clearInterval(iv)); if(this._r3dTick&&window.gsap) window.gsap.ticker.remove(this._r3dTick); if(this._renderer){ try{ this._renderer.dispose(); }catch(e){} } }
 
   waitFor(cond, cb, tries){ if(this.dead) return; if(cond()){ cb(); return; } if(tries<=0){ this.fallback(); return; } setTimeout(()=>this.waitFor(cond,cb,tries-1), 90); }
   q(sel){ const r=this.rootEl; return r? Array.from(r.querySelectorAll(sel)) : []; }
@@ -100,11 +99,13 @@ class Site {
     this.setupRules();
     this.setupTicker();
     this.setupBento();
+    this.setupLedger();
     this.setupShowcase();
     this.setupStory();
     this.setupHoverLang();
     this.setupReveal();
     this.setupAskHow();
+    this.setupMemory();
     if(!this.TOUCH){ this.setupCursor(); this.setupMagnetics(); this.setupTilt(); this.setupExpHover(); this.setupCardFX(); }
     else { this.setupExpHover(); }
     this.setupScramble();
@@ -165,7 +166,7 @@ class Site {
     tl.to(chars,{ yPercent:0, rotate:0, duration:1.05, ease:'expo.out', stagger:0.016 })
       .to(slot,{ opacity:1, y:0, duration:.7, ease:'expo.out' },'-=0.7')
       .to(els,{ opacity:1, y:0, duration:.9, ease:'expo.out', stagger:0.08 },'-=0.6')
-      .to(giant,{ opacity:1, yPercent:0, duration:1.2, ease:'expo.out' },'-=0.8');
+      .to(giant,{ opacity:.3, yPercent:0, duration:1.2, ease:'expo.out' },'-=0.8');
     // E.5 — load hands off into the charge effect as one settling ripple, after the char-rise
     if(!this.RM){ tl.eventCallback('onComplete',()=>{ this._velTarget=0.9; this.showWelcomeBack(); }); }
     this.startSlot();
@@ -222,7 +223,12 @@ class Site {
     const rx=g.quickTo(ring,'x',{duration:.35,ease:'power3'}), ry=g.quickTo(ring,'y',{duration:.35,ease:'power3'});
     const dx=g.quickTo(dot,'x',{duration:.05}), dy=g.quickTo(dot,'y',{duration:.05});
     let shown=false;
-    window.addEventListener('mousemove',e=>{ if(!shown){ shown=true; g.set([dot,ring],{ x:e.clientX, y:e.clientY }); g.to([dot,ring],{ opacity:1, duration:.25 }); } rx(e.clientX); ry(e.clientY); dx(e.clientX); dy(e.clientY); });
+    // T4 — the cursor that remembers: a fading trail of memory dots
+    const COLORS=['#2438FF','#7A2BF5','#0CAF9B','#FFAA00'];
+    const pool=[]; const POOL=10; let pi=0; let lastTrail=0;
+    if(!this.RM){ for(let i=0;i<POOL;i++){ const d=document.createElement('div'); d.style.cssText='position:fixed;top:0;left:0;width:4px;height:4px;border-radius:50%;z-index:9990;pointer-events:none;opacity:0;transform:translate(-50%,-50%);'; document.body.appendChild(d); pool.push(d); } }
+    const drop=(x,y)=>{ if(this.RM) return; const now=performance.now(); if(now-lastTrail<70) return; lastTrail=now; const d=pool[pi=(pi+1)%POOL]; d.style.background=COLORS[(Math.random()*4)|0]; g.killTweensOf(d); g.set(d,{ x:x, y:y, opacity:.32, scale:1 }); g.to(d,{ opacity:0, scale:.3, duration:.7, ease:'power2.out' }); };
+    window.addEventListener('mousemove',e=>{ if(!shown){ shown=true; g.set([dot,ring],{ x:e.clientX, y:e.clientY }); g.to([dot,ring],{ opacity:1, duration:.25 }); } rx(e.clientX); ry(e.clientY); dx(e.clientX); dy(e.clientY); drop(e.clientX,e.clientY); });
     window.addEventListener('mouseleave',()=>{ g.to([dot,ring],{ opacity:0, duration:.25 }); shown=false; });
     const grow=()=>g.to(ring,{ scale:1.7, duration:.3 }), shrink=()=>g.to(ring,{ scale:1, duration:.3 });
     this.q('a,button,[data-magnetic]').forEach(el=>{ el.addEventListener('mouseenter',grow); el.addEventListener('mouseleave',shrink); });
@@ -361,7 +367,7 @@ class Site {
       const fh=footer.getBoundingClientRect().height;
       if(this.RM || window.innerWidth<=520 || fh > window.innerHeight*0.96){
         main.style.marginBottom='0'; footer.style.position='relative'; footer.style.zIndex='1';
-        if(main.nextElementSibling!==footer) main.after(footer); // #1: footer follows the hero in normal flow (mobile / reduced-motion / short viewports)
+        if(main.nextElementSibling!==footer) main.after(footer); // #1
         return;
       }
       footer.style.position='fixed';
@@ -423,8 +429,7 @@ class Site {
     const hexToRgb=(h)=>{ const n=parseInt(h.slice(1),16); return [n>>16,(n>>8)&255,n&255]; };
     let curRGB=hexToRgb('#2438FF'), tgt='#2438FF';
     const main=this.one('[data-main]');
-    // 2.2 — section-aware nav: the logo's sign dot adopts the active zone's accent (reuses the spine signal)
-    const navDot=this.one('nav a[href="#top"] span'); if(navDot) navDot.style.transition='color .5s cubic-bezier(.76,0,.24,1)';
+    const navDot=this.one('nav a[href="#top"] span'); if(navDot) navDot.style.transition='color .5s cubic-bezier(.76,0,.24,1)'; // 2.2
     const upd=(y)=>{
       const max=document.documentElement.scrollHeight-window.innerHeight;
       bar.style.transform='scaleX('+(max>0?Math.min(1,Math.max(0,y/max)):0)+')';
@@ -603,6 +608,26 @@ class Site {
     if(logo){ logo.style.display='inline-block'; g.fromTo(logo,{ rotation:0 },{ rotation:360, duration:1, ease:'expo.inOut' }); }
   }
 
+  // master §1 — the site remembers you (returning-visitor touches; local only)
+  setupMemory(){
+    let n=0; try{ n=parseInt(localStorage.getItem('kk_visits')||'0',10)||0; localStorage.setItem('kk_visits',String(n+1)); }catch(e){}
+    this._returning = n>0;
+    if(this._returning){
+      const sign=this.one('[data-foot-signoff]'); if(sign) sign.textContent='you made it back — thanks.';
+      // the hero "welcome back" is deferred to showWelcomeBack() — fired once the hero is visible (behind the preloader at init)
+    }
+    // remember scroll depth across visits (restore handled lightly: just store)
+    const save=()=>{ try{ localStorage.setItem('kk_depth', String(Math.round((window.scrollY)/Math.max(1,document.documentElement.scrollHeight-window.innerHeight)*100))); }catch(e){} };
+    if(this.lenis) this.lenis.on('scroll',()=>{ clearTimeout(this._depthT); this._depthT=setTimeout(save,400); });
+  }
+  showWelcomeBack(){
+    if(!this._returning || this._welcomedBack) return; this._welcomedBack=true;
+    const greet=this.one('[data-greet]'); if(!greet) return;
+    const normal=greet.textContent; greet.textContent='welcome back';
+    const swap=()=>{ if(this.dead||!greet) return; const g=this.gsap; if(g&&!this.RM){ g.to(greet,{ opacity:0, duration:.3, ease:'power2.in', onComplete:()=>{ greet.textContent=normal; g.to(greet,{ opacity:1, duration:.3, ease:'power2.out' }); } }); } else { greet.textContent=normal; } };
+    setTimeout(swap, 4000);
+  }
+
   // v3 Tier 3 — dynamic tab title
   setupTitle(){
     this._title=document.title || 'Kunal Kumar';
@@ -634,7 +659,7 @@ class Site {
     } else { run(); }
   }
   armIdle(){
-    if(this.dead) return; // 2.4: also runs under reduced motion (line appears statically)
+    if(this.dead) return; // 2.4: also under reduced motion (static)
     try{ if(sessionStorage.getItem('kk_idle')) return; }catch(e){}
     let t; const reset=()=>{ clearTimeout(t); t=setTimeout(()=>this.idleLine(),20000); };
     ['mousemove','scroll','keydown','touchstart','wheel'].forEach(ev=>window.addEventListener(ev,reset,{passive:true}));
@@ -649,6 +674,8 @@ class Site {
     line.innerHTML='<span style="color:rgba(251,250,247,.38);flex:none;width:72px;">[ now  ]</span><span style="width:6px;height:6px;border-radius:50%;background:#FFAA00;flex:none;align-self:center;"></span><span>still reading? take your time.</span>';
     line.style.opacity='0'; box.appendChild(line);
     if(this.gsap && !this.RM) this.gsap.fromTo(line,{ opacity:0, y:8 },{ opacity:1, y:0, duration:.6, ease:'expo.out' }); else line.style.opacity='1';
+    // appending changes the Log's height → downstream pins (story) have stale measurements; refresh
+    if(this.ST) requestAnimationFrame(()=>{ try{ this.ST.refresh(); }catch(e){} });
   }
 
   // v4 — HOW I BUILD pipeline (traveling pulse)
@@ -689,7 +716,7 @@ class Site {
   // v7 C — living plates: one tiny engine, three scenes
   setupSims(){
     this._fx=this._fx||[];
-    const sims=[]; const ACC={ recall:'#2438FF', triage:'#7A2BF5', watershed:'#0CAF9B' };
+    const sims=[]; const ACC={ recall:'#2438FF', triage:'#7A2BF5', watershed:'#0CAF9B', monogram:'#2438FF' };
     this.q('canvas[data-sim]').forEach(cv=>{
       let ctx=null; try{ ctx=cv.getContext('2d'); }catch(e){}
       if(!ctx) return;
@@ -712,6 +739,19 @@ class Site {
         if(!s.P){ s.P=[]; const cols=8, rows=5, gw=w*.64, gh=h*.5, ox=(w-gw)/2, oy=(h-gh)/2; for(let i=0;i<40;i++){ const c=i%cols, r=(i/cols)|0; s.P.push({ hx:ox+c*(gw/(cols-1)), hy:oy+r*(gh/(rows-1)), a:Math.random()*6.28, b:Math.random()*6.28, f1:.25+Math.random()*.3, f2:.2+Math.random()*.3, amp:.16+Math.random()*.2 }); } }
         const ph=t%10; let A=0; if(ph>6&&ph<7) A=ph-6; else if(ph>=7&&ph<9.2) A=1; else if(ph>=9.2) A=1-(ph-9.2)/.8; A=A<0?0:A>1?1:A; const E=A*A*(3-2*A);
         s.P.forEach((p,i)=>{ const dx=Math.sin(p.a+t*p.f1)*w*p.amp, dy=Math.cos(p.b+t*p.f2)*h*p.amp; const x=p.hx+dx*(1-E), y=p.hy+dy*(1-E); ctx.globalAlpha=.5+.4*E; ctx.fillStyle= i%7===0? 'rgba(13,13,18,.6)' : acc; ctx.fillRect(x-4.5,y-3,9,6); });
+        ctx.globalAlpha=1;
+      } else if(s.kind==='monogram'){
+        // scattered dots snap into the monogram "KK", hold, scatter — memory reassembling
+        if(!s.P){
+          const pts=[]; const cw=w*0.28, ch=h*0.52, oy=(h-ch)/2;
+          const Kpts=(ox)=>{ const a=[]; const N=7; for(let i=0;i<N;i++) a.push([ox, oy+ch*i/(N-1)]); for(let i=0;i<5;i++){ const f=i/4; a.push([ox+cw*f, oy+ch*0.5-ch*0.5*f]); a.push([ox+cw*f, oy+ch*0.5+ch*0.5*f]); } return a; };
+          const left=w/2-cw*1.15, gap=cw*1.5;
+          const all=Kpts(left).concat(Kpts(left+gap));
+          all.forEach(([tx,ty])=>pts.push({ tx, ty, a:Math.random()*6.28, b:Math.random()*6.28, f1:.2+Math.random()*.3, f2:.2+Math.random()*.3, amp:.2+Math.random()*.22 }));
+          s.P=pts;
+        }
+        const ph=t%9; let A=0; if(ph>5&&ph<6) A=ph-5; else if(ph>=6&&ph<8) A=1; else if(ph>=8) A=1-(ph-8); A=A<0?0:A>1?1:A; const E=A*A*(3-2*A);
+        s.P.forEach((p,i)=>{ const dx=Math.sin(p.a+t*p.f1)*w*p.amp, dy=Math.cos(p.b+t*p.f2)*h*p.amp; const x=p.tx+dx*(1-E), y=p.ty+dy*(1-E); ctx.globalAlpha=.4+.5*E; ctx.fillStyle=acc; ctx.beginPath(); ctx.arc(x,y,3,0,6.3); ctx.fill(); });
         ctx.globalAlpha=1;
       } else if(s.kind==='triage'){
         if(!s.P){ s.P=[]; for(let i=0;i<64;i++) s.P.push({ x:Math.random()*w, y0:.15+Math.random()*.7, ln:i%5, v:.55+Math.random()*.5, sd:Math.random()*6.28 }); }
@@ -774,8 +814,7 @@ class Site {
     }catch(e){}
     this._phaseMode=mode;
     this.applyPhase();
-    // 2.5 — cross-fade the paper/grain between phases (enabled after the initial paint so first load doesn't animate). The night invert is left as an instant toggle on purpose: animating invert() passes through a washed-out gray midpoint that reads worse than a clean swap.
-    if(!this.RM) requestAnimationFrame(()=>{ if(this.dead) return; document.documentElement.style.transition='background-color .6s ease'; const grain=this.one('[data-grain]'); if(grain) grain.style.transition='opacity .6s ease'; });
+    if(!this.RM) requestAnimationFrame(()=>{ if(this.dead) return; document.documentElement.style.transition='background-color .6s ease'; const gr=this.one('[data-grain]'); if(gr) gr.style.transition='opacity .6s ease'; }); // 2.5
     const dial=this.one('[data-phase-dial]');
     if(dial) dial.addEventListener('click',()=>{
       const order=['auto','dawn','day','dusk','night'];
@@ -878,7 +917,7 @@ class Site {
     const run=(i)=>{ const r=rows[i]; if(!r) return; close(); setTimeout(()=>{ try{ r._act[3](); }catch(e){} },140); };
     const openFn=()=>{
       if(open) return; open=true;
-      this._palettePrevFocus = document.activeElement; // #3: remember trigger to restore focus on close
+      this._palettePrevFocus=document.activeElement; // #3
       ov.style.display='block'; inp.value=''; render();
       if(this.lenis) this.lenis.stop(); document.body.style.overflow='hidden';
       const g=this.gsap;
@@ -892,7 +931,7 @@ class Site {
       const g=this.gsap;
       if(g&&!this.RM) g.to(ov,{ opacity:0, duration:.2, ease:'expo.in', onComplete:fin }); else { ov.style.opacity=0; fin(); }
       if(this.lenis) this.lenis.start(); document.body.style.overflow='';
-      const pf=this._palettePrevFocus; if(pf && pf.focus){ try{ pf.focus({preventScroll:true}); }catch(e){ pf.focus(); } } // #3: restore focus to trigger
+      const pf=this._palettePrevFocus; if(pf&&pf.focus){ try{ pf.focus({preventScroll:true}); }catch(e){ pf.focus(); } } // #3
     };
     this.openPalette=openFn;
     ov.addEventListener('click',(e)=>{ if(e.target===ov) close(); });
@@ -914,6 +953,32 @@ class Site {
     if(logo && this.TOUCH){ let tmr; logo.addEventListener('touchstart',()=>{ tmr=setTimeout(openFn,550); },{ passive:true }); logo.addEventListener('touchend',()=>clearTimeout(tmr)); }
   }
   goAnchor(sel){ const t=this.one(sel)||document.querySelector(sel); if(!t) return; if(this.lenis) this.lenis.scrollTo(t,{ offset:-104 }); else window.scrollTo({ top:t.getBoundingClientRect().top+window.scrollY-104, behavior:'smooth' }); }
+
+  // redesign — the ledger (editorial roles): hover-expand rows + keyline draw + availability roll
+  setupLedger(){
+    const ledger=this.one('[data-ledger]'); if(!ledger) return;
+    const g=this.gsap;
+    const rows=this.q('[data-ledger-row]');
+    // keylines draw in as the section enters
+    rows.forEach(r=>{ const k=r.querySelector('[data-keyline]'); if(k){ k.style.transition='none'; g.set(k,{ scaleY:0 }); } });
+    if(this.ST && !this.RM){
+      this.ST.create({ trigger:ledger, start:'top 82%', once:true, onEnter:()=>{ rows.forEach((r,i)=>{ const k=r.querySelector('[data-keyline]'); if(k) g.to(k,{ scaleY:1, duration:.7, ease:'expo.out', delay:i*0.1 }); }); } });
+    } else { rows.forEach(r=>{ const k=r.querySelector('[data-keyline]'); if(k) g.set(k,{ scaleY:1 }); }); }
+    if(!this.TOUCH){
+      rows.forEach(row=>{
+        const acc=row.getAttribute('data-accent'); const sub=row.querySelector('[data-sub]');
+        row.addEventListener('mouseenter',()=>{ row.style.transform='translateX(12px)'; row.style.background='linear-gradient(90deg,'+this._tint(acc,0.05)+',transparent 70%)'; if(sub) sub.style.color=acc; rows.forEach(o=>{ if(o!==row) o.style.opacity='.5'; }); });
+        row.addEventListener('mouseleave',()=>{ row.style.transform='translateX(0)'; row.style.background='transparent'; if(sub) sub.style.color='#6b6b78'; rows.forEach(o=>o.style.opacity='1'); });
+      });
+    }
+    // availability pill: roll to "let's talk →" on hover
+    const pill=this.one('[data-avail]'), lbl=this.one('[data-avail-label]');
+    if(pill && lbl && !this.TOUCH){
+      pill.addEventListener('mouseenter',()=>{ lbl.textContent="let's talk →"; pill.style.background='rgba(12,175,155,.08)'; pill.style.borderColor='#0CAF9B'; });
+      pill.addEventListener('mouseleave',()=>{ lbl.textContent='open to opportunities'; pill.style.background='transparent'; pill.style.borderColor='rgba(12,175,155,.4)'; });
+    }
+  }
+  _tint(hex,a){ const n=parseInt(hex.slice(1),16); return 'rgba('+(n>>16)+','+((n>>8)&255)+','+(n&255)+','+a+')'; }
 
   // v9 2.5 — "ask me how" opens the palette to the build/play story
   setupAskHow(){ const b=this.one('[data-ask-how]'); if(b) b.addEventListener('click',()=>{ if(this.openPalette) this.openPalette(); }); }
@@ -950,9 +1015,9 @@ class Site {
 
   // v10 STEP 3.2 — the one reveal primitive (y:24, .8s, expo.out) for sections that lacked one
   setupReveal(){
-    if(this.RM || !this.ST){ this.q('[data-pos]').forEach(e=>e.style.opacity=1); return; }
+    if(this.RM || !this.ST){ this.q('[data-pos],[data-ledger-row]').forEach(e=>e.style.opacity=1); return; }
     const g=this.gsap;
-    [['[data-pos]', this.one('[data-screen-label="Roles"]')], ['[data-exp-row]', this.one('[data-screen-label="Experience"]')]].forEach(([sel,scope])=>{
+    [['[data-ledger-row]', this.one('[data-screen-label="Roles"]')], ['[data-exp-row]', this.one('[data-screen-label="Experience"]')]].forEach(([sel,scope])=>{
       if(!scope) return; const els=Array.from(scope.querySelectorAll(sel)); if(!els.length) return;
       g.set(els,{ opacity:0, y:24 });
       this.ST.create({ trigger:scope, start:'top 80%', once:true, onEnter:()=>g.to(els,{ opacity:1, y:0, duration:.8, ease:'expo.out', stagger:0.08 }) });
@@ -973,25 +1038,65 @@ class Site {
   setupBento(){
     const grid=this.one('[data-bento]'); if(!grid) return;
     const g=this.gsap, ST=this.ST;
-    // clock tile (shares the IST formatter cadence)
-    const cl=this.one('[data-bento-clock]'); const st=this.one('[data-bento-status]');
-    if(cl){ const fmt=new Intl.DateTimeFormat('en-GB',{ timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false }); const f2=new Intl.DateTimeFormat('en-GB',{ timeZone:'Asia/Kolkata',hour:'2-digit',hour12:false }); const tk=()=>{ if(this.dead) return; cl.textContent=fmt.format(new Date()); if(st){ const h=parseInt(f2.format(new Date()),10); st.textContent=(h>=1&&h<7)?'almost certainly asleep':(h>=22||h<1)?'probably still shipping':'probably shipping'; } }; tk(); this._bentoClk=setInterval(tk,1000); }
-    // github live stat (client fetch, graceful fallback)
+    // clock tile + the "who" uptime flourish (shares the IST formatter cadence)
+    const cl=this.one('[data-bento-clock]'); const st=this.one('[data-bento-status]'); const up=this.one('[data-bento-uptime]');
+    const fmt=new Intl.DateTimeFormat('en-GB',{ timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false });
+    const fhm=new Intl.DateTimeFormat('en-GB',{ timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',hour12:false });
+    const f2=new Intl.DateTimeFormat('en-GB',{ timeZone:'Asia/Kolkata',hour:'2-digit',hour12:false });
+    const tk=()=>{ if(this.dead) return; const now=new Date(); if(cl) cl.textContent=fmt.format(now); if(up) up.textContent=fhm.format(now); if(st){ const h=parseInt(f2.format(now),10); const ph=this._phaseName; st.textContent= ph==='night'?'definitely still up': ph==='dawn'?'early start': (h>=1&&h<7)?'almost certainly asleep':'probably shipping'; } };
+    tk(); this._bentoClk=setInterval(tk,1000);
+    // focus underline — slow fill loop, suggests ongoing (no fake %)
+    const fill=this.one('[data-focus-fill]');
+    if(fill && !this.RM && g){ g.fromTo(fill,{ width:'18%' },{ width:'82%', duration:3.2, ease:'sine.inOut', repeat:-1, yoyo:true }); }
+    // ask tile — cycles questions, click opens palette
+    this.setupAskTile();
+    // github live sparkline (client fetch, graceful fallback)
     this.fetchGithub();
     // stagger reveal
     const tiles=this.q('[data-tile]');
     if(this.RM){ tiles.forEach(t=>{ t.style.opacity=1; }); return; }
-    if(ST){ g.set(tiles,{ opacity:0, y:26 }); ST.create({ trigger:grid, start:'top 78%', once:true, onEnter:()=>{ g.to(tiles,{ opacity:1, y:0, duration:.7, ease:'expo.out', stagger:0.07 }); } }); }
+    if(ST){ g.set(tiles,{ opacity:0, y:26 }); ST.create({ trigger:grid, start:'top 85%', once:true, onEnter:()=>{ g.to(tiles,{ opacity:1, y:0, duration:.7, ease:'expo.out', stagger:0.07 }); } });
+      // defensive: if the grid is already in view on load / past it, reveal immediately (no dark void)
+      const gr=grid.getBoundingClientRect(); if(gr.top < window.innerHeight) g.to(tiles,{ opacity:1, y:0, duration:.5, ease:'expo.out', stagger:0.05 });
+    } else { tiles.forEach(t=>{ t.style.opacity=1; }); }
+  }
+  setupAskTile(){
+    const tile=this.one('[data-ask]'), q=this.one('[data-ask-q]'); if(!tile) return;
+    tile.addEventListener('click',()=>{ if(this.openPalette) this.openPalette(); });
+    if(q && !this.RM){
+      const qs=['anything you want','where do i work?','what is mats?','what am i learning?','how was this built?'];
+      let i=0; this._askIv=setInterval(()=>{ if(this.dead||!this.gsap) return; i=(i+1)%qs.length; this.gsap.to(q,{ opacity:0, y:-6, duration:.25, ease:'power2.in', onComplete:()=>{ q.textContent=qs[i]; this.gsap.fromTo(q,{ opacity:0, y:6 },{ opacity:1, y:0, duration:.25, ease:'power2.out' }); } }); },3200);
+    }
+  }
+  buildSparkline(counts){
+    const box=this.one('[data-gh-spark]'); if(!box) return;
+    box.innerHTML=''; const max=Math.max(1,...counts);
+    counts.forEach((c,i)=>{
+      const bar=document.createElement('div');
+      const hpct=Math.round((c/max)*100);
+      bar.style.cssText='flex:1;min-width:0;height:'+Math.max(8,hpct)+'%;border-radius:2px;background:'+(c>0?'#FFAA00':'rgba(13,13,18,.1)')+';transition:opacity .2s;position:relative;';
+      bar.title=c+' commit'+(c===1?'':'s')+' · '+i+'d ago';
+      box.appendChild(bar);
+    });
   }
   fetchGithub(){
     const num=this.one('[data-gh-num]'), label=this.one('[data-gh-label]'); if(!num) return;
-    const fallback=()=>{ num.textContent='oss'; if(label) label.textContent='open source club · scaler'; };
+    // seed a quiet fallback sparkline so the tile is never empty
+    const seed=[1,0,2,1,3,0,1,2,1,0,2,1,1,3];
+    this.buildSparkline(seed);
+    const fallback=()=>{ num.textContent='@kunalKumar-13'; if(label) label.textContent='last 14 days · cached'; };
     if(!('fetch' in window)){ fallback(); return; }
     const ctrl = ('AbortController' in window)? new AbortController():null;
     const to = ctrl? setTimeout(()=>ctrl.abort(),4000):null;
     fetch('https://api.github.com/users/kunalKumar-13/events/public?per_page=100', ctrl?{signal:ctrl.signal}:{})
       .then(r=>r.ok?r.json():Promise.reject())
-      .then(ev=>{ if(to) clearTimeout(to); const wk=Date.now()-2592e6; let c=0; (ev||[]).forEach(e=>{ if(e.type==='PushEvent' && new Date(e.created_at).getTime()>wk){ c+=(e.payload&&e.payload.commits?e.payload.commits.length:1); } }); if(c>0){ num.textContent=c; if(label) label.textContent='commit'+(c===1?'':'s')+' this month'; } else { num.textContent='@kunal'; if(label) label.textContent='shipping in private'; } })
+      .then(ev=>{ if(to) clearTimeout(to);
+        const days=new Array(14).fill(0); const now=Date.now(); let month=0; const mAgo=now-2592e6;
+        (ev||[]).forEach(e=>{ if(e.type==='PushEvent'){ const cm=(e.payload&&e.payload.commits?e.payload.commits.length:1); const ts=new Date(e.created_at).getTime(); const d=Math.floor((now-ts)/864e5); if(d>=0&&d<14) days[13-d]+=cm; if(ts>mAgo) month+=cm; } });
+        if(days.some(d=>d>0)) this.buildSparkline(days);
+        if(num) num.textContent= month>0? month+' this month' : 'shipping private';
+        if(label) label.textContent='last 14 days';
+      })
       .catch(()=>fallback());
   }
 
@@ -1037,7 +1142,7 @@ class Site {
       render(1); return;
     }
     let vis=false;
-    ST.create({ trigger:sec, start:'top top', end:'+=130%', pin:pin, pinSpacing:true, anticipatePin:1, scrub:true, invalidateOnRefresh:true, onEnter:()=>vis=true, onLeave:()=>vis=false, onEnterBack:()=>vis=true, onLeaveBack:()=>vis=false,
+    ST.create({ trigger:sec, start:'top top', end:'+=100%', pin:pin, pinSpacing:true, anticipatePin:1, scrub:true, invalidateOnRefresh:true, onEnter:()=>vis=true, onLeave:()=>vis=false, onEnterBack:()=>vis=true, onLeaveBack:()=>vis=false,
       onUpdate:(self)=>{ this._storyProg=self.progress; setCap(self.progress); render(self.progress); } });
     // gentle life while pinned (drift wobble continues even when not scrubbing)
     this._fx=this._fx||[]; let lt=0;
@@ -1157,23 +1262,6 @@ class Site {
     el.textContent = (h>=5&&h<12)?'good morning':(h>=12&&h<17)?'good afternoon':(h>=17&&h<22)?'good evening':"it's late in bengaluru — still shipping";
   }
 
-  // 2.1 — returning-visitor memory (the brand's "remember", made real). Private-mode safe.
-  setupReturning(){
-    let returning=false;
-    try{ returning = localStorage.getItem('kk_seen')==='1'; localStorage.setItem('kk_seen','1'); }catch(e){}
-    this._returning=returning;
-    if(!returning) return; // first visit unchanged
-    const so=this.one('[data-signoff]');
-    if(so) so.textContent='you made it back — thanks.';
-    // the hero greeting swap is deferred to showWelcomeBack() — fired once the hero is actually visible (it's behind the preloader at mount)
-  }
-  showWelcomeBack(){
-    if(!this._returning || this._welcomedBack) return; this._welcomedBack=true;
-    const greet=this.one('[data-greet]'); if(!greet) return;
-    const settled=greet.textContent; greet.textContent='welcome back';
-    setTimeout(()=>{ if(!this.dead) greet.textContent=settled; },4000);
-  }
-
   // v3 copy pack — heroVariants (single source of truth)
   getPacks(){
     const C={ cobalt:'#2438FF', violet:'#7A2BF5', teal:'#0CAF9B', amber:'#FFAA00', coral:'#FF4D5E' };
@@ -1218,9 +1306,8 @@ class Site {
   }
 }
 
-/* boot — mount the component once the DOM (and the #kk-root markup) is ready */
+/* boot */
 (function(){
-  function boot(){ var el = document.getElementById('kk-root'); if(el) new Site(el); }
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
-  else boot();
+  function boot(){ var el=document.getElementById('kk-root'); if(el) new Site(el); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
