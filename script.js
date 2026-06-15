@@ -101,7 +101,6 @@ class Site {
     this.setupBento();
     this.setupLedger();
     this.setupShowcase();
-    this.setupStory();
     this.setupHoverLang();
     this.setupReveal();
     this.setupAskHow();
@@ -836,7 +835,7 @@ class Site {
     this._syncDial(mode,name);
     const de=document.documentElement;
     const grain=this.one('[data-grain]');
-    const counter=[this.one('[data-aurora-canvas]'), this.one('[data-story-canvas]')].concat(this.q('canvas[data-sim]'));
+    const counter=[this.one('[data-aurora-canvas]')].concat(this.q('canvas[data-sim]'));
     if(name==='night'){
       de.style.filter='invert(1) hue-rotate(180deg)';
       de.style.background='#FBFAF7';
@@ -1008,7 +1007,7 @@ class Site {
     const box=this.one('[data-log-lines]'), panel=this.one('[data-log]'); if(!box||!panel) return;
     if(this.TOUCH) return;
     const lines=this.q('[data-log-line]');
-    const COMMITS=['a1c0de · feat(community): join hack club · +3 events','b2f4a7 · chore(events): kept the wifi and the pizza coming','c3e9d2 · feat(ai): into a fellowship i care about','d4a1b8 · tag: apple-dev-init · cosmetic, still proud','e5f7c3 · fix(triage): stopped it guessing','f6b2a9 · perf(watershed): ran till alliances formed','a7c4e1 · tag: hpair-harvard · passport stamped','b8d3f5 · feat(ostrius): ship auth end to end · 0 regressions','c9e2a6 · merge(ai): joined emergent · fast-forward','d0f1b4 · feat(community): became lead · signed off','a5b1c8 · feat(relations): took over externals · handshakes++','eeeeee · HEAD -> main · reading you, live'];
+    const COMMITS=['a1c0de · feat(community): join hack club · +3 events','b2f4a7 · chore(events): kept the wifi and the pizza coming','c3e9d2 · feat(ai): activate fellowship · indias first cohort, 1 of 15','d4a1b8 · tag: apple-dev-init · cosmetic, still proud','e5f7c3 · fix(triage): stopped it guessing','f6b2a9 · perf(watershed): ran till alliances formed','a7c4e1 · tag: hpair-harvard · passport stamped','b8d3f5 · feat(ostrius): ship auth end to end · 0 regressions','c9e2a6 · merge(ai): joined emergent · fast-forward','d0f1b4 · feat(community): became lead · signed off','a5b1c8 · feat(relations): took over externals · handshakes++','eeeeee · HEAD -> main · reading you, live'];
     const tip=document.createElement('div'); tip.style.cssText='position:absolute;z-index:30;pointer-events:none;font-family:JetBrains Mono,monospace;font-size:11px;color:#0D0D12;background:#FBFAF7;border:1px solid #0D0D12;border-radius:12px;padding:6px 9px;white-space:nowrap;opacity:0;transition:opacity .18s ease;transform:translate(0,-118%);'; panel.appendChild(tip);
     lines.forEach((l,i)=>{ const txt=COMMITS[i]; if(!txt) return; l.addEventListener('mouseenter',()=>{ tip.textContent=txt; const r=l.getBoundingClientRect(), pr=panel.getBoundingClientRect(); tip.style.left=(r.left-pr.left+60)+'px'; tip.style.top=(r.top-pr.top+8)+'px'; tip.style.opacity=1; }); l.addEventListener('mouseleave',()=>{ tip.style.opacity=0; }); });
   }
@@ -1073,8 +1072,8 @@ class Site {
     box.innerHTML=''; const max=Math.max(1,...counts);
     counts.forEach((c,i)=>{
       const bar=document.createElement('div');
-      const hpct=Math.round((c/max)*100);
-      bar.style.cssText='flex:1;min-width:0;height:'+Math.max(8,hpct)+'%;border-radius:2px;background:'+(c>0?'#FFAA00':'rgba(13,13,18,.1)')+';transition:opacity .2s;position:relative;';
+      const hpct=c>0?Math.round((c/max)*100):16;
+      bar.style.cssText='flex:1;min-width:0;height:'+Math.max(16,hpct)+'%;min-height:14px;border-radius:3px;background:'+(c>0?'#FFAA00':'rgba(255,170,0,.18)')+';transition:opacity .2s;position:relative;';
       bar.title=c+' commit'+(c===1?'':'s')+' · '+i+'d ago';
       box.appendChild(bar);
     });
@@ -1112,42 +1111,6 @@ class Site {
     rail.addEventListener('keydown',(e)=>{ if(e.key==='ArrowRight'){ e.preventDefault(); rail.scrollBy({left:step(),behavior:'smooth'}); } else if(e.key==='ArrowLeft'){ e.preventDefault(); rail.scrollBy({left:-step(),behavior:'smooth'}); } });
     // wheel → horizontal when hovering the rail
     rail.addEventListener('wheel',(e)=>{ if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){ rail.scrollLeft+=e.deltaY; e.preventDefault(); } },{passive:false});
-  }
-
-  // v9 2.2 — pinned scroll story (Recall.me), canvas scrubbed by progress
-  setupStory(){
-    const sec=this.one('[data-story]'); if(!sec) return;
-    const pin=this.one('[data-story-pin]'); const cv=this.one('[data-story-canvas]');
-    const caps=Array.from(sec.querySelectorAll('[data-cap]')); const dots=Array.from(sec.querySelectorAll('[data-story-dots] span'));
-    const g=this.gsap, ST=this.ST;
-    let ctx=null; try{ ctx=cv&&cv.getContext('2d'); }catch(e){}
-    let P=null;
-    const size=()=>{ if(!cv) return; const r=cv.getBoundingClientRect(); const w=Math.max(60,r.width|0), h=Math.max(60,r.height|0); if(cv.width!==w||cv.height!==h){ cv.width=w; cv.height=h; P=null; } };
-    const build=(w,h)=>{ P=[]; const cols=8, rows=5, gw=w*.6, gh=h*.52, ox=(w-gw)/2, oy=(h-gh)/2; for(let i=0;i<40;i++){ const c=i%cols, r=(i/cols)|0; P.push({ hx:ox+c*(gw/(cols-1)), hy:oy+r*(gh/(rows-1)), a:Math.random()*6.28, b:Math.random()*6.28, f1:.5+Math.random()*.7, f2:.5+Math.random()*.7, amp:.18+Math.random()*.22 }); } };
-    const render=(prog)=>{
-      if(!ctx) return; size(); const w=cv.width, h=cv.height; if(!P||!P.length) build(w,h);
-      ctx.clearRect(0,0,w,h);
-      // assembled fraction: stays scattered through first half, snaps home in the last third
-      let A=(prog-0.5)/0.45; A=A<0?0:A>1?1:A; const E=A*A*(3-2*A);
-      const tt=(performance.now()*0.0006);
-      for(let i=0;i<P.length;i++){ const p=P[i]; const dx=Math.sin(p.a+tt*p.f1)*w*p.amp, dy=Math.cos(p.b+tt*p.f2)*h*p.amp; const x=p.hx+dx*(1-E), y=p.hy+dy*(1-E); ctx.globalAlpha=.45+.5*E; ctx.fillStyle= i%7===0?'rgba(13,13,18,.55)':'#2438FF'; ctx.fillRect(x-5,y-3.2,10,6.4); }
-      ctx.globalAlpha=1;
-    };
-    this._storyProg=0;
-    const setCap=(prog)=>{ let idx=Math.min(caps.length-1,Math.floor(prog*caps.length)); caps.forEach((c,i)=>{ if(g) g.to(c,{ opacity:i===idx?1:0, duration:.3, overwrite:true }); else c.style.opacity=i===idx?1:0; }); dots.forEach((d,i)=>d.style.background=i===idx?'#2438FF':'rgba(13,13,18,.14)'); };
-    size(); window.addEventListener('resize',size);
-    if(this.RM || !ST){
-      if(pin){ pin.style.height='auto'; pin.style.padding='clamp(60px,10vh,120px) clamp(20px,5vw,80px)'; }
-      caps.forEach(c=>{ c.style.position='relative'; c.style.opacity=1; c.style.marginBottom='10px'; });
-      render(1); return;
-    }
-    let vis=false;
-    ST.create({ trigger:sec, start:'top top', end:'+=100%', pin:pin, pinSpacing:true, anticipatePin:1, scrub:true, invalidateOnRefresh:true, onEnter:()=>vis=true, onLeave:()=>vis=false, onEnterBack:()=>vis=true, onLeaveBack:()=>vis=false,
-      onUpdate:(self)=>{ this._storyProg=self.progress; setCap(self.progress); render(self.progress); } });
-    // gentle life while pinned (drift wobble continues even when not scrubbing)
-    this._fx=this._fx||[]; let lt=0;
-    this._fx.push((t)=>{ if(!vis||document.hidden) return; if(t-lt<33) return; lt=t; render(this._storyProg); });
-    render(0); setCap(0);
   }
 
   // v9 2.4 — the currently ticker (slot mechanic, one item swapping)
