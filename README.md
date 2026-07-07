@@ -1,7 +1,6 @@
 # Kunal Kumar — Portfolio
 
-A single-page portfolio implemented from the Claude Design prototype (`Kunal Kumar.dc.html`,
-revision v14 — "Fill the Gaps, Add the Glow"). Static site: no build step, no framework.
+A single-page portfolio. Static site: no build step, no framework — one HTML file, one class.
 
 The design medium was a Claude Design Component (a small React-runtime `.dc.html`). This repo is
 a **byte-faithful vanilla port**: the markup and all behavior are reproduced exactly; only the
@@ -32,15 +31,17 @@ python3 -m http.server 8000
   availability pill that rolls to "let's talk →". Velocity **mono ribbon** · scroll-fill **manifesto**.
 - **The Log** — a `tail -f life.log` terminal that streams in, shows commit tooltips on hover,
   and appends an idle line if you go quiet.
-- **Recall.me story** — a pinned, scroll-scrubbed canvas (memory scattering → reassembling).
 - **Work** — three stacking project cards with living-sim canvases; the top progress spine
-  takes on the active project's accent.
+  takes on the active project's accent. Each card opens a **case file** — an editorial dossier
+  (problem → build → pipeline → stack) in an accessible overlay.
 - **Experience** — a 2-col grid (Emergent · Ostrius · Teaching Assistant · Apple Developer Academy),
   collapsing to one column ≤680px.
 - **Bento** — live Bengaluru clock + uptime, a GitHub 14-day commit **sparkline**, an **"ask me"**
   tile that opens the palette, a focus bar, the **MATS** tile with a rotating 4-color conic glow,
   and a monogram "KK" canvas that reassembles from scattered dots.
-- **Memory** — a fading 4-color cursor trail, and a returning-visitor "welcome back" greeting.
+- **Memory** — a fading 4-color cursor trail, a returning-visitor "welcome back" greeting, a
+  "pick up where you left off" toast that restores your scroll depth, and **sign the log** — a
+  guestbook line in the terminal that the site remembers (local-only, forgettable on request).
 - **Showcase** rail (drag, arrow keys, wheel) · **"How I build"** pipeline · **contact** end-card.
 
 ### Interactions / affordances
@@ -51,6 +52,9 @@ python3 -m http.server 8000
   `auto`, which follows real Bengaluru time (night mode inverts the page). Persisted for a day.
 - **Sound** toggle (footer) — off by default, soft WebAudio ticks on section enter.
 - Press **K** twice for party-mode confetti. Footer email click copies (second click opens mail).
+- **Colophon** (footer link or ⌘K) — how the site is built + the easter-egg field guide.
+- **Print** (⌘P) — the page collapses to a clean, ink-friendly one-pager.
+- `404.html`, `robots.txt`, `og-image.png` + JSON-LD Person schema for sharing/SEO.
 
 ## Editing content
 

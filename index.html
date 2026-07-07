@@ -10,6 +10,11 @@
 <meta property="og:title" content="Kunal Kumar — building software worth remembering">
 <meta property="og:description" content="A memory engine for unfinished work, an agent that refuses to hallucinate, and an arena where machines learn to negotiate.">
 <meta property="og:type" content="website">
+<!-- set to an absolute URL once the domain is live (scrapers need absolute) -->
+<meta property="og:image" content="og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Kunal Kumar","jobTitle":"Frontend Engineering Intern","worksFor":{"@type":"Organization","name":"Emergent"},"sameAs":["https://github.com/kunalKumar-13","https://linkedin.com/in/sainkunal"]}</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 16 L16 2 A14 14 0 0 1 30 16 Z' fill='%232438FF'/%3E%3Cpath d='M16 16 L30 16 A14 14 0 0 1 16 30 Z' fill='%237A2BF5'/%3E%3Cpath d='M16 16 L16 30 A14 14 0 0 1 2 16 Z' fill='%230CAF9B'/%3E%3Cpath d='M16 16 L2 16 A14 14 0 0 1 16 2 Z' fill='%23FFAA00'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,8 +40,8 @@
 
   /* #4 — 44px touch targets on mobile (invisible hit-area; visuals unchanged) */
   @media (max-width:640px){
-    .navlink,[data-phase-dial],[data-cmdk],[data-sound],[data-top]{position:relative}
-    .navlink::after,[data-phase-dial]::after,[data-cmdk]::after,[data-sound]::after,[data-top]::after{
+    .navlink,[data-phase-dial],[data-cmdk],[data-sound],[data-top],[data-colophon],[data-case]{position:relative}
+    .navlink::after,[data-phase-dial]::after,[data-cmdk]::after,[data-sound]::after,[data-top]::after,[data-colophon]::after,[data-case]::after{
       content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
       width:100%;height:100%;min-width:44px;min-height:44px;
     }
@@ -46,6 +51,15 @@
     [data-nav-clock]{display:none!important}
     [data-nav]{gap:7px!important;padding:7px 10px!important}
     [data-nav-links]{gap:8px!important}
+  }
+  /* v22 — print: the page collapses to a clean, ink-friendly one-pager */
+  @media print{
+    [data-grain],[data-cursor-dot],[data-cursor-ring],[data-progress],[data-preloader],[data-nav],[data-hero-aurora],[data-foot-giant],canvas,[data-glow-bloom],[data-glow-ring]{display:none!important}
+    *{animation:none!important;transition:none!important;text-shadow:none!important;box-shadow:none!important}
+    [data-hero-el],[data-hero-content],[data-tile],[data-ledger-row],[data-log-line],[data-giant-name]{opacity:1!important;transform:none!important}
+    [data-footer]{position:static!important}
+    [data-main]{margin-bottom:0!important}
+    html,body{background:#fff!important;filter:none!important}
   }
 </style>
 </head>
@@ -103,6 +117,7 @@
         <a href="kunal-kumar-resume.pdf" target="_blank" rel="noopener" data-roll style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.04em;text-decoration:none;color:#FBFAF7;">Résumé ↗</a>
       </div>
       <div style="display:flex;align-items:center;gap:26px;">
+        <button data-colophon style="background:transparent;border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;color:#6b6b78;padding:0;">colophon</button>
         <a href="#top" data-top data-roll style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-decoration:none;color:#FBFAF7;">↑ back to top</a>
         <button data-sound style="background:transparent;border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;color:#6b6b78;padding:0;">♪ sound: off</button>
         <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#3a3a46;letter-spacing:.1em;">© 2026 kunal kumar</span>
@@ -292,6 +307,7 @@
                   <span style="padding:5px 10px;border:1px solid rgba(13,13,18,.12);border-radius:12px;">semantic search</span>
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button data-case="recall" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;padding:8px 16px;border-radius:999px;border:1px solid #2438FF;color:#2438FF;background:rgba(36,56,255,.08);cursor:pointer;">case file →</button>
                   <a href="https://github.com/kunalKumar-13" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;padding:8px 16px;border-radius:999px;border:1px solid #0D0D12;color:#FBFAF7;background:#0D0D12;text-decoration:none;">Code ↗</a>
                 </div>
               </div>
@@ -329,6 +345,7 @@
                   <span style="padding:5px 10px;border:1px solid rgba(13,13,18,.12);border-radius:12px;">prompt defense</span>
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button data-case="triage" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;padding:8px 16px;border-radius:999px;border:1px solid #7A2BF5;color:#7A2BF5;background:rgba(122,43,245,.08);cursor:pointer;">case file →</button>
                   <a href="https://github.com/kunalKumar-13" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;padding:8px 16px;border-radius:999px;border:1px solid #0D0D12;color:#FBFAF7;background:#0D0D12;text-decoration:none;">Code ↗</a>
                 </div>
               </div>
@@ -366,6 +383,7 @@
                   <span style="padding:5px 10px;border:1px solid rgba(13,13,18,.12);border-radius:12px;">TRL</span>
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button data-case="watershed" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;padding:8px 16px;border-radius:999px;border:1px solid #0CAF9B;color:#0CAF9B;background:rgba(12,175,155,.08);cursor:pointer;">case file →</button>
                   <a href="https://github.com/kunalKumar-13" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;padding:8px 16px;border-radius:999px;border:1px solid #0D0D12;color:#FBFAF7;background:#0D0D12;text-decoration:none;">Code ↗</a>
                 </div>
               </div>
