@@ -105,6 +105,9 @@ class Site {
     this.setupReveal();
     this.setupAskHow();
     this.setupMemory();
+    this.setupDossier();
+    this.setupGuestLog();
+    this.setupContinuity();
     if(!this.TOUCH){ this.setupCursor(); this.setupMagnetics(); this.setupTilt(); this.setupExpHover(); this.setupCardFX(); }
     else { this.setupExpHover(); }
     this.setupScramble();
@@ -878,7 +881,12 @@ class Site {
       ['do','open linkedin','#0CAF9B',()=>window.open('https://linkedin.com/in/sainkunal','_blank')],
       ['play','cycle phase ☀ ☾','#FFAA00',()=>this.cyclePhase()],
       ['play','spin the verb','#FFAA00',()=>this.advanceSlot(true)],
-      ['play','party mode','#FFAA00',()=>this.party()]
+      ['play','party mode','#FFAA00',()=>this.party()],
+      ['open','recall.me — case file','#2438FF',()=>this.openDossier('recall')],
+      ['open','triage agent — case file','#7A2BF5',()=>this.openDossier('triage')],
+      ['open','watershed — case file','#0CAF9B',()=>this.openDossier('watershed')],
+      ['open','colophon — how this is built','#FF4D5E',()=>this.openDossier('colophon')],
+      ['do','sign the log','#FFAA00',()=>{ this.goAnchor('#log'); setTimeout(()=>{ if(this.startGuestEntry) this.startGuestEntry(); },900); }]
     ];
     const sheet=this.TOUCH;
     const ov=document.createElement('div');
@@ -1213,6 +1221,177 @@ class Site {
         onEnterBack:()=>{ if(title) g.fromTo(title,{ y:-8, opacity:.7 },{ y:0, opacity:1, duration:.5, ease:'expo.out' }); }
       });
     });
+  }
+
+  // v22 — case files + colophon (one dossier engine, palette-grade a11y)
+  DOSSIERS(){
+    const D={
+      recall:{ n:'001', acc:'#2438FF', tag:'memory · continuity', title:'Recall.me', why:'because I kept losing my own unfinished work.',
+        problem:"Work scatters. You start something, life interrupts, and the context — the tabs, the half-formed intent — evaporates between sessions. Tools remember files; nothing remembers where you actually were.",
+        build:"A local-first memory engine: a daemon that exposes capture, recall and semantic-search APIs, with a Qt desktop client on top. Everything indexes locally, so recall works across sessions and survives restarts — a past any agent (or human) can reason from.",
+        own:'solo build — daemon, APIs and desktop client, end to end.',
+        pipe:[['capture','moments of work stream into the daemon'],['index','captures are embedded for semantic search'],['recall','query APIs surface the right past'],['resume','the client puts you back where you were']],
+        stack:['Python','Qt','daemon APIs','semantic search'],
+        links:[['Code ↗','https://github.com/kunalKumar-13']] },
+      triage:{ n:'002', acc:'#7A2BF5', tag:'agents · grounding', title:'Deterministic Support Triage Agent', why:'because agents lie when retrieval gets messy.',
+        problem:"Support agents answer confidently even when retrieval hands them garbage — and a confident wrong answer costs more than no answer.",
+        build:"Hybrid retrieval (LlamaIndex + BM25) grounds every reply in the docs; prompt-injection defense filters hostile inputs; and the refusal path is deterministic — when grounding is weak, it declines the same way every time instead of guessing.",
+        own:'built and tuned the full retrieval → refusal path.',
+        pipe:[['query','the user question comes in'],['retrieve','hybrid search — semantic + BM25 keyword'],['ground','answers must trace to the docs'],['answer / refuse','grounded reply, or a clean deterministic no']],
+        stack:['LlamaIndex','BM25','prompt defense'],
+        links:[['Code ↗','https://github.com/kunalKumar-13']] },
+      watershed:{ n:'003', acc:'#0CAF9B', tag:'rl · negotiation', title:'Watershed Negotiation Intelligence', why:'to watch machines learn to share something scarce.',
+        problem:"Scarce shared resources force a choice: hold your ground or make the deal. Could agents learn that balance from nothing but experience?",
+        build:"A negotiation arena trained with GRPO over self-play episodes — a TRL training loop served behind FastAPI. Run long enough, the agents stopped just competing: alliances formed.",
+        own:'designed the environment, reward and training loop.',
+        pipe:[['arena','agents face a scarce shared resource'],['self-play','episode after episode against themselves'],['learn','GRPO updates from what worked'],['serve','the trained policy behind FastAPI']],
+        stack:['RL · GRPO','TRL','FastAPI'],
+        links:[['Code ↗','https://github.com/kunalKumar-13']] },
+      colophon:{ n:'∞', acc:'#FF4D5E', tag:'colophon', title:'How this is built', why:'a site that remembers should also explain itself.',
+        problem:"No framework, no build step — one HTML file, one class, and a design system of paper, ink and four accents. GSAP + ScrollTrigger drive the choreography, Lenis the scroll; every canvas is a tiny hand-rolled sim that pauses off-screen.",
+        build:"It lives on Bengaluru time — dawn, day, dusk and night re-theme the page (night inverts it). It remembers you: return and it greets you back, keeps your place, and holds anything you sign into the log. Reduced motion gets a full static page; Lighthouse sits at 94 desktop / 100 mobile.",
+        own:'type: Bricolage Grotesque · Archivo · Instrument Serif · JetBrains Mono.',
+        pipe:[['⌘k','the command palette goes everywhere'],['k k','press twice — party mode'],['the verb','the rolling hero word is clickable'],['the log','go idle and it notices · sign it and it remembers'],['the dial','☾ in the nav — live the site at night']],
+        stack:['vanilla JS','GSAP + ScrollTrigger','Lenis','canvas sims','localStorage memory'],
+        links:[['view source ↗','https://github.com/kunalKumar-13/Portfolio']] },
+    };
+    return D;
+  }
+  setupDossier(){
+    this.q('[data-case]').forEach(b=>b.addEventListener('click',()=>this.openDossier(b.getAttribute('data-case'))));
+    const col=this.one('[data-colophon]'); if(col) col.addEventListener('click',()=>this.openDossier('colophon'));
+    // deep link: /#case-recall etc.
+    const h=(location.hash||'').replace('#case-','');
+    if(h && this.DOSSIERS()[h]) setTimeout(()=>this.openDossier(h), this.RM?600:5200);
+  }
+  buildDossierShell(){
+    if(this._dsOv) return;
+    const ov=document.createElement('div');
+    ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true'); ov.setAttribute('aria-label','case file');
+    ov.style.cssText='position:fixed;inset:0;z-index:10008;background:rgba(13,13,18,.38);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;opacity:0;';
+    const panel=document.createElement('div');
+    panel.setAttribute('data-ds-panel','');
+    panel.style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(94vw,880px);max-height:86vh;overflow-y:auto;overscroll-behavior:contain;border-radius:22px;background:#FBFAF7;border:1px solid rgba(13,13,18,.14);box-shadow:0 26px 64px rgba(13,13,18,.2);padding:clamp(26px,4vw,52px);';
+    ov.appendChild(panel); document.body.appendChild(ov);
+    ov.addEventListener('click',(e)=>{ if(e.target===ov) this.closeDossier(); });
+    window.addEventListener('keydown',(e)=>{
+      if(!this._dsOpen) return;
+      if(e.key==='Escape'){ e.preventDefault(); this.closeDossier(); }
+      else if(e.key==='Tab'){ // keep focus inside
+        const f=[...panel.querySelectorAll('a,button,[tabindex]')].filter(x=>x.offsetParent!==null);
+        if(!f.length) return; const first=f[0], last=f[f.length-1];
+        if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+        else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+      }
+    });
+    this._dsOv=ov; this._dsPanel=panel;
+  }
+  openDossier(key){
+    const D=this.DOSSIERS()[key]; if(!D) return;
+    this.buildDossierShell();
+    const acc=D.acc, mono="font-family:'JetBrains Mono',monospace;";
+    const chips=D.stack.map(t=>'<span style="'+mono+'font-size:11px;color:#6b6b78;padding:5px 10px;border:1px solid rgba(13,13,18,.12);border-radius:12px;">'+t+'</span>').join('');
+    const pipe=D.pipe.map((st,i)=>'<div style="display:grid;grid-template-columns:34px 14px 1fr;align-items:baseline;column-gap:12px;padding:9px 0;border-bottom:1px dashed rgba(13,13,18,.08);"><span style="'+mono+'font-size:11px;color:#9a9aa3;">0'+(i+1)+'</span><span style="width:7px;height:7px;background:'+acc+';transform:rotate(45deg);align-self:center;"></span><div><span style="'+mono+'font-size:12.5px;letter-spacing:.04em;color:#0D0D12;">'+st[0]+'</span><span style="font-family:Archivo,sans-serif;font-size:14px;color:#6b6b78;"> — '+st[1]+'</span></div></div>').join('');
+    const links=D.links.map(l=>'<a href="'+l[1]+'" target="_blank" rel="noopener" style="'+mono+'font-size:11px;letter-spacing:.04em;padding:9px 17px;border-radius:999px;border:1px solid #0D0D12;color:#FBFAF7;background:#0D0D12;text-decoration:none;">'+l[0]+'</a>').join('');
+    const order=['recall','triage','watershed','colophon']; const next=order[(order.indexOf(key)+1)%order.length];
+    this._dsPanel.innerHTML=
+      '<div style="display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:clamp(20px,3vw,30px);">'
+      +'<span style="'+mono+'font-size:11px;letter-spacing:.14em;text-transform:lowercase;color:'+acc+';">[ case file '+D.n+' — '+D.tag+' ]</span>'
+      +'<button data-ds-close aria-label="close" style="'+mono+'font-size:11px;letter-spacing:.08em;color:#6b6b78;background:transparent;border:1px solid rgba(13,13,18,.14);border-radius:999px;padding:9px 14px;cursor:pointer;min-height:34px;">esc ✕</button></div>'
+      +'<h2 style="font-family:\'Bricolage Grotesque\',sans-serif;font-weight:700;font-size:clamp(30px,4.6vw,54px);line-height:1;letter-spacing:-.03em;margin:0;">'+D.title+'</h2>'
+      +'<p style="font-family:\'Instrument Serif\',serif;font-style:italic;font-size:clamp(18px,2.2vw,26px);color:rgba(13,13,18,.72);margin:14px 0 0;line-height:1.3;">'+D.why+'</p>'
+      +'<div style="margin-top:clamp(22px,3vw,34px);"><div style="'+mono+'font-size:11px;letter-spacing:.14em;text-transform:lowercase;color:#9a9aa3;margin-bottom:10px;"><span style="display:inline-block;width:6px;height:6px;border-radius:1.5px;background:'+acc+';margin-right:8px;vertical-align:middle;transform:rotate(45deg);"></span>'+(key==='colophon'?'the anatomy':'the problem')+'</div><p style="font-size:15.5px;line-height:1.65;color:#3a3a46;margin:0;max-width:64ch;">'+D.problem+'</p></div>'
+      +'<div style="margin-top:clamp(20px,2.6vw,30px);"><div style="'+mono+'font-size:11px;letter-spacing:.14em;text-transform:lowercase;color:#9a9aa3;margin-bottom:10px;"><span style="display:inline-block;width:6px;height:6px;border-radius:1.5px;background:'+acc+';margin-right:8px;vertical-align:middle;transform:rotate(45deg);"></span>'+(key==='colophon'?'the memory':'the build')+'</div><p style="font-size:15.5px;line-height:1.65;color:#3a3a46;margin:0;max-width:64ch;">'+D.build+'</p><p style="'+mono+'font-size:12px;color:'+acc+';margin:12px 0 0;">↳ '+D.own+'</p></div>'
+      +'<div style="margin-top:clamp(20px,2.6vw,30px);"><div style="'+mono+'font-size:11px;letter-spacing:.14em;text-transform:lowercase;color:#9a9aa3;margin-bottom:6px;"><span style="display:inline-block;width:6px;height:6px;border-radius:1.5px;background:'+acc+';margin-right:8px;vertical-align:middle;transform:rotate(45deg);"></span>'+(key==='colophon'?'field guide':'the pipeline')+'</div>'+pipe+'</div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:clamp(20px,2.6vw,30px);">'+chips+'</div>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-top:clamp(24px,3.2vw,38px);">'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;">'+links+'</div>'
+      +'<button data-ds-next style="'+mono+'font-size:11px;letter-spacing:.08em;color:#0D0D12;background:transparent;border:none;cursor:pointer;padding:9px 0;">next: '+(next==='colophon'?'colophon':this.DOSSIERS()[next].title.toLowerCase())+' →</button></div>';
+    this._dsPanel.querySelector('[data-ds-close]').addEventListener('click',()=>this.closeDossier());
+    this._dsPanel.querySelector('[data-ds-next]').addEventListener('click',()=>this.openDossier(next));
+    if(!this._dsOpen){
+      this._dsOpen=true; this._dsPrevFocus=document.activeElement;
+      this._dsOv.style.display='block';
+      if(this.lenis) this.lenis.stop(); document.body.style.overflow='hidden';
+      const g=this.gsap;
+      if(g&&!this.RM){ g.fromTo(this._dsOv,{opacity:0},{opacity:1,duration:.25,ease:'expo.out'}); g.fromTo(this._dsPanel,{opacity:0},{opacity:1,duration:.3,ease:'expo.out'}); } // opacity only — the panel's CSS transform does the centering
+      else this._dsOv.style.opacity=1;
+    }
+    this._dsPanel.scrollTop=0;
+    setTimeout(()=>{ const c=this._dsPanel.querySelector('[data-ds-close]'); if(c) c.focus({preventScroll:true}); },50);
+  }
+  closeDossier(){
+    if(!this._dsOpen) return; this._dsOpen=false;
+    const fin=()=>{ this._dsOv.style.display='none'; };
+    const g=this.gsap;
+    if(g&&!this.RM) g.to(this._dsOv,{opacity:0,duration:.2,ease:'expo.in',onComplete:fin}); else { this._dsOv.style.opacity=0; fin(); }
+    if(this.lenis) this.lenis.start(); document.body.style.overflow='';
+    const pf=this._dsPrevFocus; if(pf&&pf.focus){ try{ pf.focus({preventScroll:true}); }catch(e){} }
+  }
+
+  // v22 — sign the log (the guestbook, terminal-style; local only, forgettable on request)
+  setupGuestLog(){
+    const panel=this.one('[data-log]'); const box=this.one('[data-log-lines]'); if(!panel||!box) return;
+    const row=document.createElement('div');
+    row.style.cssText='padding:12px clamp(20px,3.5vw,38px) clamp(18px,2.6vw,28px);border-top:1px solid rgba(251,250,247,.08);';
+    panel.appendChild(row); this._guestRow=row;
+    const mono="font-family:'JetBrains Mono',monospace;font-size:clamp(12px,1.3vw,14px);";
+    let saved=null; try{ saved=JSON.parse(localStorage.getItem('kk_guest')||'null'); }catch(e){}
+    const renderSaved=(gv)=>{
+      row.innerHTML='<div style="display:grid;grid-template-columns:78px 14px 1fr;align-items:center;column-gap:13px;line-height:1.95;'+mono+'color:rgba(251,250,247,.85);"><span style="color:rgba(251,250,247,.38);white-space:nowrap;">['+gv.m+']</span><span style="width:6px;height:6px;border-radius:50%;background:#FFAA00;"></span><span>“<span data-guest-txt></span>” — remembered. <button data-guest-forget style="'+mono+'font-size:10px;letter-spacing:.06em;color:rgba(251,250,247,.34);background:transparent;border:none;cursor:pointer;padding:2px 4px;">forget</button></span></div>';
+      row.querySelector('[data-guest-txt]').textContent=gv.t;
+      row.querySelector('[data-guest-forget]').addEventListener('click',()=>{ try{ localStorage.removeItem('kk_guest'); }catch(e){} renderCTA(); });
+    };
+    const renderForm=()=>{
+      row.innerHTML='<div style="display:grid;grid-template-columns:78px 14px 1fr;align-items:center;column-gap:13px;'+mono+'color:rgba(251,250,247,.85);"><span style="color:rgba(251,250,247,.38);">[ you  ]</span><span style="width:6px;height:6px;border-radius:50%;background:#FFAA00;animation:kk-pulse 2s ease-out infinite;"></span><span style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"><input data-guest-in maxlength="48" placeholder="a name, a note, a hello…" aria-label="sign the log" style="'+mono+'flex:1 1 180px;min-width:0;background:transparent;border:none;border-bottom:1px solid rgba(251,250,247,.28);color:#FBFAF7;padding:4px 2px;outline:none;"><span style="'+mono+'font-size:10px;letter-spacing:.08em;color:rgba(251,250,247,.34);">enter ↵</span></span></div>';
+      const inp=row.querySelector('[data-guest-in]');
+      setTimeout(()=>inp.focus({preventScroll:true}),40);
+      inp.addEventListener('keydown',(e)=>{
+        if(e.key==='Escape'){ renderCTA(); return; }
+        if(e.key!=='Enter') return;
+        const t=(inp.value||'').trim().slice(0,48); if(!t) return;
+        const m=new Date().toISOString().slice(0,7);
+        const gv={ t, m };
+        try{ localStorage.setItem('kk_guest',JSON.stringify(gv)); }catch(e){}
+        renderSaved(gv);
+        if(this.beep) this.beep(659,0.4,0.05);
+        const r=row.getBoundingClientRect(); this.burst(r.left+120, r.top+10);
+      });
+    };
+    const renderCTA=()=>{
+      row.innerHTML='<button data-guest-cta style="display:grid;grid-template-columns:78px 14px 1fr;align-items:center;column-gap:13px;line-height:1.95;'+mono+'color:rgba(251,250,247,.55);background:transparent;border:none;cursor:pointer;padding:0;width:100%;text-align:left;"><span style="color:rgba(251,250,247,.30);white-space:nowrap;">[ you  ]</span><span style="width:6px;height:6px;border-radius:50%;background:rgba(255,170,0,.5);"></span><span>leave a mark → <span style="font-size:10px;letter-spacing:.08em;color:rgba(251,250,247,.3);">(stays on this device)</span></span></button>';
+      row.querySelector('[data-guest-cta]').addEventListener('click',()=>renderForm());
+    };
+    this.startGuestEntry=()=>{ if(!saved) renderForm(); };
+    if(saved && saved.t) renderSaved(saved); else renderCTA();
+  }
+
+  // v22 — continuity: the site keeps your place ("pick up where you left off")
+  setupContinuity(){
+    if(!this._returning) return;
+    let depth=0; try{ depth=parseInt(localStorage.getItem('kk_depth')||'0',10)||0; }catch(e){}
+    try{ if(sessionStorage.getItem('kk_resumed')) return; }catch(e){}
+    if(depth<18 || depth>96) return;
+    const show=()=>{
+      if(this.dead) return;
+      try{ sessionStorage.setItem('kk_resumed','1'); }catch(e){}
+      const b=document.createElement('button');
+      b.setAttribute('data-resume','');
+      b.style.cssText="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:9600;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;color:#0D0D12;background:#FBFAF7;border:1px solid rgba(13,13,18,.16);border-radius:999px;padding:12px 18px;cursor:pointer;box-shadow:0 12px 32px rgba(13,13,18,.14);opacity:0;";
+      b.textContent='↓ pick up where you left off';
+      document.body.appendChild(b);
+      const g=this.gsap;
+      if(g&&!this.RM) g.to(b,{opacity:1,y:-4,duration:.5,ease:'expo.out'}); else b.style.opacity=1;
+      const gone=()=>{ if(!b.parentNode) return; if(g&&!this.RM) g.to(b,{opacity:0,duration:.3,onComplete:()=>b.remove()}); else b.remove(); };
+      b.addEventListener('click',()=>{
+        const max=document.documentElement.scrollHeight-window.innerHeight;
+        const y=Math.round(max*depth/100);
+        if(this.lenis) this.lenis.scrollTo(y,{duration:1.6,easing:(t)=>1-Math.pow(1-t,4)}); else window.scrollTo({top:y,behavior:'smooth'});
+        gone();
+      });
+      setTimeout(gone,9000);
+    };
+    setTimeout(show, this.RM?1200:5600);
   }
 
   // v3 1.8 — time-aware greeting (Bengaluru)
