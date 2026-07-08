@@ -220,6 +220,62 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
 .foot{padding:26px clamp(20px,6vw,88px) 40px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:10.5px;letter-spacing:.18em;color:var(--dark);text-transform:uppercase}
 .foot .fr{display:flex;gap:6px;align-items:center}
 
+/* == ticker strip =========================================== */
+.tick-strip{border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);overflow:clip;padding:13px 0;position:relative;z-index:1}
+.tick-track{display:flex;gap:0;width:max-content;white-space:nowrap;font-size:11px;letter-spacing:.22em;color:var(--dark);text-transform:uppercase;animation:tick 34s linear infinite}
+.tick-track b{color:var(--amber);font-weight:400;padding:0 18px}
+@keyframes tick{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion: reduce){.tick-track{animation:none}}
+
+/* == receipts row ============================================ */
+.rcp{display:flex;gap:clamp(14px,3vw,36px);flex-wrap:wrap;margin-top:24px;padding:16px 0 0;border-top:1px solid var(--line2)}
+.rcp .r1 .rn{font-size:clamp(22px,3vw,34px);color:var(--amber);font-weight:700;letter-spacing:.02em}
+.rcp .r1 .rl{font-size:10px;letter-spacing:.2em;color:var(--dark);text-transform:uppercase;margin-top:4px}
+
+/* == bank body cascade on open =============================== */
+.bank .bank-body>*{opacity:0;transform:translateY(6px);transition:opacity .24s steps(3),transform .24s steps(3)}
+.bank.open .bank-body>*{opacity:1;transform:none}
+.bank.open .bank-body>*:nth-child(1){transition-delay:.05s}.bank.open .bank-body>*:nth-child(2){transition-delay:.12s}
+.bank.open .bank-body>*:nth-child(3){transition-delay:.19s}.bank.open .bank-body>*:nth-child(4){transition-delay:.26s}
+.bank.open .bank-body>*:nth-child(5){transition-delay:.33s}
+.bnew{font-size:9px;letter-spacing:.2em;color:#050507;background:var(--cyan);padding:3px 7px;font-weight:700;margin-left:10px;vertical-align:middle}
+
+/* == hero display entrance + dot glow ======================== */
+.display .dl{display:block;overflow:hidden}
+.display .dl i{display:block;font-style:normal;transform:none}
+.js-pre .display .dl i{transform:translateY(105%)}
+.display .dl i.up{transform:none;transition:transform .5s cubic-bezier(.8,0,.2,1)}
+.display .dot{display:inline-block}
+@keyframes dotpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,176,0,.0)}50%{box-shadow:0 0 26px 4px rgba(255,176,0,.35)}}
+.display .dot{animation:dotpulse 3.2s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.js-pre .display .dl i{transform:none}.display .dot{animation:none}}
+
+/* == cta flicker ============================================= */
+@keyframes flick{0%{filter:invert(0)}49%{filter:invert(1)}100%{filter:invert(0)}}
+.cta:hover,.kbtn:hover{animation:flick .16s steps(2) 1}
+
+/* == reveal primitive (JS-gated) ============================= */
+.spec .row,.proc tbody tr,.mod,[data-bank],.organ,.id-copy p,.linkrow .kbtn{transition:opacity .3s steps(4),transform .3s steps(4)}
+.rv-hide{opacity:0;transform:translateY(12px)}
+
+/* == second brain ============================================ */
+.brain-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,60px);align-items:start}
+@media(max-width:940px){.brain-grid{grid-template-columns:1fr}}
+.organ{display:grid;grid-template-columns:92px 1fr;gap:14px;padding:14px 0;border-bottom:1px dashed var(--line2);font-size:13.5px}
+.organ .ok{color:var(--amber);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;padding-top:3px}
+.organ .ov2{color:var(--dim)}
+.organ .ov2 b{color:var(--ink);font-weight:500}
+.capline{margin-top:20px;font-size:13px;color:var(--dim)}
+.capline code{color:var(--amber);background:var(--amber-ghost);border:1px solid var(--line2);padding:3px 8px}
+.bterm{border:1px solid var(--line);background:#070709}
+.bterm .bt-h{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line2);font-size:10.5px;letter-spacing:.18em;color:var(--dark);text-transform:uppercase}
+.bterm .bt-h b{color:var(--cyan);font-weight:500}
+.bterm .bt-b{padding:18px 18px 22px;min-height:190px;font-size:13px;line-height:2}
+.bterm .q{color:var(--ink)}
+.bterm .q::before{content:"kunal@hq:~$ ";color:var(--cyan)}
+.bterm .a{color:var(--dim)}
+.bterm .a b{color:var(--amber);font-weight:500}
+
 /* == crosshair cursor ======================================= */
 .xh-x,.xh-y{position:fixed;z-index:940;pointer-events:none;background:rgba(255,176,0,.28);opacity:0}
 .xh-x{left:0;right:0;height:1px}
@@ -268,6 +324,8 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
 @media (prefers-reduced-motion: reduce){
   .cursor,.st.run::before,.avail::before,.spec .v .live,.ll .blockc{animation:none}
   html{scroll-behavior:auto}
+  .bank .bank-body>*{opacity:1!important;transform:none!important;transition:none!important}
+  .rv-hide{opacity:1!important;transform:none!important}
 }
 /* print: clean one-pager */
 @media print{
@@ -293,7 +351,7 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
 <nav class="nav" aria-label="primary">
   <a href="#hero" class="kbtn" style="border-color:transparent;color:var(--amber);font-weight:700;">K.</a>
   <div class="links">
-    <a href="#id">0x01 ID</a><a href="#work">0x02 WORK</a><a href="#runtime">0x03 RUNTIME</a><a href="#log">0x04 LOG</a><a href="#modules">0x05 MODULES</a><a href="#contact">0x06 CONTACT</a>
+    <a href="#id">0x01 ID</a><a href="#work">0x02 WORK</a><a href="#runtime">0x03 RUNTIME</a><a href="#log">0x04 LOG</a><a href="#brain">0x05 BRAIN</a><a href="#modules">0x06 MODULES</a><a href="#contact">0x07 CONTACT</a>
   </div>
   <div class="right">
     <button class="kbtn" data-cmdk aria-label="⌘K — command palette">⌘K</button>
@@ -310,7 +368,7 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
     <canvas id="memgrid" aria-hidden="true"></canvas>
     <div class="wrap hero-in">
       <div class="prompt"><b>kunal@blr</b>:~$ whoami<span data-greet></span></div>
-      <h1 class="display">KUNAL<br>KUMAR<span class="dot">.</span></h1>
+      <h1 class="display"><span class="dl"><i>KUNAL</i></span><span class="dl"><i>KUMAR<span class="dot">.</span></i></span></h1>
       <div class="typeline">&gt; building software worth <span class="tw" data-tw>remembering.</span><span class="cursor" aria-hidden="true"></span></div>
       <div class="chips">
         <span class="chip hotc">FRONTEND @ EMERGENT · YC S24</span>
@@ -326,6 +384,8 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
     </div>
   </section>
 
+  <div class="tick-strip" aria-hidden="true"><div class="tick-track"><span>EMERGENT (YC S24)<b>✦</b>BITS PILANI — CLASS OF 2027<b>✦</b>ACTIVATE FELLOW — 1 OF 15 FROM 500+<b>✦</b>HPAIR · HARVARD<b>✦</b>MATS — ROUND 2<b>✦</b>132/132 TESTS<b>✦</b>100K+ EPISODES<b>✦</b>AI SAFETY<b>✦</b>BENGALURU<b>✦</b></span><span>EMERGENT (YC S24)<b>✦</b>BITS PILANI — CLASS OF 2027<b>✦</b>ACTIVATE FELLOW — 1 OF 15 FROM 500+<b>✦</b>HPAIR · HARVARD<b>✦</b>MATS — ROUND 2<b>✦</b>132/132 TESTS<b>✦</b>100K+ EPISODES<b>✦</b>AI SAFETY<b>✦</b>BENGALURU<b>✦</b></span></div></div>
+
   <!-- 0x01 IDENTITY -->
   <section class="sector" id="id" data-sector="0x01" data-name="IDENTITY">
     <div class="wrap">
@@ -338,7 +398,7 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
         <div class="spec">
           <div class="row"><span class="k">host</span><span class="v">Bengaluru, IN</span></div>
           <div class="row"><span class="k">proc</span><span class="v">Frontend Engineering Intern — Emergent (YC S24)</span></div>
-          <div class="row"><span class="k">edu</span><span class="v">CS @ BITS Pilani — 2nd year</span></div>
+          <div class="row"><span class="k">edu</span><span class="v">CS @ BITS Pilani — class of 2027</span></div>
           <div class="row"><span class="k">focus</span><span class="v">AI safety · MATS round 2</span></div>
           <div class="row"><span class="k">state</span><span class="v"><span class="live"></span>open to opportunities</span></div>
           <div class="row"><span class="k">uptime</span><span class="v" data-spec-clock>--:--:-- IST</span></div>
@@ -350,7 +410,7 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
   <!-- 0x02 WORK -->
   <section class="sector" id="work" data-sector="0x02" data-name="WORK">
     <div class="wrap">
-      <div class="sec-head"><span class="addr">0x02</span><h2>Memory Banks</h2><span class="rule"></span><span class="cnt">3 MOUNTED</span></div>
+      <div class="sec-head"><span class="addr">0x02</span><h2>Memory Banks</h2><span class="rule"></span><span class="cnt">4 MOUNTED</span></div>
 
       <article class="bank open" data-bank>
         <button class="bank-h" aria-expanded="true">
@@ -363,16 +423,18 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
           <p class="why">// because I kept losing my own unfinished work.</p>
           <div class="bcols">
             <div><div class="blabel">the problem</div><p class="btext">Work scatters. You start something, life interrupts, and the context — the tabs, the half-formed intent — evaporates between sessions. Tools remember files; <b>nothing remembers where you actually were.</b></p></div>
-            <div><div class="blabel">the build</div><p class="btext">A <b>local-first memory engine</b>: a daemon exposing capture, recall and semantic-search APIs, with a Qt desktop client on top. Everything indexes locally, so recall works across sessions and survives restarts.</p><p class="own">↳ solo build — daemon, APIs, desktop client. end to end.</p></div>
+            <div><div class="blabel">the build</div><p class="btext">A <b>local-first continuity OS</b>: a browser extension and watchers stream activity signals into a daemon — event storage, <b>recovery scoring, investigation ranking</b> and semantic search — with a Python/Qt launcher on top: live search, previews, one-key resume. Recall survives restarts.</p><p class="own">↳ solo build — extension → daemon → recovery interface. end to end.</p></div>
           </div>
           <div class="pipe">
-            <div class="prow"><span class="pn">01</span><span class="pt"><b>capture</b> <span>— moments of work stream into the daemon</span></span></div>
-            <div class="prow"><span class="pn">02</span><span class="pt"><b>index</b> <span>— captures are embedded for semantic search</span></span></div>
-            <div class="prow"><span class="pn">03</span><span class="pt"><b>recall</b> <span>— query APIs surface the right past</span></span></div>
-            <div class="prow"><span class="pn">04</span><span class="pt"><b>resume</b> <span>— the client puts you back where you were</span></span></div>
+            <div class="prow"><span class="pn">01</span><span class="pt"><b>ingest</b> <span>— browser, file &amp; dev activity stream in</span></span></div>
+            <div class="prow"><span class="pn">02</span><span class="pt"><b>store</b> <span>— events land in the local daemon</span></span></div>
+            <div class="prow"><span class="pn">03</span><span class="pt"><b>score</b> <span>— recovery scoring + investigation ranking</span></span></div>
+            <div class="prow"><span class="pn">04</span><span class="pt"><b>recall</b> <span>— semantic search across everything</span></span></div>
+            <div class="prow"><span class="pn">05</span><span class="pt"><b>resume</b> <span>— the Qt launcher puts you back mid-thought</span></span></div>
           </div>
+          <div class="rcp"><div class="r1"><div class="rn"><span data-count="3">0</span></div><div class="rl">signal streams — browser · file · dev</div></div><div class="r1"><div class="rn">LIVE</div><div class="rl">daemon apis · real-time retrieval</div></div><div class="r1"><div class="rn">LOCAL</div><div class="rl">first — nothing leaves the machine</div></div></div>
           <div class="bfoot">
-            <div class="stackrow"><span class="mchip">python</span><span class="mchip">qt</span><span class="mchip">daemon apis</span><span class="mchip">semantic search</span></div>
+            <div class="stackrow"><span class="mchip">python</span><span class="mchip">qt</span><span class="mchip">browser extension</span><span class="mchip">daemon apis</span><span class="mchip">semantic search</span></div>
             <a class="kbtn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">CODE ↗</a>
           </div>
         </div></div></div>
@@ -389,7 +451,7 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
           <p class="why">// because agents lie when retrieval gets messy.</p>
           <div class="bcols">
             <div><div class="blabel">the problem</div><p class="btext">Support agents answer confidently even when retrieval hands them garbage — and <b>a confident wrong answer costs more than no answer.</b></p></div>
-            <div><div class="blabel">the build</div><p class="btext">Hybrid retrieval (<b>LlamaIndex + BM25</b>) grounds every reply in the docs; prompt-injection defense filters hostile inputs; and the refusal path is <b>deterministic</b> — when grounding is weak it declines the same way every time, instead of guessing.</p><p class="own">↳ built and tuned the full retrieval → refusal path.</p></div>
+            <div><div class="blabel">the build</div><p class="btext">A deterministic orchestration layer: <b>explicit policy enforcement, safe tool gating</b> and stateful multi-turn reasoning under adversarial inputs. Retrieval is a hybrid consensus — <b>BM25 + TF-IDF + reranking</b> with grounding diagnostics — plus multilingual injection defense, retrieval-poisoning defense, <b>PII redaction</b> and calibrated confidence. When grounding is weak it refuses, the same way every time.</p><p class="own">↳ built and tuned the full retrieval → refusal path.</p></div>
           </div>
           <div class="pipe">
             <div class="prow"><span class="pn">01</span><span class="pt"><b>query</b> <span>— the user question comes in</span></span></div>
@@ -397,8 +459,9 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
             <div class="prow"><span class="pn">03</span><span class="pt"><b>ground</b> <span>— answers must trace to the docs</span></span></div>
             <div class="prow"><span class="pn">04</span><span class="pt"><b>answer / refuse</b> <span>— grounded reply, or a clean deterministic no</span></span></div>
           </div>
+          <div class="rcp"><div class="r1"><div class="rn"><span data-count="132">0</span>/132</div><div class="rl">evaluation tests passing — reproducible</div></div><div class="r1"><div class="rn">MULTI</div><div class="rl">lingual injection + poisoning defense</div></div></div>
           <div class="bfoot">
-            <div class="stackrow"><span class="mchip">llamaindex</span><span class="mchip">bm25</span><span class="mchip">prompt defense</span></div>
+            <div class="stackrow"><span class="mchip">llamaindex</span><span class="mchip">bm25 · tf-idf</span><span class="mchip">reranking</span><span class="mchip">pii redaction</span><span class="mchip">prompt defense</span></div>
             <a class="kbtn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">CODE ↗</a>
           </div>
         </div></div></div>
@@ -415,7 +478,7 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
           <p class="why">// to watch machines learn to share something scarce.</p>
           <div class="bcols">
             <div><div class="blabel">the problem</div><p class="btext">Scarce shared resources force a choice: hold your ground or make the deal. <b>Could agents learn that balance from nothing but experience?</b></p></div>
-            <div><div class="blabel">the build</div><p class="btext">A negotiation arena trained with <b>GRPO over self-play episodes</b> — a TRL training loop served behind FastAPI. Run long enough, the agents stopped just competing: <b>alliances formed.</b></p><p class="own">↳ designed the environment, reward and training loop.</p></div>
+            <div><div class="blabel">the build</div><p class="btext">A multi-agent RL environment simulating resource allocation under constraints — fed by <b>live environmental data</b>, with <b>trust dynamics and coalition formation</b> modeled into the reward. A language model trained with <b>GRPO</b> (TRL loop, served behind FastAPI) across massive self-play. Run long enough, the agents stopped just competing: <b>alliances formed.</b></p><p class="own">↳ designed the environment, reward and training loop.</p></div>
           </div>
           <div class="pipe">
             <div class="prow"><span class="pn">01</span><span class="pt"><b>arena</b> <span>— agents face a scarce shared resource</span></span></div>
@@ -423,8 +486,36 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
             <div class="prow"><span class="pn">03</span><span class="pt"><b>learn</b> <span>— GRPO updates from what worked</span></span></div>
             <div class="prow"><span class="pn">04</span><span class="pt"><b>serve</b> <span>— the trained policy behind FastAPI</span></span></div>
           </div>
+          <div class="rcp"><div class="r1"><div class="rn"><span data-count="100">0</span>K+</div><div class="rl">self-play episodes to convergence</div></div><div class="r1"><div class="rn">LIVE</div><div class="rl">environmental data in the loop</div></div></div>
           <div class="bfoot">
             <div class="stackrow"><span class="mchip">rl · grpo</span><span class="mchip">trl</span><span class="mchip">fastapi</span></div>
+            <a class="kbtn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">CODE ↗</a>
+          </div>
+        </div></div></div>
+      </article>
+
+      <article class="bank" data-bank>
+        <button class="bank-h" aria-expanded="false">
+          <span class="baddr">BANK.04</span>
+          <span class="btitle">Aegis<span class="bnew">NEW</span></span>
+          <span class="btag">trust &amp; safety / moderation</span>
+          <span class="tgl" aria-hidden="true">+</span>
+        </button>
+        <div class="bb"><div class="bbi"><div class="bank-body">
+          <p class="why">// because scaling trust shouldn't mean scaling the moderation team.</p>
+          <div class="bcols">
+            <div><div class="blabel">the problem</div><p class="btext">Platforms drown in user content. One-size-fits-all moderation misroutes everything — a kids' platform and an adult forum need different lines — and black-box decisions are <b>impossible to audit or appeal.</b></p></div>
+            <div><div class="blabel">the build</div><p class="btext">A multi-stage pipeline: an engine scores content across <b>7 harm categories</b> (Gemini, with a deterministic local fallback that always works), a <b>per-platform policy</b> applies thresholds, weights and custom rules, and confidence routes each item — <b>allow, human review, or block</b>. Every decision is explainable: the offending span, the category, the reasoning, the full routing trace.</p><p class="own">↳ solo — engine interface, policy system, review queue, dashboard.</p></div>
+          </div>
+          <div class="pipe">
+            <div class="prow"><span class="pn">01</span><span class="pt"><b>classify</b> <span>— 7 categories, 0–1 confidence, offending spans</span></span></div>
+            <div class="prow"><span class="pn">02</span><span class="pt"><b>apply policy</b> <span>— per-platform thresholds, toggles, custom rules</span></span></div>
+            <div class="prow"><span class="pn">03</span><span class="pt"><b>route</b> <span>— ALLOW · REVIEW · BLOCK, by calibrated confidence</span></span></div>
+            <div class="prow"><span class="pn">04</span><span class="pt"><b>review</b> <span>— priority queue for humans; verdicts feed back as audit</span></span></div>
+          </div>
+          <div class="rcp"><div class="r1"><div class="rn"><span data-count="7">0</span></div><div class="rl">harm categories, scored 0–1</div></div><div class="r1"><div class="rn"><span data-count="3">0</span></div><div class="rl">routes — allow / review / block</div></div><div class="r1"><div class="rn">FULL</div><div class="rl">audit trail — span · reasoning · trace</div></div></div>
+          <div class="bfoot">
+            <div class="stackrow"><span class="mchip">next.js 16</span><span class="mchip">react 19</span><span class="mchip">typescript</span><span class="mchip">prisma · sqlite</span><span class="mchip">vitest</span></div>
             <a class="kbtn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">CODE ↗</a>
           </div>
         </div></div></div>
@@ -445,8 +536,9 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
             <tr><td>002</td><td><span class="pname">OPEN_SOURCE_CLUB</span><span class="sub">scaler school of technology</span></td><td>operations lead</td><td>2026 —</td><td><span class="st run">RUNNING</span></td></tr>
             <tr><td>003</td><td><span class="pname">ASPIRANTS_RELATIONS</span><span class="sub">scaler school of technology</span></td><td>head of immersions</td><td>2026 —</td><td><span class="st run">RUNNING</span></td></tr>
             <tr><td>004</td><td><span class="pname">OSTRIUS_AI</span><span class="sub">shipped auth &amp; verification end to end</span></td><td>swe intern</td><td>apr–jun 2026</td><td><span class="st exit">EXIT 0</span></td></tr>
-            <tr><td>005</td><td><span class="pname">DSA_TEACHING</span><span class="sub">data structures &amp; algorithms</span></td><td>teaching assistant</td><td>2026</td><td><span class="st exit">EXIT 0</span></td></tr>
-            <tr><td>006</td><td><span class="pname">APPLE_DEV_ACADEMY</span><span class="sub">application in progress</span></td><td>applicant</td><td>2027 cohort</td><td><span class="st queue">QUEUED</span></td></tr>
+            <tr><td>005</td><td><span class="pname">HACK_CLUB</span><span class="sub">campfire · daydream · codeday bengaluru — 500+ participants</span></td><td>growth &amp; ops lead</td><td>nov 2024 – mar 2026</td><td><span class="st exit">EXIT 0</span></td></tr>
+            <tr><td>006</td><td><span class="pname">DSA_TEACHING</span><span class="sub">50+ students mentored — algorithms &amp; structured thinking</span></td><td>teaching assistant</td><td>may–jun 2026</td><td><span class="st exit">EXIT 0</span></td></tr>
+            <tr><td>007</td><td><span class="pname">APPLE_DEV_ACADEMY</span><span class="sub">application in progress</span></td><td>applicant</td><td>2027 cohort</td><td><span class="st queue">QUEUED</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -475,9 +567,32 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
   </section>
 
   <!-- 0x05 MODULES -->
-  <section class="sector" id="modules" data-sector="0x05" data-name="MODULES">
+  <section class="sector" id="brain" data-sector="0x05" data-name="SECOND BRAIN">
     <div class="wrap">
-      <div class="sec-head"><span class="addr">0x05</span><h2>Loaded Modules</h2><span class="rule"></span><span class="cnt">LSMOD</span></div>
+      <div class="sec-head"><span class="addr">0x05</span><h2>Second Brain</h2><span class="rule"></span><span class="cnt">KUNAL_HQ · v10 · PERSONAL SYSTEM</span></div>
+      <div class="brain-grid">
+        <div>
+          <p class="btext" style="font-size:15.5px;max-width:58ch"><b>July 2026:</b> an internship, college, three applications and a life — all carried in working memory. The result was fog. The fix wasn't discipline; <b>it was a place.</b> So I built one: an external brain that sorts, remembers, and shows only what matters now.</p>
+          <div style="margin-top:26px">
+            <div class="organ"><span class="ok">vault</span><span class="ov2"><b>plain-text files</b> on my machine — the single source of truth. journal, habits, goals, projects, reviews.</span></div>
+            <div class="organ"><span class="ok">agent</span><span class="ov2"><b>an AI that reads and writes the vault</b> — plus a silent pulse at 8:23 every morning that pulls the world in: weather, calendar, GitHub ×2, LeetCode.</span></div>
+            <div class="organ"><span class="ok">page</span><span class="ov2"><b>one dashboard</b> that mirrors it all — and always opens to exactly one thing.</span></div>
+          </div>
+          <p class="capline">capture from any terminal: <code>$ brain &lt;thought&gt;</code> — two seconds, zero judgment, sorted later.</p>
+          <p class="capline" style="margin-top:10px">the game layer earns XP <b style="color:var(--amber)">only from real, verified data</b> — never invented. it runs my mornings; this section is just its shadow.</p>
+        </div>
+        <div class="bterm" aria-label="neural link demo">
+          <div class="bt-h"><span><b>▸</b> NEURAL LINK — kunal_hq</span><span>LOCAL DEMO</span></div>
+          <div class="bt-b" data-bterm></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 0x06 MODULES -->
+  <section class="sector" id="modules" data-sector="0x06" data-name="MODULES">
+    <div class="wrap">
+      <div class="sec-head"><span class="addr">0x06</span><h2>Loaded Modules</h2><span class="rule"></span><span class="cnt">LSMOD</span></div>
       <div class="mods">
         <div class="mod"><h3>interface</h3><ul><li>react</li><li>typescript</li><li>next.js</li></ul></div>
         <div class="mod"><h3>api</h3><ul><li>fastapi · node</li><li>pydantic · sql</li><li>go <i>— learning</i></li><li>java</li></ul></div>
@@ -488,9 +603,9 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
   </section>
 
   <!-- 0x06 CONTACT -->
-  <section class="sector" id="contact" data-sector="0x06" data-name="CONTACT">
+  <section class="sector" id="contact" data-sector="0x07" data-name="CONTACT">
     <div class="wrap say">
-      <div class="sec-head"><span class="addr">0x06</span><h2>Transmit</h2><span class="rule"></span><span class="cnt">STDIN OPEN</span></div>
+      <div class="sec-head"><span class="addr">0x07</span><h2>Transmit</h2><span class="rule"></span><span class="cnt">STDIN OPEN</span></div>
       <h2 class="display">SAY<br>HELLO<span class="dot">.</span></h2>
       <div class="mailrow">
         <button class="mailbtn" data-mail>kunalsain0324@gmail.com</button>
