@@ -32,6 +32,10 @@ class Kernel{
     this.soundToggle();
     this.titleFlip();
     this.memory();
+    this.reveals();
+    this.scrambleHeads();
+    this.countups();
+    this.brainTerm();
   }
 
   /* -- audio ----------------------------------------------------- */
@@ -63,11 +67,16 @@ class Kernel{
     if(ll){ try{ ll.textContent='LAST LOGIN: '+new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}).toUpperCase()+' · BENGALURU, IN'; }catch(e){} }
   }
 
+  heroIn(){
+    document.documentElement.classList.remove('js-pre');
+    this.$$('.display .dl i').forEach((el,i)=>setTimeout(()=>el.classList.add('up'), 80+i*140));
+  }
   /* -- boot sequence ---------------------------------------------- */
   boot(){
     const el=this.$('#boot'), pre=this.$('[data-boot-pre]'); if(!el||!pre) return;
+    if(!this.RM) document.documentElement.classList.add('js-pre');
     let seen=false; try{ seen=sessionStorage.getItem('kk_boot')==='1'; }catch(e){}
-    if(this.RM||seen){ el.remove(); return; }
+    if(this.RM||seen){ el.remove(); this.heroIn(); return; }
     el.hidden=false; document.documentElement.style.overflow='hidden';
     const L=[
       'KUNAL.SYS v2.0 — memory core',
@@ -78,7 +87,7 @@ class Kernel{
       this.returning?'visitor .................. <i class="ok">RECOGNIZED — WELCOME BACK</i>':'visitor .................. <i class="ok">NEW — HELLO</i>',
       'boot complete. <i class="ok">READY_</i>'
     ];
-    let i=0; const done=()=>{ try{ sessionStorage.setItem('kk_boot','1'); }catch(e){} el.style.transition='opacity .28s steps(3)'; el.style.opacity='0'; document.documentElement.style.overflow=''; setTimeout(()=>el.remove(),320); };
+    let i=0; const done=()=>{ try{ sessionStorage.setItem('kk_boot','1'); }catch(e){} el.style.transition='opacity .28s steps(3)'; el.style.opacity='0'; document.documentElement.style.overflow=''; this.heroIn(); setTimeout(()=>el.remove(),320); };
     const step=()=>{ if(!el.isConnected) return; if(i>=L.length){ setTimeout(done,340); return; } pre.innerHTML+=(i?'\n':'')+L[i]; this.beep(220+i*40,.03,.02); i++; setTimeout(step, i===L.length?260:110+Math.random()*90); };
     step();
     this.$('[data-boot-skip]').addEventListener('click',done);
@@ -152,12 +161,14 @@ class Kernel{
   crosshair(){
     if(this.TOUCH||this.RM) return;
     const x=this.$('.xh-x'), y=this.$('.xh-y'), tag=this.$('.xh-tag'); if(!x) return;
-    let shown=false;
+    let shown=false, tx=0, ty=0, cx=0, cy=0, raf=0;
+    const step=()=>{ cx+=(tx-cx)*.3; cy+=(ty-cy)*.3;
+      x.style.top=cy+'px'; y.style.left=cx+'px'; tag.style.left=cx+'px'; tag.style.top=cy+'px';
+      tag.textContent='x:'+String(Math.round(cx)).padStart(4,'0')+' y:'+String(Math.round(cy)).padStart(4,'0');
+      if(Math.abs(tx-cx)>.4||Math.abs(ty-cy)>.4) raf=requestAnimationFrame(step); else raf=0; };
     addEventListener('mousemove',(e)=>{
-      if(!shown){ shown=true; x.style.opacity=y.style.opacity=tag.style.opacity='1'; }
-      x.style.top=e.clientY+'px'; y.style.left=e.clientX+'px';
-      tag.style.left=e.clientX+'px'; tag.style.top=e.clientY+'px';
-      tag.textContent='x:'+String(e.clientX).padStart(4,'0')+' y:'+String(e.clientY).padStart(4,'0');
+      if(!shown){ shown=true; cx=e.clientX; cy=e.clientY; x.style.opacity=y.style.opacity=tag.style.opacity='1'; }
+      tx=e.clientX; ty=e.clientY; if(!raf) raf=requestAnimationFrame(step);
     });
     document.documentElement.addEventListener('mouseleave',()=>{ shown=false; x.style.opacity=y.style.opacity=tag.style.opacity='0'; });
   }
@@ -228,8 +239,9 @@ class Kernel{
       ['go','0x02 — memory banks',()=>this.jump('#work')],
       ['go','0x03 — runtime',()=>this.jump('#runtime')],
       ['go','0x04 — life.log',()=>this.jump('#log')],
-      ['go','0x05 — modules',()=>this.jump('#modules')],
-      ['go','0x06 — transmit',()=>this.jump('#contact')],
+      ['go','0x05 — second brain',()=>this.jump('#brain')],
+      ['go','0x06 — modules',()=>this.jump('#modules')],
+      ['go','0x07 — transmit',()=>this.jump('#contact')],
       ['go','top of core',()=>this.jump('#hero')],
       ['do','copy email',()=>{ this.copyMail(); }],
       ['do','open resume.pdf',()=>window.open('kunal-kumar-resume.pdf','_blank','noopener')],
@@ -383,6 +395,87 @@ class Kernel{
   titleFlip(){
     const t=document.title;
     document.addEventListener('visibilitychange',()=>{ document.title=document.hidden?'— still running · KUNAL.SYS':t; });
+  }
+
+  /* -- v2.1: stepped stagger reveals -------------------------------- */
+  reveals(){
+    if(this.RM||!('IntersectionObserver' in window)) return;
+    const groups=[
+      ['.spec .row',60],['.proc tbody tr',70],['.mod',90],
+      ['[data-bank]',110],['.organ',90],['.id-copy p',110],['.linkrow .kbtn',70]
+    ];
+    groups.forEach(([sel,step])=>{
+      const els=this.$$(sel); if(!els.length) return;
+      els.forEach(el=>el.classList.add('rv-hide'));
+      const io=new IntersectionObserver((es)=>{ es.forEach(en=>{ if(!en.isIntersecting) return;
+        io.unobserve(en.target);
+        const i=els.indexOf(en.target);
+        setTimeout(()=>en.target.classList.remove('rv-hide'), 60+(i%8)*step);
+      });},{threshold:.15});
+      els.forEach(el=>io.observe(el));
+    });
+  }
+
+  /* -- v2.1: section headers decode --------------------------------- */
+  scrambleHeads(){
+    if(this.RM||!('IntersectionObserver' in window)) return;
+    const CH='█▓▒░<>/_';
+    this.$$('.sec-head h2').forEach(h=>{
+      const orig=h.textContent;
+      const io=new IntersectionObserver((es)=>{ if(!es[0].isIntersecting) return; io.disconnect();
+        const t0=performance.now(), D=520;
+        const tick=()=>{ const pr=Math.min(1,(performance.now()-t0)/D); const n=Math.floor(orig.length*pr);
+          let out=orig.slice(0,n);
+          for(let i=n;i<orig.length;i++) out+= orig[i]===' '?' ':CH[(Math.random()*CH.length)|0];
+          h.textContent=out;
+          if(pr<1) requestAnimationFrame(tick); else h.textContent=orig; };
+        tick();
+      },{threshold:.5});
+      io.observe(h);
+    });
+  }
+
+  /* -- v2.1: receipts count up --------------------------------------- */
+  countups(){
+    const els=this.$$('[data-count]'); if(!els.length) return;
+    if(this.RM||!('IntersectionObserver' in window)){ els.forEach(el=>el.textContent=el.getAttribute('data-count')); return; }
+    const io=new IntersectionObserver((es)=>{ es.forEach(en=>{ if(!en.isIntersecting) return; io.unobserve(en.target);
+      const el=en.target, to=parseInt(el.getAttribute('data-count'),10)||0, t0=performance.now(), D=900;
+      const tick=()=>{ const pr=Math.min(1,(performance.now()-t0)/D); const e2=1-Math.pow(1-pr,3);
+        el.textContent=String(Math.round(to*e2));
+        if(pr<1) requestAnimationFrame(tick); else el.textContent=String(to); };
+      tick();
+    });},{threshold:.4});
+    els.forEach(el=>io.observe(el));
+  }
+
+  /* -- v2.1: neural link (second-brain demo terminal) ----------------- */
+  brainTerm(){
+    const box=this.$('[data-bterm]'); if(!box) return;
+    const QA=[
+      ['brain status','vault mounted · agent listening · <b>fog: clearing</b>'],
+      ['what is this','an external brain. three organs: <b>vault + agent + page</b>.'],
+      ['how fast is capture','<b>two seconds.</b> $ brain &lt;thought&gt; — sorted later, automatically.'],
+      ['when does it sync','<b>8:23 every morning</b> — weather, calendar, github ×2, leetcode. while I sleep.'],
+      ['what does it show','<b>one thing.</b> never the whole house — only the room you walked into.']
+    ];
+    if(this.RM||!('IntersectionObserver' in window)){
+      box.innerHTML=QA.slice(0,3).map(q=>'<div class="q">'+q[0]+'</div><div class="a">'+q[1]+'</div>').join('');
+      return;
+    }
+    let qi=0, running=false;
+    const typeQ=(txt,cb)=>{ const d=document.createElement('div'); d.className='q'; box.appendChild(d);
+      let i=0; const t=()=>{ if(!running) return; d.textContent=txt.slice(0,++i); if(i<txt.length) setTimeout(t,34+Math.random()*40); else setTimeout(cb,260); }; t(); };
+    const showA=(html,cb)=>{ const d=document.createElement('div'); d.className='a'; d.innerHTML=html; d.style.opacity='0'; box.appendChild(d);
+      setTimeout(()=>{ d.style.transition='opacity .2s steps(2)'; d.style.opacity='1'; this.beep(500,.04,.02); setTimeout(cb,2400); },120); };
+    const cycle=()=>{ if(!running) return;
+      if(box.children.length>=6){ box.removeChild(box.firstChild); box.removeChild(box.firstChild); }
+      const pair=QA[qi]; qi=(qi+1)%QA.length;
+      typeQ(pair[0],()=>showA(pair[1],cycle));
+    };
+    const io=new IntersectionObserver((es)=>{ const v=es[0].isIntersecting;
+      if(v&&!running){ running=true; cycle(); } else if(!v){ running=false; } },{threshold:.3});
+    io.observe(box);
   }
 }
 

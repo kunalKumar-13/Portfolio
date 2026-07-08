@@ -22,13 +22,16 @@ python3 -m http.server 8000   # then open http://localhost:8000
   phosphor **memory-grid canvas** that lights where your cursor sweeps and fades like CRT
   persistence, and a crosshair cursor with live coordinates.
 - **IDENTITY (0x01)** — the thesis + a spec sheet (host/proc/edu/focus/state/uptime, live IST).
-- **MEMORY BANKS (0x02)** — the three projects as expandable banks: problem → build →
-  ownership → 4-step pipeline → stack → code link.
+- **MEMORY BANKS (0x02)** — four projects as expandable banks (problem → build → ownership →
+  pipeline → receipts with count-up metrics → stack): Recall.me, the Triage Agent (132/132),
+  Watershed (100k+ episodes), and **Aegis** — a trust & safety moderation pipeline.
 - **RUNTIME (0x03)** — experience as a `ps aux` process table (RUNNING / EXIT 0 / QUEUED).
 - **LIFE.LOG (0x04)** — 8 career milestones, tail -f style, ending on a blinking cursor —
   plus **leave a mark**: visitors sign the log and the site remembers them (local-only,
   forgettable).
-- **MODULES (0x05)** — the stack as `lsmod` groups. **TRANSMIT (0x06)** — say hello.
+- **SECOND BRAIN (0x05)** — Kunal HQ: vault + agent + page, the 8:23 pulse, capture in two
+  seconds — with a NEURAL LINK demo terminal that types its own Q&A.
+- **MODULES (0x06)** — the stack as `lsmod` groups. **TRANSMIT (0x07)** — say hello.
 
 ### Field guide
 
@@ -47,4 +50,4 @@ each feature is one small method. The résumé is `kunal-kumar-resume.pdf` at th
 
 ## Numbers
 
-Lighthouse: **97–100 performance · 100 accessibility · 100 best-practices · 100 SEO**.
+Lighthouse: **100 · 100 · 100 · 100 — desktop and mobile.**
