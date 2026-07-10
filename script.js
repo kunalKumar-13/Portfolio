@@ -36,6 +36,7 @@ class Kernel{
     this.scrambleHeads();
     this.countups();
     this.brainTerm();
+    this.heatmap();
   }
 
   /* -- audio ----------------------------------------------------- */
@@ -476,6 +477,70 @@ class Kernel{
     const io=new IntersectionObserver((es)=>{ const v=es[0].isIntersecting;
       if(v&&!running){ running=true; cycle(); } else if(!v){ running=false; } },{threshold:.3});
     io.observe(box);
+  }
+
+  /* -- v2.2: live GitHub commit heatmap ------------------------------- */
+  heatmap(){
+    const panel=this.$('[data-heat]'); if(!panel) return;
+    const grid=this.$('[data-hm-grid]'), read=this.$('[data-hm-read]'), stats=this.$('[data-hm-stats]');
+    const down=()=>{ const w=grid.parentElement; w.innerHTML='<div class="hm-down"><b>▮ LINK DOWN</b> — the live contribution feed is unreachable right now. the commits are real; the fetch was not. <a href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">view the graph on github ↗</a></div>'; };
+    const fmtDay=(iso)=>{ try{ return new Date(iso+'T00:00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short'}).toLowerCase(); }catch(e){ return iso; } };
+    const render=(d)=>{
+      const cs=d.contributions;
+      grid.innerHTML='';
+      const frag=document.createDocumentFragment();
+      const first=new Date(cs[0].date+'T00:00:00');
+      for(let i=0;i<first.getDay();i++){ const e=document.createElement('i'); e.className='hm-c'; e.style.visibility='hidden'; frag.appendChild(e); }
+      let maxs=0, run=0, busy=cs[0];
+      cs.forEach(c=>{
+        if(c.count>0){ run++; if(run>maxs) maxs=run; } else run=0;
+        if(c.count>busy.count) busy=c;
+        const e=document.createElement('i');
+        e.className='hm-c'+(c.level?' l'+Math.min(4,c.level):'');
+        e.title=c.date+' — '+c.count+' contribution'+(c.count===1?'':'s');
+        e.setAttribute('data-d',c.date); e.setAttribute('data-c',c.count);
+        frag.appendChild(e);
+      });
+      let i=cs.length-1, cur=0; if(cs[i]&&cs[i].count===0) i--; while(i>=0&&cs[i].count>0){ cur++; i--; }
+      grid.appendChild(frag);
+      const total=(d.total&&d.total.lastYear)||cs.reduce((a,c)=>a+c.count,0);
+      grid.setAttribute('aria-label','GitHub contribution heatmap — '+total+' contributions in the last year');
+      // stats (total counts up)
+      const tEl=this.$('[data-hm-total]');
+      this.$('[data-hm-cur]').textContent=String(cur);
+      this.$('[data-hm-max]').textContent=String(maxs);
+      this.$('[data-hm-busy]').textContent=busy.count>0?(fmtDay(busy.date)+' · '+busy.count):'—';
+      stats.hidden=false;
+      if(this.RM){ tEl.textContent=String(total); }
+      else{ const t0=performance.now(),D=1000; const tk=()=>{ const pr=Math.min(1,(performance.now()-t0)/D); tEl.textContent=String(Math.round(total*(1-Math.pow(1-pr,3)))); if(pr<1) requestAnimationFrame(tk); }; tk(); }
+      // hover readout
+      if(!this.TOUCH){
+        grid.addEventListener('mouseover',(e)=>{ const t=e.target; if(t&&t.getAttribute&&t.getAttribute('data-d')) read.textContent=t.getAttribute('data-d')+' — '+t.getAttribute('data-c')+' COMMITS'; });
+        grid.addEventListener('mouseleave',()=>{ read.textContent=''; });
+      }
+      // phosphor sweep reveal
+      if(!this.RM && 'IntersectionObserver' in window){
+        const cells=Array.from(grid.children); cells.forEach(c=>c.classList.add('hmh'));
+        const io=new IntersectionObserver((es)=>{ if(!es[0].isIntersecting) return; io.disconnect();
+          cells.forEach((c,idx)=>{ const col=(idx/7)|0; setTimeout(()=>c.classList.remove('hmh'), 60+col*16); });
+          this.beep(420,.05,.02);
+        },{threshold:.2});
+        io.observe(grid);
+      }
+    };
+    // session cache (1h) → instant paint, still refreshes hourly
+    try{ const c=JSON.parse(sessionStorage.getItem('kk_heat')||'null'); if(c&&c.d&&Date.now()-c.ts<36e5){ render(c.d); return; } }catch(e){}
+    if(!('fetch' in window)){ down(); return; }
+    const ctrl=('AbortController' in window)?new AbortController():null;
+    const to=ctrl?setTimeout(()=>ctrl.abort(),7000):null;
+    fetch('https://github-contributions-api.jogruber.de/v4/kunalKumar-13?y=last',ctrl?{signal:ctrl.signal}:{})
+      .then(r=>r.ok?r.json():Promise.reject())
+      .then(d=>{ if(to) clearTimeout(to);
+        if(!d||!Array.isArray(d.contributions)||!d.contributions.length){ down(); return; }
+        try{ sessionStorage.setItem('kk_heat',JSON.stringify({ts:Date.now(),d})); }catch(e){}
+        render(d);
+      })
+      .catch(()=>{ if(to) clearTimeout(to); down(); });
   }
 }
 
