@@ -174,6 +174,29 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
 .st.exit{color:var(--dark)}.st.exit::before{content:"■ "}
 .st.queue{color:var(--cyan)}.st.queue::before{content:"□ "}
 
+/* == commit heatmap ========================================== */
+.heatp{border:1px solid var(--line);background:var(--panel);margin-top:14px}
+.hm-h{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:13px 18px;border-bottom:1px solid var(--line2);font-size:10.5px;letter-spacing:.18em;color:var(--dark);text-transform:uppercase}
+.hm-h b{color:var(--amber);font-weight:500}
+.hm-h a{color:var(--dim);text-decoration:none}
+.hm-h a:hover{color:var(--amber)}
+.hm-read{color:var(--amber);letter-spacing:.08em;min-height:1em}
+.hm-wrap{padding:18px 18px 6px;overflow-x:auto}
+.hm-grid{--cell:11px;--cgap:3px;display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,var(--cell));grid-auto-columns:var(--cell);gap:var(--cgap);width:max-content}
+.hm-c{width:var(--cell);height:var(--cell);background:rgba(232,228,216,.07);transition:opacity .28s steps(3),transform .28s steps(3),background .15s}
+.hm-c:hover{outline:1px solid var(--amber)}
+.hm-c.l1{background:rgba(255,176,0,.25)}
+.hm-c.l2{background:rgba(255,176,0,.48)}
+.hm-c.l3{background:rgba(255,176,0,.74)}
+.hm-c.l4{background:var(--amber);box-shadow:0 0 7px rgba(255,176,0,.55)}
+.hm-c.hmh{opacity:0;transform:scale(.3)}
+.hm-stats{display:flex;gap:clamp(18px,4.5vw,52px);flex-wrap:wrap;padding:16px 18px 20px;border-top:1px solid var(--line2);margin-top:12px}
+.hm-down{padding:24px 18px;font-size:12.5px;color:var(--dim);line-height:1.8}
+.hm-down b{color:var(--red);letter-spacing:.14em}
+.hm-down a{color:var(--amber)}
+@media(max-width:700px){.hm-grid{--cell:4px;--cgap:2px}.hm-wrap{padding:14px 12px 4px}}
+@media (prefers-reduced-motion: reduce){.hm-c.hmh{opacity:1!important;transform:none!important}}
+
 /* == log ==================================================== */
 .logp{border:1px solid var(--line);background:#070709;max-width:900px}
 .log-h{display:flex;justify-content:space-between;gap:14px;padding:13px 20px;border-bottom:1px solid var(--line2);font-size:12px;color:var(--dark);letter-spacing:.08em}
@@ -541,6 +564,21 @@ table.proc{width:100%;border-collapse:collapse;min-width:640px}
             <tr><td>007</td><td><span class="pname">APPLE_DEV_ACADEMY</span><span class="sub">application in progress</span></td><td>applicant</td><td>2027 cohort</td><td><span class="st queue">QUEUED</span></td></tr>
           </tbody>
         </table>
+      </div>
+
+      <div class="heatp" data-heat>
+        <div class="hm-h">
+          <span><b>▸</b> COMMIT MAP — LAST 12 MONTHS</span>
+          <span class="hm-read" data-hm-read aria-live="polite"></span>
+          <a href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">GITHUB / KUNALKUMAR-13 ↗</a>
+        </div>
+        <div class="hm-wrap"><div class="hm-grid" data-hm-grid role="img" aria-label="GitHub contribution heatmap — loading"></div></div>
+        <div class="hm-stats" data-hm-stats hidden>
+          <div class="r1"><div class="rn" data-hm-total>·</div><div class="rl">contributions — last year</div></div>
+          <div class="r1"><div class="rn" data-hm-cur>·</div><div class="rl">current streak — days</div></div>
+          <div class="r1"><div class="rn" data-hm-max>·</div><div class="rl">longest streak — days</div></div>
+          <div class="r1"><div class="rn" data-hm-busy>·</div><div class="rl">busiest day</div></div>
+        </div>
       </div>
     </div>
   </section>

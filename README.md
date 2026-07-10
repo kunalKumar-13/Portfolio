@@ -25,7 +25,10 @@ python3 -m http.server 8000   # then open http://localhost:8000
 - **MEMORY BANKS (0x02)** — four projects as expandable banks (problem → build → ownership →
   pipeline → receipts with count-up metrics → stack): Recall.me, the Triage Agent (132/132),
   Watershed (100k+ episodes), and **Aegis** — a trust & safety moderation pipeline.
-- **RUNTIME (0x03)** — experience as a `ps aux` process table (RUNNING / EXIT 0 / QUEUED).
+- **RUNTIME (0x03)** — experience as a `ps aux` process table (RUNNING / EXIT 0 / QUEUED),
+  plus a **live GitHub commit map**: last 12 months fetched on load (1h session cache),
+  phosphor-amber cells, hover readout, and computed streak/busiest-day stats — with an honest
+  LINK DOWN state when the feed is unreachable (no invented data).
 - **LIFE.LOG (0x04)** — 8 career milestones, tail -f style, ending on a blinking cursor —
   plus **leave a mark**: visitors sign the log and the site remembers them (local-only,
   forgettable).
