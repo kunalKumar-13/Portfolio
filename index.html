@@ -135,8 +135,9 @@ main{position:relative;z-index:1}
 .plateframe{border:1px solid var(--ink);background:var(--paper2);position:relative}
 .plateframe .pf-h{background:var(--paper);display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 11px;border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase}
 .plateframe .pf-h b{color:var(--mag-t);font-weight:400}
-#plate{width:100%;aspect-ratio:4/5;image-rendering:pixelated}
-@media(max-width:940px){#plate{aspect-ratio:16/11}}
+.plate-shot{display:block;position:relative;overflow:hidden}
+#plate{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:center;display:block}
+@media(max-width:940px){#plate{aspect-ratio:16/10;object-position:center}}
 .pf-ctl{display:flex;border-top:1px solid var(--ink)}
 .pf-ctl button{flex:1;font-family:var(--mono);font-size:8.5px;letter-spacing:.13em;padding:9px 3px;color:var(--grey);border-right:1px solid var(--rule);text-transform:uppercase}
 .pf-ctl button:last-child{border-right:none}
@@ -185,8 +186,22 @@ main{position:relative;z-index:1}
 .workhead button.on .wt{color:var(--paper)}
 .workhead button.on .wn{color:var(--mag)}
 @media(max-width:760px){.workhead{grid-template-columns:repeat(2,1fr)}}
-.proj{border-top:1px solid var(--line);padding:clamp(26px,3.6vw,46px) 0}
-.proj:last-of-type{border-bottom:1px solid var(--line)}
+.railbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:clamp(12px,1.8vw,20px);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--grey);text-transform:uppercase}
+.railcount b{color:var(--ink);font-weight:500}
+.railnav{display:flex;gap:6px}
+.railnav button{width:40px;height:34px;border:1px solid var(--ink);display:grid;place-items:center;font-size:13px;transition:background .2s,color .2s,opacity .2s}
+.railnav button:hover:not(:disabled){background:var(--ink);color:var(--paper)}
+.railnav button:disabled{opacity:.28;cursor:default}
+.rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);cursor:grab;overscroll-behavior-x:contain}
+.rail::-webkit-scrollbar{display:none}
+.rail.dragging{cursor:grabbing;scroll-snap-type:none}
+.rail.dragging *{pointer-events:none}
+.proj{flex:0 0 100%;min-width:0;scroll-snap-align:start;padding:clamp(24px,3.2vw,40px) 0}
+.proj + .proj{border-left:1px dashed var(--line)}
+.proj + .proj{padding-left:clamp(18px,2.4vw,34px)}
+@media(prefers-reduced-motion:reduce){.rail{scroll-behavior:auto}}
 .p-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:clamp(16px,2.2vw,26px)}
 .p-no{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--mag-t)}
 .p-jp{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--grey);text-transform:uppercase}
@@ -427,12 +442,13 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
       </div>
       <div>
         <figure class="plateframe">
-          <figcaption class="pf-h"><span><b>PLATE Ø1</b> — 1-BIT DITHER</span><span data-plate-mode>ATKINSON</span></figcaption>
-          <canvas id="plate" data-photo="" role="img" aria-label="A generative 1-bit dithered plate: a topographic portrait rendered from Kunal's commit activity."></canvas>
-          <div class="pf-ctl" role="group" aria-label="dither algorithm">
-            <button data-dith="atkinson" class="on">ATKINSON</button><button data-dith="floyd">FLOYD</button><button data-dith="bayer4">BAYER4</button><button data-dith="bayer8">BAYER8</button>
-          </div>
-          <div class="pf-cap"><span>移動して現像 — MOVE TO DEVELOP</span><span data-plate-src>GEN</span></div>
+          <figcaption class="pf-h"><span><b>PLATE Ø1</b> — RECALL · MEMORY GRAPH</span><span>実物</span></figcaption>
+          <a class="p-shot plate-shot" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">
+            <img id="plate" src="shots/plate.jpg" width="559" height="700" decoding="async" fetchpriority="high"
+                 alt="Recall's memory graph — nodes and a traced recovery path across events, sessions and threads.">
+            <span class="p-cap"><span>WEB-SEVEN-PUCE-99.VERCEL.APP</span><span>HOVER FOR COLOUR</span></span>
+          </a>
+          <div class="pf-cap"><span>記録 — THE FLAGSHIP, RUNNING</span><span data-plate-total>—</span></div>
         </figure>
         <div class="barcode">
           <canvas id="barcode" aria-hidden="true"></canvas>
@@ -478,10 +494,16 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
     <section class="spread" id="works" data-spread="02" data-name="WORKS" data-jp="作品">
       <div class="wrap">
         <div class="shead"><span class="no">Ø2</span><h2>Works</h2><span class="jp">作品 — 4 SHIPPED, ALL LIVE</span></div>
+        <div class="railbar">
+          <span class="railcount"><b data-rail-i>Ø1</b> / Ø4 — <span data-rail-name>RECALL</span></span>
+          <span>ドラッグ — DRAG, SWIPE OR USE ← →</span>
+          <span class="railnav"><button data-rail-prev aria-label="previous project" disabled>←</button><button data-rail-next aria-label="next project">→</button></span>
+        </div>
+        <div class="rail" data-rail tabindex="0" role="group" aria-label="projects, scroll horizontally">
       <article class="proj">
         <div class="p-head"><span class="p-no">PLATE Ø1</span><span class="p-jp">記憶 · 継続 / MEMORY · CONTINUITY</span></div>
         <div class="p-body">
-          <a class="p-shot" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener" aria-label="Recall — open the live site">
+          <a class="p-shot" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">
             <span class="p-live"><i></i>LIVE</span>
             <img src="shots/recall.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Recall’s live site: a memory-graph visualisation beside the headline “Never lose the thread”.">
             <span class="p-cap"><span>web-seven-puce-99.vercel.app</span><span>実物 — HOVER FOR COLOUR</span></span>
@@ -505,7 +527,7 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
       <article class="proj">
         <div class="p-head"><span class="p-no">PLATE Ø2</span><span class="p-jp">信頼 · 安全 / TRUST &amp; SAFETY</span></div>
         <div class="p-body">
-          <a class="p-shot" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener" aria-label="Aegis — open the live site">
+          <a class="p-shot" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener">
             <span class="p-live"><i></i>LIVE</span>
             <img src="shots/aegis.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Aegis dashboard: decisions processed, routing outcomes donut and flagged harm categories.">
             <span class="p-cap"><span>aegis-one-livid.vercel.app</span><span>実物 — HOVER FOR COLOUR</span></span>
@@ -529,7 +551,7 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
       <article class="proj">
         <div class="p-head"><span class="p-no">PLATE Ø3</span><span class="p-jp">接地 · 拒否 / GROUNDING · REFUSAL</span></div>
         <div class="p-body">
-          <a class="p-shot" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener" aria-label="PDFChat — open the live site">
+          <a class="p-shot" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener">
             <span class="p-live"><i></i>LIVE</span>
             <img src="shots/pdfchat.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="PDFChat: upload a PDF, with the upload / retrieve / answer pipeline explained.">
             <span class="p-cap"><span>pdf-reviewer-ten.vercel.app</span><span>実物 — HOVER FOR COLOUR</span></span>
@@ -553,7 +575,7 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
       <article class="proj">
         <div class="p-head"><span class="p-no">PLATE Ø4</span><span class="p-jp">警備 · 自律 / AGENTS · SECURITY</span></div>
         <div class="p-body">
-          <a class="p-shot" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener" aria-label="Code-Guardian — open the live site">
+          <a class="p-shot" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener">
             <span class="p-live"><i></i>LIVE</span>
             <img src="shots/codeguardian.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Code-Guardian landing page — “Autonomous Security Engineering”.">
             <span class="p-cap"><span>zeus1205-codeguardian-ai.hf.space</span><span>実物 — HOVER FOR COLOUR</span></span>
@@ -574,6 +596,8 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
         <div class="f"><div class="fn">DEMO</div><div class="fl">public, on HF Spaces</div></div>
         </div>
       </article>
+
+        </div>
 
         <div class="lbl" style="margin:clamp(30px,4vw,44px) 0 14px"><b>◆</b> ALSO BUILT / その他 — no public artefact</div>
         <div class="p-body" style="align-items:start">

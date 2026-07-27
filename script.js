@@ -18,7 +18,6 @@ class Issue {
     this.press();
     this.clocks();
     this.barcode();
-    this.plate();
     this.folio();
     this.works();
     this.workPlates();
@@ -110,190 +109,6 @@ class Issue {
     widths.forEach(w => { if (bar) c.fillRect(x, 0, w*unit, 44); x += w*unit; bar = !bar; });
   }
 
-  /* ── PLATE Ø1 · the live 1-bit dither engine ────────────── */
-  plate(){
-    const cv = $('#plate'); if (!cv) return;
-    const ctx = cv.getContext('2d', { willReadFrequently:true });
-    if (!ctx) return;
-    const W = 190, H = 238;
-    cv.width = W; cv.height = H;
-    const img = ctx.createImageData(W, H);
-    const base = new Float32Array(W*H);
-    const work = new Float32Array(W*H);
-    const boost = new Float32Array(W*H);
-    let mode = 'atkinson', mx = .5, my = .42, tmx = .5, tmy = .42, t = 0, vis = true, photo = null;
-
-    /* glyph mask — a giant K emerging from the terrain */
-    const glyph = document.createElement('canvas');
-    glyph.width = W; glyph.height = H;
-    const gc = glyph.getContext('2d');
-    const drawGlyph = () => {
-      gc.clearRect(0,0,W,H);
-      gc.fillStyle = '#fff';
-      gc.font = `900 ${H*0.66}px Archivo, Helvetica, Arial, sans-serif`;
-      gc.textAlign = 'center'; gc.textBaseline = 'middle';
-      gc.fillText('K', W*0.5, H*0.47);
-    };
-    drawGlyph();
-    let gdata = gc.getImageData(0,0,W,H).data;
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { drawGlyph(); gdata = gc.getImageData(0,0,W,H).data; buildBase(); });
-
-    const hash = (x,y) => { const s = Math.sin(x*127.1 + y*311.7) * 43758.5453; return s - Math.floor(s); };
-    const smooth = (x,y) => {
-      const xi = Math.floor(x), yi = Math.floor(y), xf = x-xi, yf = y-yi;
-      const u = xf*xf*(3-2*xf), v = yf*yf*(3-2*yf);
-      return hash(xi,yi)*(1-u)*(1-v) + hash(xi+1,yi)*u*(1-v) + hash(xi,yi+1)*(1-u)*v + hash(xi+1,yi+1)*u*v;
-    };
-
-    /* commit terrain — the plate is literally a portrait of the work */
-    const commitAt = (nx, ny) => {
-      const d = this.commit; if (!d) return 0;
-      const weeks = Math.ceil(d.length/7);
-      const wx = nx * (weeks-1), wy = ny * 6;
-      const x0 = Math.floor(wx), y0 = Math.floor(wy);
-      const val = (wi, di) => { const i = wi*7 + di; return i>=0 && i<d.length ? Math.min(1, d[i]/8) : 0; };
-      const fx = wx-x0, fy = wy-y0;
-      return val(x0,y0)*(1-fx)*(1-fy) + val(x0+1,y0)*fx*(1-fy) + val(x0,y0+1)*(1-fx)*fy + val(x0+1,y0+1)*fx*fy;
-    };
-
-    const buildBase = () => {
-      for (let y=0; y<H; y++){
-        for (let x=0; x<W; x++){
-          const i = y*W + x, nx = x/W, ny = y/H;
-          let l;
-          if (photo){
-            l = photo[i];
-          } else {
-            const dx = nx-.44, dy = ny-.40;
-            const vig = 1 - Math.sqrt(dx*dx + dy*dy) * 1.28;
-            const ridge = (Math.sin(nx*13 + Math.sin(ny*7)*1.7) * .5 + .5) * (Math.sin(ny*9)*.5+.5);
-            const grain = smooth(nx*22, ny*26) * .5 + smooth(nx*52, ny*61) * .5;
-            const terr = commitAt(nx, ny);
-            const g = gdata[i*4+3] / 255;
-            l = vig*.56 + ridge*.17 + grain*.13 + terr*.26 + g*.32 + .03;
-          }
-          base[i] = clamp(l, 0, 1);
-        }
-      }
-    };
-    buildBase();
-
-    /* dither kernels */
-    const B4 = [0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
-    const B8 = (() => { const m=[]; for(let y=0;y<8;y++)for(let x=0;x<8;x++){ let v=0,mask=4,xc=x,yc=y; for(let b=0;b<3;b++){ v=v*4 + ((yc&mask?2:0) + (xc&mask?1:0)); mask>>=1; } m[y*8+x]=v; } return m; })();
-
-    const INK=[20,20,28], PAPER=[244,242,236], MAG=[255,45,111];
-    const paint = () => {
-      const d = img.data;
-      if (mode === 'bayer4' || mode === 'bayer8'){
-        const M = mode==='bayer4'?B4:B8, n = mode==='bayer4'?4:8, den = n*n;
-        for (let y=0;y<H;y++) for (let x=0;x<W;x++){
-          const i = y*W+x;
-          const th = (M[(y%n)*n + (x%n)] + .5) / den;
-          const on = work[i] > th;
-          const c = on ? PAPER : (boost[i] > .22 ? MAG : INK);
-          const p = i*4; d[p]=c[0]; d[p+1]=c[1]; d[p+2]=c[2]; d[p+3]=255;
-        }
-      } else {
-        const err = work; // mutate the working copy in place
-        const atk = mode === 'atkinson';
-        for (let y=0;y<H;y++){
-          for (let x=0;x<W;x++){
-            const i = y*W+x;
-            const old = err[i];
-            const on = old > .5;
-            const e = old - (on ? 1 : 0);
-            const c = on ? PAPER : (boost[i] > .22 ? MAG : INK);
-            const p = i*4; d[p]=c[0]; d[p+1]=c[1]; d[p+2]=c[2]; d[p+3]=255;
-            if (atk){
-              const q = e / 8;
-              if (x+1<W) err[i+1] += q;
-              if (x+2<W) err[i+2] += q;
-              if (y+1<H){ if (x>0) err[i+W-1] += q; err[i+W] += q; if (x+1<W) err[i+W+1] += q; }
-              if (y+2<H) err[i+2*W] += q;
-            } else {
-              if (x+1<W) err[i+1] += e*7/16;
-              if (y+1<H){ if (x>0) err[i+W-1] += e*3/16; err[i+W] += e*5/16; if (x+1<W) err[i+W+1] += e*1/16; }
-            }
-          }
-        }
-      }
-      ctx.putImageData(img, 0, 0);
-    };
-
-    const frame = () => {
-      mx += (tmx-mx)*.09; my += (tmy-my)*.09;
-      t += .0055;
-      const drift = Math.sin(t)*.018;
-      for (let y=0;y<H;y++){
-        for (let x=0;x<W;x++){
-          const i = y*W+x;
-          const dx = x/W - mx, dy = y/H - my;
-          const b = TOUCH ? 0 : Math.exp(-(dx*dx + dy*dy) / .022);
-          boost[i] = b;
-          let l = base[i] + drift;
-          l = .5 + (l - .5) * (1 + b*2.3) + b*.12;   // develop under the cursor
-          work[i] = clamp(l, 0, 1);
-        }
-      }
-      paint();
-    };
-
-    /* optional real photo — set data-photo="portrait.jpg" on #plate and it becomes the plate */
-    const src = cv.getAttribute('data-photo');
-    const im = new Image();
-    im.onload = () => {
-      const tc = document.createElement('canvas'); tc.width=W; tc.height=H;
-      const t2 = tc.getContext('2d');
-      const r = Math.max(W/im.width, H/im.height), w = im.width*r, h = im.height*r;
-      t2.drawImage(im, (W-w)/2, (H-h)/2, w, h);
-      const px = t2.getImageData(0,0,W,H).data;
-      photo = new Float32Array(W*H);
-      for (let i=0;i<W*H;i++){
-        const l = (px[i*4]*.299 + px[i*4+1]*.587 + px[i*4+2]*.114)/255;
-        photo[i] = clamp((l-.5)*1.18 + .5, 0, 1);
-      }
-      buildBase();
-      const s = $('[data-plate-src]'); if (s) s.textContent = 'PHOTO';
-    };
-    im.onerror = () => {};
-    if (src) im.src = src;
-
-    if (!TOUCH) window.addEventListener('mousemove', (e) => {
-      const r = cv.getBoundingClientRect();
-      if (r.bottom < -200 || r.top > innerHeight + 200) return;
-      tmx = clamp((e.clientX - r.left)/r.width, -.3, 1.3);
-      tmy = clamp((e.clientY - r.top)/r.height, -.3, 1.3);
-    }, { passive:true });
-
-    $$('[data-dith]').forEach(b => b.addEventListener('click', () => {
-      mode = b.getAttribute('data-dith');
-      $$('[data-dith]').forEach(o => o.classList.toggle('on', o === b));
-      const m = $('[data-plate-mode]'); if (m) m.textContent = b.textContent;
-      if (RM || !vis) { work.set(base); frame(); }
-    }));
-    this.cycleDither = () => {
-      const list = $$('[data-dith]');
-      const i = list.findIndex(b => b.classList.contains('on'));
-      list[(i+1) % list.length].click();
-    };
-    this.rebuildPlate = () => buildBase();
-
-    if ('IntersectionObserver' in window)
-      new IntersectionObserver(e => { vis = e[0].isIntersecting; }).observe(cv);
-
-    frame();
-    if (RM) return;
-    let last = 0;
-    const loop = (ts) => {
-      if (this.dead) return;
-      requestAnimationFrame(loop);
-      if (!vis || document.hidden || ts - last < 42) return;   // ~24fps
-      last = ts; frame();
-    };
-    requestAnimationFrame(loop);
-  }
-
   /* ── folio · running head · colour bar · nav ────────────── */
   folio(){
     const fN = $('[data-folio]'), fName = $('[data-folio-name]'), rh = $('[data-rh]');
@@ -330,10 +145,68 @@ class Issue {
 
   /* ── works ──────────────────────────────────────────────── */
   works(){
-    this.showWork = (n) => {
-      const el = $$('.proj')[(+n)-1];
-      if (el) el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block:'center' });
+    const rail = $('[data-rail]');
+    const projs = $$('.proj', rail || document);
+    const iEl = $('[data-rail-i]'), nEl = $('[data-rail-name]');
+    const prev = $('[data-rail-prev]'), next = $('[data-rail-next]');
+    if (!rail || !projs.length){ this.showWork = () => {}; return; }
+
+    const names = projs.map(p => { const n = p.querySelector('.p-name'); return n ? n.textContent.trim().toUpperCase() : ''; });
+    const index = () => Math.round(rail.scrollLeft / Math.max(1, rail.clientWidth));
+    const paint = () => {
+      const i = Math.min(projs.length-1, Math.max(0, index()));
+      if (iEl) iEl.textContent = 'Ø' + (i+1);
+      if (nEl) nEl.textContent = names[i];
+      if (prev) prev.disabled = rail.scrollLeft < 8;
+      if (next) next.disabled = rail.scrollLeft > rail.scrollWidth - rail.clientWidth - 8;
     };
+    const go = (i) => {
+      i = Math.min(projs.length-1, Math.max(0, i));
+      rail.scrollTo({ left: i * rail.clientWidth, behavior: RM ? 'auto' : 'smooth' });
+    };
+    this.showWork = (n) => {
+      const sec = $('#works'); if (sec) sec.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block:'start' });
+      setTimeout(() => go((+n)-1), RM ? 0 : 420);
+    };
+
+    prev && prev.addEventListener('click', () => go(index()-1));
+    next && next.addEventListener('click', () => go(index()+1));
+    let raf = 0;
+    rail.addEventListener('scroll', () => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; paint(); }); }, { passive:true });
+    addEventListener('resize', paint, { passive:true });
+
+    /* arrows work while the rail is focused, or while it owns the screen */
+    addEventListener('keydown', e => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const tag = (document.activeElement && document.activeElement.tagName) || '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      const r = rail.getBoundingClientRect();
+      const owns = rail.contains(document.activeElement) || (r.top < innerHeight*0.6 && r.bottom > innerHeight*0.4);
+      if (!owns) return;
+      e.preventDefault();
+      go(index() + (e.key === 'ArrowRight' ? 1 : -1));
+    });
+
+    /* drag to flip through — pointer events, so trackpad + touch both work */
+    if (!TOUCH){
+      let down = false, sx = 0, sl = 0, moved = 0;
+      rail.addEventListener('pointerdown', e => { down = true; moved = 0; sx = e.clientX; sl = rail.scrollLeft; rail.classList.add('dragging'); });
+      rail.addEventListener('pointermove', e => {
+        if (!down) return;
+        const dx = e.clientX - sx; moved = Math.abs(dx);
+        rail.scrollLeft = sl - dx;
+      });
+      const up = () => {
+        if (!down) return; down = false;
+        rail.classList.remove('dragging');
+        go(Math.round(rail.scrollLeft / Math.max(1, rail.clientWidth)));   // snap to the nearest plate
+      };
+      rail.addEventListener('pointerup', up);
+      rail.addEventListener('pointerleave', up);
+      rail.addEventListener('click', e => { if (moved > 6){ e.preventDefault(); e.stopPropagation(); } }, true);
+    }
+    paint();
   }
 
   /* ── work plates ────────────────────────────────────────── */
@@ -382,8 +255,6 @@ class Issue {
     const render = (d) => {
       const cs = d.contributions;
       this.commit = cs.map(c => c.count);
-      if (this.rebuildPlate) this.rebuildPlate();
-      const s = $('[data-plate-src]'); if (s) s.textContent = 'COMMITS';
       grid.innerHTML = '';
       const frag = document.createDocumentFragment();
       const first = new Date(cs[0].date + 'T00:00:00');
@@ -404,6 +275,7 @@ class Issue {
       grid.appendChild(frag);
       const total = (d.total && d.total.lastYear) || cs.reduce((a,c)=>a+c.count,0);
       grid.setAttribute('aria-label', `GitHub contribution heatmap — ${total} contributions in the last year`);
+      const pt = $('[data-plate-total]'); if (pt) pt.textContent = total + ' COMMITS · LAST 12 MONTHS';
       const tEl = $('[data-hm-total]');
       $('[data-hm-cur]').textContent = cur;
       $('[data-hm-max]').textContent = maxs;
@@ -436,7 +308,7 @@ class Issue {
         try { sessionStorage.setItem('kk_heat', JSON.stringify({ ts:Date.now(), d })); } catch(e){}
         render(d);
       })
-      .catch(() => { if (to) clearTimeout(to); down(); });
+      .catch((err) => { if (to) clearTimeout(to); if (err) console.warn('commit map:', err && err.message || err); down(); });
   }
 
   /* ── sign the log ───────────────────────────────────────── */
@@ -532,7 +404,7 @@ class Issue {
       ['plate','aegis','4',()=>{ go('#works'); this.showWork(4); }],
       ['do','copy email','',()=>this.copyMail()],
       ['do','sign the log','G',()=>{ go('#log'); setTimeout(()=>this.signLog(), 700); }],
-      ['do','cycle dither','D',()=>{ go('#cover'); this.cycleDither(); }],
+      ['do','next project','→',()=>{ go('#works'); setTimeout(()=>{ const n=$('[data-rail-next]'); n && !n.disabled && n.click(); }, 500); }],
       ['do','open résumé','',()=>window.open('kunal-kumar-resume.pdf','_blank','noopener')],
       ['do','open github','',()=>window.open('https://github.com/kunalKumar-13','_blank','noopener')],
       ['do','open linkedin','',()=>window.open('https://linkedin.com/in/sainkunal','_blank','noopener')],
@@ -633,7 +505,6 @@ class Issue {
       if (tag === 'INPUT' || tag === 'TEXTAREA') return;
       const k = e.key.toLowerCase();
       if (k >= '1' && k <= '4'){ this.showWork(k); }   // showWork scrolls to that project
-      else if (k === 'd'){ this.cycleDither && this.cycleDither(); }
       else if (k === 'g'){ $('#log').scrollIntoView({ behavior: RM?'auto':'smooth', block:'start' }); setTimeout(() => this.signLog(), 700); }
     });
   }
