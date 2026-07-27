@@ -3,674 +3,692 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KUNAL.SYS — software worth remembering</title>
-<meta name="description" content="Kunal Kumar — CS @ BITS Pilani, frontend @ Emergent (YC S24), going deep on AI safety. A memory engine for unfinished work, an agent that refuses to hallucinate, and an arena where machines learn to negotiate.">
+<title>KUNAL KUMAR — ISSUE Ø1 / 記憶</title>
+<meta name="description" content="Kunal Kumar — Issue Ø1. CS @ BITS Pilani, frontend @ Emergent (YC S24), going deep on AI safety. A memory engine for unfinished work, an agent that refuses to hallucinate, an arena where machines learn to negotiate, and a moderation system you can audit.">
 <meta name="author" content="Kunal Kumar">
-<meta name="theme-color" content="#050507">
-<meta property="og:title" content="KUNAL.SYS — software worth remembering">
-<meta property="og:description" content="A memory engine for unfinished work, an agent that refuses to hallucinate, and an arena where machines learn to negotiate.">
+<meta name="theme-color" content="#F4F2EC">
+<meta property="og:title" content="KUNAL KUMAR — ISSUE Ø1 / 記憶">
+<meta property="og:description" content="A memory engine for unfinished work · an agent that refuses to hallucinate · an arena where machines learn to negotiate · moderation you can audit.">
 <meta property="og:type" content="website">
-<!-- set to an absolute URL once the domain is live -->
 <meta property="og:image" content="og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Kunal Kumar","jobTitle":"Frontend Engineering Intern","worksFor":{"@type":"Organization","name":"Emergent"},"sameAs":["https://github.com/kunalKumar-13","https://linkedin.com/in/sainkunal"]}</script>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050507'/%3E%3Crect x='3' y='3' width='26' height='26' fill='none' stroke='%23FFB000' stroke-width='2'/%3E%3Ctext x='9' y='24' font-family='monospace' font-size='19' font-weight='700' fill='%23FFB000'%3EK%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Kunal Kumar","jobTitle":"Frontend Engineering Intern","worksFor":{"@type":"Organization","name":"Emergent"},"alumniOf":{"@type":"CollegeOrUniversity","name":"BITS Pilani"},"sameAs":["https://github.com/kunalKumar-13","https://linkedin.com/in/sainkunal"]}</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F4F2EC'/%3E%3Crect x='4' y='4' width='24' height='24' fill='%23FF2D6F'/%3E%3Ctext x='8.5' y='24' font-family='Helvetica,Arial' font-size='20' font-weight='700' fill='%23F4F2EC'%3EK%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
 <style>
 :root{
-  --bg:#050507; --panel:#09090c; --panel2:#0d0d11;
-  --line:rgba(232,228,216,.16); --line2:rgba(232,228,216,.07);
-  --ink:#E8E4D8; --dim:#908b7d; --dark:#83806c;
-  --amber:#FFB000; --amber-dim:rgba(255,176,0,.12); --amber-ghost:rgba(255,176,0,.05);
-  --cyan:#59F0FF; --red:#FF5252;
-  --mono:'JetBrains Mono',ui-monospace,monospace; --disp:'Anton',sans-serif;
+  --paper:#F4F2EC; --paper2:#EAE7DE; --ink:#14141C; --ink2:#3A3A44;
+  --grey:#63615A; --faint:#97948B;
+  --mag:#FF2D6F; --mag-t:#C81E5B; --navy:#171B4D; --cy:#00B3C7;
+  --rule:rgba(20,20,28,.18); --rule2:rgba(20,20,28,.09);
+  --disp:'Archivo',Helvetica,Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --jp:'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP','Archivo',sans-serif;
+  --gut:clamp(18px,4.4vw,64px);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scrollbar-color:var(--dark) var(--bg)}
-@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
-body{background:var(--bg);color:var(--ink);font-family:var(--mono);font-size:15px;line-height:1.6;overflow-x:clip;cursor:default}
-::selection{background:var(--amber);color:#050507}
-::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#1c1c22;border:2px solid var(--bg)}::-webkit-scrollbar-thumb:hover{background:var(--amber)}
-a{color:inherit}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16px;line-height:1.55;overflow-x:clip;-webkit-font-smoothing:antialiased}
+::selection{background:var(--mag);color:var(--paper)}
+a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
-:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
-.skip{position:fixed;left:16px;top:-60px;z-index:2000;background:var(--amber);color:#050507;padding:10px 16px;font-size:12px;transition:top .2s}
-.skip:focus{top:16px}
+:focus-visible{outline:2px solid var(--mag);outline-offset:3px}
+img,canvas{display:block;max-width:100%}
+.skip{position:fixed;left:14px;top:-70px;z-index:3000;background:var(--ink);color:var(--paper);padding:12px 18px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;transition:top .18s}
+.skip:focus{top:14px}
 
-/* CRT: scanlines + vignette (visual only) */
-body::before{content:"";position:fixed;inset:0;z-index:950;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px);opacity:.5}
-body::after{content:"";position:fixed;inset:0;z-index:951;pointer-events:none;background:radial-gradient(120% 90% at 50% 40%,transparent 60%,rgba(0,0,0,.5) 100%)}
+/* ─ paper grain ─────────────────────────────── */
+body::before{content:"";position:fixed;inset:0;z-index:600;pointer-events:none;opacity:.5;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='.42'/></svg>")}
 
-/* ambient grid paper */
-.field{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--line2) 1px,transparent 1px),linear-gradient(90deg,var(--line2) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(90% 70% at 50% 30%,#000 30%,transparent 100%)}
+/* ─ press marks (crop + registration + colour bar) ─ */
+.marks{position:fixed;inset:0;z-index:560;pointer-events:none}
+.marks .cm{position:absolute;width:26px;height:26px}
+.marks .cm::before,.marks .cm::after{content:"";position:absolute;background:var(--ink);opacity:.5}
+.marks .cm::before{width:100%;height:1px;top:50%}
+.marks .cm::after{height:100%;width:1px;left:50%}
+.marks .tl{left:8px;top:8px}.marks .tr{right:8px;top:8px}.marks .bl{left:8px;bottom:8px}.marks .br{right:8px;bottom:8px}
+.reg{position:fixed;right:16px;top:50%;z-index:560;width:26px;height:26px;pointer-events:none;opacity:.55}
+.reg svg{width:100%;height:100%}
+.cbar{position:fixed;left:0;bottom:0;z-index:560;display:flex;pointer-events:none}
+.cbar i{width:26px;height:7px;opacity:.5;transition:opacity .4s,height .4s}
+.cbar i.on{opacity:1;height:11px}
+@media(max-width:820px){.reg,.cbar{display:none}.marks .cm{width:16px}}
 
-/* == HUD frame ============================================= */
-.hud{position:fixed;inset:10px;z-index:900;pointer-events:none;border:1px solid var(--line)}
-.hud i{position:absolute;width:14px;height:14px;border:0 solid var(--amber)}
-.hud i:nth-child(1){left:-1px;top:-1px;border-left-width:2px;border-top-width:2px}
-.hud i:nth-child(2){right:-1px;top:-1px;border-right-width:2px;border-top-width:2px}
-.hud i:nth-child(3){left:-1px;bottom:-1px;border-left-width:2px;border-bottom-width:2px}
-.hud i:nth-child(4){right:-1px;bottom:-1px;border-right-width:2px;border-bottom-width:2px}
-.hud b{position:absolute;font-weight:400;font-size:10px;letter-spacing:.22em;color:var(--dim);background:var(--bg);padding:0 10px;white-space:nowrap}
-.hud .h-sys{left:22px;top:-7px;color:var(--amber)}
-.hud .h-sector{right:22px;top:-7px}
-.hud .h-mem{left:22px;bottom:-7px}
-.hud .h-clock{right:22px;bottom:-7px}
-@media(max-width:700px){.hud{inset:6px}.hud .h-mem{display:none}}
+/* ─ running head + folio ────────────────────── */
+.band{position:fixed;top:0;left:0;right:0;height:78px;background:var(--paper);border-bottom:1px solid var(--rule);z-index:500}
+.band::after{content:"";position:absolute;left:0;right:0;bottom:-14px;height:14px;background:linear-gradient(var(--paper),transparent)}
+@media(max-width:820px){.band{height:60px}}
+.rhead{position:fixed;top:0;left:0;right:0;z-index:520;display:flex;justify-content:space-between;padding:16px var(--gut) 0;font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--grey);text-transform:uppercase;pointer-events:none}
+.folio{position:fixed;right:var(--gut);bottom:18px;z-index:520;background:var(--paper);padding:6px 9px 5px 12px;border-left:1px solid var(--rule);font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--ink);pointer-events:none;text-align:right}
+.folio b{font-family:var(--disp);font-weight:900;font-size:26px;letter-spacing:-.02em;display:block;line-height:.9}
+.folio span{color:var(--grey)}
+@media(max-width:820px){.folio{bottom:10px;right:12px}.folio b{font-size:18px}.rhead{display:none}}
 
-/* == nav ==================================================== */
-.nav{position:fixed;top:10px;left:0;right:0;z-index:920;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 26px;pointer-events:none}
-.nav>*{pointer-events:auto}
-.nav .links{display:flex;gap:2px}
-.nav .links a{font-size:11px;letter-spacing:.16em;text-decoration:none;color:var(--dim);padding:9px 12px;text-transform:uppercase}
-.nav .links a:hover,.nav .links a.on{color:var(--amber);background:var(--amber-ghost)}
-.nav .right{display:flex;gap:8px;align-items:center}
-.kbtn{font-size:11px;letter-spacing:.12em;border:1px solid var(--line);padding:9px 13px;color:var(--dim);text-transform:uppercase}
-.kbtn:hover{color:var(--amber);border-color:var(--amber)}
-.kbtn.hot{background:var(--amber);color:#050507;border-color:var(--amber);font-weight:700;text-decoration:none}
-.kbtn.hot:hover{background:var(--ink)}
-@media(max-width:860px){.nav .links{display:none}.nav{padding:12px 16px}}
+/* ─ nav ─────────────────────────────────────── */
+nav.top{position:fixed;top:0;left:0;right:0;z-index:540;display:flex;justify-content:space-between;align-items:center;gap:14px;height:78px;padding:26px var(--gut) 0;pointer-events:none}
+nav.top>*{pointer-events:auto}
+.brand{font-family:var(--disp);font-weight:900;font-size:15px;letter-spacing:-.04em}
+.brand i{color:var(--mag-t);font-style:normal}
+.navlinks{display:flex;gap:0}
+.navlinks a{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--grey);padding:8px 11px;text-transform:uppercase;border-bottom:1px solid transparent}
+.navlinks a:hover,.navlinks a.on{color:var(--ink);border-bottom-color:var(--mag-t)}
+.navr{display:flex;gap:7px;align-items:center}
+.btn{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--ink);padding:9px 13px;background:transparent;transition:background .18s,color .18s}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.fill{background:var(--mag);border-color:var(--mag);color:var(--ink);font-weight:700}
+.btn.fill:hover{background:var(--ink);border-color:var(--ink)}
+@media(max-width:1080px){.navlinks{display:none}}
+@media(max-width:820px){nav.top{height:60px;padding-top:0}}
 
-/* == boot =================================================== */
-#boot{position:fixed;inset:0;z-index:1500;background:var(--bg);display:flex;align-items:flex-end;padding:9vh 8vw}
-#boot pre{font-family:var(--mono);font-size:clamp(11px,1.4vw,14px);line-height:2;color:var(--dim);white-space:pre-wrap}
-#boot pre .ok{color:var(--amber)}
-#boot .skipb{position:absolute;right:8vw;bottom:9vh;font-size:11px;letter-spacing:.18em;color:var(--dark);border:1px solid var(--line);padding:10px 16px}
-#boot .skipb:hover{color:var(--amber);border-color:var(--amber)}
+/* ─ press-run loader ────────────────────────── */
+#press{position:fixed;inset:0;z-index:2000;background:var(--paper);display:grid;place-items:center}
+#press .plate{position:absolute;font-family:var(--disp);font-weight:900;font-size:clamp(56px,15vw,190px);letter-spacing:-.05em;line-height:.82;text-align:center;mix-blend-mode:multiply;will-change:transform,opacity}
+#press .pmeta{position:absolute;bottom:9vh;left:0;right:0;text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--grey)}
 
-/* == sections =============================================== */
+/* ─ layout ──────────────────────────────────── */
 main{position:relative;z-index:1}
-.sector{padding:clamp(96px,15vh,170px) clamp(20px,6vw,88px)}
-.wrap{max-width:1240px;margin:0 auto}
-.sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:clamp(34px,5vw,64px)}
-.sec-head .addr{color:var(--amber);font-size:12px;letter-spacing:.2em}
-.sec-head h2{font-family:var(--disp);font-weight:400;font-size:clamp(30px,5vw,62px);letter-spacing:.02em;line-height:1;text-transform:uppercase}
-.sec-head .rule{flex:1;border-bottom:1px dashed var(--line)}
-.sec-head .cnt{font-size:11px;letter-spacing:.18em;color:var(--dark)}
+.spread{padding:clamp(90px,13vh,150px) var(--gut);position:relative;border-bottom:1px solid var(--rule)}
+.spread:last-of-type{border-bottom:none}
+.wrap{max-width:1400px;margin:0 auto}
+.shead{display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:clamp(14px,3vw,34px);padding-bottom:14px;border-bottom:2px solid var(--ink);margin-bottom:clamp(30px,4.5vw,54px)}
+.shead .no{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--mag-t)}
+.shead h2{font-family:var(--disp);font-weight:900;font-size:clamp(26px,4.6vw,58px);letter-spacing:-.045em;line-height:.92;text-transform:uppercase}
+.shead .jp{font-family:var(--jp);font-weight:400;font-size:clamp(11px,1.4vw,15px);color:var(--grey);letter-spacing:.14em;white-space:nowrap}
+.lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--grey);text-transform:uppercase}
+.lbl b{color:var(--mag-t);font-weight:400}
+.hair{border-top:1px solid var(--rule);margin:clamp(22px,3vw,34px) 0}
 
-/* == hero =================================================== */
-#hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden}
-#memgrid{position:absolute;inset:0;z-index:0;opacity:.85}
-.hero-in{position:relative;z-index:2;width:100%}
-.prompt{font-size:13px;letter-spacing:.08em;color:var(--dim);margin-bottom:18px}
-.prompt b{color:var(--amber);font-weight:500}
-.display{font-family:var(--disp);font-weight:400;font-size:clamp(64px,17.5vw,238px);line-height:.86;letter-spacing:.005em;text-transform:uppercase;color:var(--ink)}
-.display .dot{color:var(--amber)}
-.typeline{margin-top:clamp(22px,3.5vw,40px);font-size:clamp(14px,1.8vw,19px);color:var(--dim)}
-.typeline .tw{color:var(--amber)}
-.cursor{display:inline-block;width:.62em;height:1.15em;background:var(--amber);vertical-align:text-bottom;margin-left:2px;animation:blink 1.06s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(24px,3.4vw,38px)}
-.chip{font-size:11px;letter-spacing:.14em;border:1px solid var(--line);color:var(--dim);padding:9px 13px;text-transform:uppercase}
-.chip.hotc{border-color:rgba(255,176,0,.5);color:var(--amber)}
-.ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(28px,4vw,46px)}
-.cta{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;padding:16px 24px;border:1px solid var(--amber);color:#050507;background:var(--amber);font-weight:700}
-.cta:hover{background:var(--ink);border-color:var(--ink)}
-.cta.ghost{background:transparent;color:var(--ink);border-color:var(--line);font-weight:400}
-.cta.ghost:hover{border-color:var(--amber);color:var(--amber)}
-.lastlogin{margin-top:clamp(30px,5vw,54px);font-size:11px;letter-spacing:.16em;color:var(--dark);text-transform:uppercase}
+/* ─ COVER ───────────────────────────────────── */
+#cover{min-height:100vh;display:flex;align-items:center;padding-top:clamp(92px,11vh,124px);padding-bottom:clamp(48px,6vh,74px);border-bottom:2px solid var(--ink)}
+.cov{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(20px,4vw,58px);width:100%;align-items:center}
+@media(max-width:940px){.cov{grid-template-columns:1fr;gap:26px}}
+.masthead{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--grey);display:flex;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:9px;margin-bottom:clamp(18px,2.6vw,30px);text-transform:uppercase}
+.bigname{font-family:var(--disp);font-weight:900;font-size:clamp(48px,10.2vw,146px);line-height:.83;letter-spacing:-.055em;text-transform:uppercase}
+.bigname .ln{display:block;overflow:hidden}
+.bigname .ln i{display:block;font-style:normal}
+.bigname .mg{color:var(--mag)}
+.subhead{margin-top:clamp(13px,1.9vw,21px);font-size:clamp(15px,1.75vw,21px);line-height:1.5;max-width:46ch;color:var(--ink2)}
+.subhead b{color:var(--ink);font-weight:700}
+.covmeta{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:clamp(18px,2.4vw,26px)}
+.covmeta div{background:var(--paper);padding:9px 11px}
+.covmeta .k{font-family:var(--mono);font-size:8.5px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase}
+.covmeta .v{font-family:var(--mono);font-size:11.5px;margin-top:5px;color:var(--ink)}
+@media(max-width:600px){.covmeta{grid-template-columns:repeat(2,1fr)}}
+.covcta{display:flex;flex-wrap:wrap;gap:9px;margin-top:clamp(16px,2.2vw,24px)}
+.covcta .btn{font-size:10.5px;padding:13px 20px}
+/* short laptop viewports — keep the whole cover above the fold */
+@media(max-height:870px) and (min-width:940px){
+  .bigname{font-size:clamp(44px,8.2vw,112px)}
+  .subhead{font-size:15px;margin-top:11px}
+  .covmeta{margin-top:13px}.covmeta div{padding:8px 10px}
+  .covcta{margin-top:13px}
+  #cover{padding-top:clamp(84px,10vh,104px)}
+}
 
-/* == identity =============================================== */
-.id-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(28px,5vw,72px);align-items:start}
-@media(max-width:900px){.id-grid{grid-template-columns:1fr}}
-.id-copy p{font-size:clamp(16px,2vw,21px);line-height:1.75;color:var(--ink)}
-.id-copy p+p{margin-top:1.2em}
-.id-copy .a{color:var(--amber)}
-.id-copy .c{color:var(--cyan)}
-.spec{border:1px solid var(--line);background:var(--panel)}
-.spec .row{display:grid;grid-template-columns:110px 1fr;gap:14px;padding:15px 18px;border-bottom:1px solid var(--line2);font-size:13px}
-.spec .row:last-child{border-bottom:none}
-.spec .k{color:var(--dark);letter-spacing:.14em;font-size:10.5px;text-transform:uppercase;padding-top:2px}
+/* plate (dither) */
+.plateframe{border:1px solid var(--ink);background:var(--paper2);position:relative}
+.plateframe .pf-h{background:var(--paper);display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 11px;border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase}
+.plateframe .pf-h b{color:var(--mag-t);font-weight:400}
+#plate{width:100%;aspect-ratio:4/5;image-rendering:pixelated}
+@media(max-width:940px){#plate{aspect-ratio:16/11}}
+.pf-ctl{display:flex;border-top:1px solid var(--ink)}
+.pf-ctl button{flex:1;font-family:var(--mono);font-size:8.5px;letter-spacing:.13em;padding:9px 3px;color:var(--grey);border-right:1px solid var(--rule);text-transform:uppercase}
+.pf-ctl button:last-child{border-right:none}
+.pf-ctl button.on{background:var(--ink);color:var(--paper)}
+.pf-ctl button:hover{color:var(--ink)}
+.pf-ctl button.on:hover{color:var(--paper)}
+.pf-cap{padding:8px 11px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--grey);display:flex;justify-content:space-between;gap:10px}
+.barcode{margin-top:12px;display:flex;align-items:flex-end;gap:10px;justify-content:space-between}
+#barcode{height:44px;width:170px}
+.barcode .bmeta{font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;color:var(--grey);text-align:right;text-transform:uppercase}
+
+/* ─ CONTENTS ────────────────────────────────── */
+.toc{border-top:1px solid var(--ink)}
+.toc a{display:grid;grid-template-columns:52px 1fr auto auto;gap:clamp(12px,2.6vw,28px);align-items:baseline;padding:clamp(13px,1.9vw,20px) 4px;border-bottom:1px solid var(--rule2)}
+.toc a:hover{background:var(--ink);color:var(--paper)}
+.toc a:hover .tno,.toc a:hover .tjp,.toc a:hover .tpg{color:var(--paper)}
+.tno{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--mag-t)}
+.tnm{font-family:var(--disp);font-weight:900;font-size:clamp(19px,2.8vw,34px);letter-spacing:-.035em;text-transform:uppercase}
+.tjp{font-family:var(--jp);font-size:12px;color:var(--grey);letter-spacing:.12em}
+.tpg{font-family:var(--mono);font-size:11px;color:var(--grey)}
+@media(max-width:640px){.toc a{grid-template-columns:40px 1fr auto}.tjp{display:none}}
+
+/* ─ PROFILE ─────────────────────────────────── */
+.two{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,5vw,72px)}
+@media(max-width:940px){.two{grid-template-columns:1fr;gap:30px}}
+.lede{font-size:clamp(19px,2.5vw,31px);line-height:1.42;letter-spacing:-.02em;font-weight:500}
+.lede b{font-weight:900}
+.lede .mg{color:var(--mag-t)}
+.body p{font-size:15.5px;line-height:1.72;color:var(--ink2);max-width:60ch}
+.body p+p{margin-top:1.15em}
+.body b{color:var(--ink);font-weight:700}
+.spec{border-top:1px solid var(--ink)}
+.spec .r{display:grid;grid-template-columns:88px 1fr;gap:14px;padding:11px 2px;border-bottom:1px solid var(--rule2);font-size:13.5px}
+.spec .k{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase;padding-top:3px}
 .spec .v{color:var(--ink)}
-.spec .v .live{display:inline-block;width:7px;height:7px;background:var(--amber);margin-right:8px;animation:blink 1.4s steps(1) infinite}
+.spec .v .dot{display:inline-block;width:6px;height:6px;background:var(--mag);margin-right:7px;vertical-align:1px}
+.pull{border-left:3px solid var(--mag);padding:4px 0 4px 18px;margin:clamp(22px,3vw,32px) 0;font-family:var(--jp);font-size:13px;color:var(--grey);letter-spacing:.06em}
+.pull b{display:block;font-family:var(--disp);font-weight:700;font-size:clamp(16px,2vw,21px);color:var(--ink);letter-spacing:-.02em;margin-bottom:5px}
 
-/* == work / memory banks ==================================== */
-.bank{border:1px solid var(--line);background:var(--panel);margin-bottom:14px}
-.bank-h{width:100%;display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:clamp(12px,2.5vw,26px);padding:clamp(16px,2.6vw,26px) clamp(16px,2.6vw,28px);text-align:left}
-.bank-h:hover{background:var(--amber-ghost)}
-.bank-h .baddr{font-size:11px;letter-spacing:.18em;color:var(--dark)}
-.bank-h .btitle{font-family:var(--disp);font-weight:400;font-size:clamp(22px,4.4vw,46px);letter-spacing:.02em;text-transform:uppercase;line-height:1}
-.bank-h .btag{font-size:10.5px;letter-spacing:.18em;color:var(--dim);text-transform:uppercase;white-space:nowrap}
-.bank-h .tgl{font-size:20px;color:var(--amber);width:34px;height:34px;border:1px solid var(--line);display:grid;place-items:center}
-.bank.open .bank-h .tgl{background:var(--amber);color:#050507}
-.bank .bb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s cubic-bezier(.8,0,.2,1)}
-.bank.open .bb{grid-template-rows:1fr}
-.bank .bbi{overflow:hidden;min-height:0}
-.bank.open{border-color:rgba(255,176,0,.45)}
-.bank-body{padding:6px clamp(16px,2.6vw,28px) clamp(22px,3vw,32px);border-top:1px dashed var(--line2)}
-.why{font-size:clamp(15px,2vw,19px);color:var(--amber);margin:18px 0 22px}
-.bcols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3.5vw,44px)}
-@media(max-width:860px){.bcols{grid-template-columns:1fr}}
-.blabel{font-size:10.5px;letter-spacing:.2em;color:var(--dark);text-transform:uppercase;margin-bottom:10px}
-.blabel::before{content:"▮ ";color:var(--amber)}
-.btext{font-size:14px;line-height:1.75;color:var(--dim)}
-.btext b{color:var(--ink);font-weight:500}
-.own{margin-top:14px;font-size:12px;color:var(--amber)}
-.pipe{margin-top:26px;border:1px solid var(--line2)}
-.pipe .prow{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:11px 14px;border-bottom:1px dashed var(--line2);font-size:13px}
-.pipe .prow:last-child{border-bottom:none}
-.pipe .pn{color:var(--dark)}
-.pipe .pt b{color:var(--amber);font-weight:500}
-.pipe .pt span{color:var(--dim)}
-.bfoot{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-top:26px}
-.stackrow{display:flex;flex-wrap:wrap;gap:8px}
-.mchip{font-size:11px;color:var(--dim);border:1px solid var(--line2);padding:6px 10px;letter-spacing:.06em}
+/* ─ WORKS ───────────────────────────────────── */
+.workhead{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:clamp(22px,3vw,32px)}
+.workhead button{background:var(--paper);padding:13px 12px;text-align:left}
+.workhead button .wn{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--grey)}
+.workhead button .wt{font-family:var(--disp);font-weight:900;font-size:14px;letter-spacing:-.02em;margin-top:4px;text-transform:uppercase}
+.workhead button.on{background:var(--ink)}
+.workhead button.on .wt{color:var(--paper)}
+.workhead button.on .wn{color:var(--mag)}
+@media(max-width:760px){.workhead{grid-template-columns:repeat(2,1fr)}}
+.plates{position:relative}
+.pl{display:none}
+.pl.on{display:block;animation:pin .42s cubic-bezier(.2,.7,.3,1)}
+@keyframes pin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.pl.on{animation:none}}
+.pl-top{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;padding-bottom:clamp(16px,2.4vw,24px);border-bottom:1px solid var(--ink)}
+.pl-title{font-family:var(--disp);font-weight:900;font-size:clamp(34px,7vw,90px);line-height:.86;letter-spacing:-.05em;text-transform:uppercase}
+.pl-title .nw{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--ink);background:var(--mag);padding:4px 7px;vertical-align:middle;margin-left:12px;text-transform:uppercase;font-weight:400}
+.pl-why{font-family:var(--jp);font-size:clamp(13px,1.7vw,17px);color:var(--mag-t);margin-top:12px;letter-spacing:.02em}
+.pl-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase;text-align:right;white-space:nowrap}
+.pl-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,56px);padding:clamp(20px,3vw,30px) 0}
+@media(max-width:860px){.pl-grid{grid-template-columns:1fr;gap:24px}.pl-top{grid-template-columns:1fr}.pl-tag{text-align:left}}
+.pipe{border-top:1px solid var(--rule)}
+.pipe .pr{display:grid;grid-template-columns:36px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule2);font-size:13.5px}
+.pipe .pn{font-family:var(--mono);font-size:10px;color:var(--faint)}
+.pipe .pt b{font-weight:700}
+.pipe .pt span{color:var(--grey)}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:clamp(20px,3vw,28px)}
+.figs .f{background:var(--paper);padding:15px 14px}
+.figs .fn{font-family:var(--disp);font-weight:900;font-size:clamp(26px,3.6vw,40px);letter-spacing:-.04em;line-height:1}
+.figs .fl{font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:7px;text-transform:uppercase;line-height:1.5}
+.plfoot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:clamp(20px,3vw,28px)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;border:1px solid var(--rule);padding:6px 9px;color:var(--ink2)}
 
-/* == runtime (process table) ================================ */
-.procwrap{border:1px solid var(--line);background:var(--panel);overflow-x:auto}
-table.proc{width:100%;border-collapse:collapse;min-width:640px}
-.proc th{font-size:10px;letter-spacing:.22em;color:var(--dark);text-transform:uppercase;text-align:left;padding:14px 18px;border-bottom:1px solid var(--line);font-weight:400}
-.proc td{padding:17px 18px;border-bottom:1px solid var(--line2);font-size:13.5px;color:var(--dim);vertical-align:top}
-.proc tr:last-child td{border-bottom:none}
-.proc tbody tr:hover{background:var(--amber-ghost)}
-.proc .pname{color:var(--ink);font-weight:500;letter-spacing:.04em}
-.proc .sub{display:block;font-size:11px;color:var(--dark);margin-top:4px}
-.st{font-size:11px;letter-spacing:.14em}
-.st.run{color:var(--amber)}.st.run::before{content:"▮ ";animation:blink 1.4s steps(1) infinite}
-.st.exit{color:var(--dark)}.st.exit::before{content:"■ "}
-.st.queue{color:var(--cyan)}.st.queue::before{content:"□ "}
+/* ─ RUNTIME ─────────────────────────────────── */
+.tblwrap{overflow-x:auto;border-top:1px solid var(--ink)}
+[data-swipe-hint]{display:none}
+@media(max-width:760px){[data-swipe-hint]{display:block}}
+table.rt{width:100%;border-collapse:collapse;min-width:660px}
+.rt th{font-family:var(--mono);font-size:8.5px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase;text-align:left;font-weight:400;padding:10px 12px 10px 0;border-bottom:1px solid var(--rule)}
+.rt td{padding:15px 12px 15px 0;border-bottom:1px solid var(--rule2);font-size:13.5px;color:var(--ink2);vertical-align:top}
+.rt tbody tr:hover{background:var(--paper2)}
+.rt .nm{font-family:var(--disp);font-weight:900;font-size:16px;letter-spacing:-.02em;color:var(--ink);text-transform:uppercase}
+.rt .sb{display:block;font-family:var(--mono);font-size:10.5px;color:var(--grey);margin-top:4px;letter-spacing:.02em}
+.st{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;white-space:nowrap}
+.st.run{color:var(--mag-t)}.st.run::before{content:"● "}
+.st.done{color:var(--grey)}.st.done::before{content:"○ "}
+.st.q{color:var(--cy)}.st.q::before{content:"◐ "}
 
-/* == commit heatmap ========================================== */
-.heatp{border:1px solid var(--line);background:var(--panel);margin-top:14px}
-.hm-h{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:13px 18px;border-bottom:1px solid var(--line2);font-size:10.5px;letter-spacing:.18em;color:var(--dark);text-transform:uppercase}
-.hm-h b{color:var(--amber);font-weight:500}
-.hm-h a{color:var(--dim);text-decoration:none}
-.hm-h a:hover{color:var(--amber)}
-.hm-read{color:var(--amber);letter-spacing:.08em;min-height:1em}
-.hm-wrap{padding:18px 18px 6px;overflow-x:auto}
-.hm-grid{--cell:11px;--cgap:3px;display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,var(--cell));grid-auto-columns:var(--cell);gap:var(--cgap);width:max-content}
-.hm-c{width:var(--cell);height:var(--cell);background:rgba(232,228,216,.07);transition:opacity .28s steps(3),transform .28s steps(3),background .15s}
-.hm-c:hover{outline:1px solid var(--amber)}
-.hm-c.l1{background:rgba(255,176,0,.25)}
-.hm-c.l2{background:rgba(255,176,0,.48)}
-.hm-c.l3{background:rgba(255,176,0,.74)}
-.hm-c.l4{background:var(--amber);box-shadow:0 0 7px rgba(255,176,0,.55)}
-.hm-c.hmh{opacity:0;transform:scale(.3)}
-.hm-stats{display:flex;gap:clamp(18px,4.5vw,52px);flex-wrap:wrap;padding:16px 18px 20px;border-top:1px solid var(--line2);margin-top:12px}
-.hm-down{padding:24px 18px;font-size:12.5px;color:var(--dim);line-height:1.8}
-.hm-down b{color:var(--red);letter-spacing:.14em}
-.hm-down a{color:var(--amber)}
-@media(max-width:700px){.hm-grid{--cell:4px;--cgap:2px}.hm-wrap{padding:14px 12px 4px}}
-@media (prefers-reduced-motion: reduce){.hm-c.hmh{opacity:1!important;transform:none!important}}
+/* commit map */
+.heat{border:1px solid var(--ink);margin-top:clamp(26px,4vw,40px)}
+.heat-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 13px;border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase}
+.heat-h b{color:var(--mag-t);font-weight:400}
+.heat-h .rd{color:var(--ink);letter-spacing:.06em;min-height:1em}
+.heat-w{padding:16px 13px 6px;overflow-x:auto}
+.hg{--c:11px;--g:3px;display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,var(--c));grid-auto-columns:var(--c);gap:var(--g);width:max-content}
+.hc{width:var(--c);height:var(--c);background:var(--paper2);border:1px solid rgba(20,20,28,.05);transition:opacity .3s steps(3),transform .3s steps(3)}
+.hc.l1{background:rgba(255,45,111,.28);border-color:transparent}
+.hc.l2{background:rgba(255,45,111,.55);border-color:transparent}
+.hc.l3{background:rgba(255,45,111,.8);border-color:transparent}
+.hc.l4{background:var(--mag);border-color:transparent}
+.hc:hover{outline:1px solid var(--ink)}
+.hc.hid{opacity:0;transform:scale(.4)}
+.heat-s{display:flex;gap:clamp(16px,4vw,44px);flex-wrap:wrap;padding:14px 13px 16px;border-top:1px solid var(--rule)}
+.heat-down{padding:20px 13px;font-size:13px;color:var(--grey);line-height:1.7}
+.heat-down b{color:var(--mag-t)}
+.heat-down a{border-bottom:1px solid var(--mag)}
+@media(max-width:700px){.hg{--c:4px;--g:2px}}
+@media(prefers-reduced-motion:reduce){.hc.hid{opacity:1!important;transform:none!important}}
 
-/* == log ==================================================== */
-.logp{border:1px solid var(--line);background:#070709;max-width:900px}
-.log-h{display:flex;justify-content:space-between;gap:14px;padding:13px 20px;border-bottom:1px solid var(--line2);font-size:12px;color:var(--dark);letter-spacing:.08em}
-.log-h b{color:var(--amber);font-weight:500}
-.log-lines{padding:clamp(18px,3vw,30px) clamp(18px,3vw,32px)}
-.ll{display:grid;grid-template-columns:86px 16px 1fr;column-gap:12px;align-items:baseline;line-height:2.1;font-size:clamp(12px,1.35vw,14px)}
-.ll .ts{color:var(--dark);white-space:nowrap}
-.ll .m{color:var(--amber)}
-.ll .tx{color:var(--dim)}
-.ll .tx b{color:var(--ink);font-weight:500}
-.ll.hot .tx,.ll.hot .tx b{color:var(--amber)}
-.ll .blockc{display:inline-block;width:8px;height:14px;background:var(--ink);margin-left:8px;vertical-align:middle;animation:blink 1.06s steps(1) infinite}
-.guest{padding:14px clamp(18px,3vw,32px) 20px;border-top:1px solid var(--line2)}
-.guest .gbtn{display:grid;grid-template-columns:86px 16px 1fr;column-gap:12px;width:100%;text-align:left;font-size:clamp(12px,1.35vw,14px);color:var(--dark);line-height:2.1}
-.guest .gbtn:hover .glab{color:var(--amber)}
-.guest input{background:transparent;border:none;border-bottom:1px solid var(--line);color:var(--amber);font:inherit;padding:2px;outline:none;width:min(100%,320px)}
-.guest .fg{font-size:10px;color:var(--dark);letter-spacing:.1em;padding:2px 6px}
-.guest .fg:hover{color:var(--red)}
+/* ─ LOG ─────────────────────────────────────── */
+.log{border:1px solid var(--ink);max-width:940px}
+.log-h{display:flex;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase}
+.log-b{padding:clamp(14px,2.2vw,22px) clamp(14px,2.4vw,24px)}
+.ll{display:grid;grid-template-columns:82px 12px 1fr;column-gap:12px;align-items:baseline;font-family:var(--mono);font-size:clamp(11.5px,1.3vw,13px);line-height:2.05;color:var(--ink2)}
+.ll .ts{color:var(--faint)}
+.ll .m{color:var(--mag-t)}
+.ll b{color:var(--ink);font-weight:500}
+.ll.hi{background:linear-gradient(90deg,rgba(255,45,111,.09),transparent 70%)}
+.ll .cur{display:inline-block;width:7px;height:12px;background:var(--ink);margin-left:7px;vertical-align:middle;animation:bl 1.05s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.ll .cur{animation:none}}
+.guest{border-top:1px solid var(--rule);padding:12px clamp(14px,2.4vw,24px) 16px}
+.guest .gb{display:grid;grid-template-columns:82px 12px 1fr;column-gap:12px;width:100%;text-align:left;font-family:var(--mono);font-size:clamp(11.5px,1.3vw,13px);line-height:2.05;color:var(--grey)}
+.guest .gb:hover .gl{color:var(--mag-t)}
+.guest input{font-family:var(--mono);font-size:inherit;background:transparent;border:none;border-bottom:1px solid var(--rule);color:var(--ink);padding:2px;outline:none;width:min(100%,300px)}
+.guest .fg{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--faint);padding:2px 5px}
+.guest .fg:hover{color:var(--mag-t)}
 
-/* == modules ================================================ */
-.mods{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-@media(max-width:1000px){.mods{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.mods{grid-template-columns:1fr}}
-.mod{border:1px solid var(--line);background:var(--panel);padding:clamp(16px,2.4vw,24px)}
-.mod h3{font-size:11px;letter-spacing:.2em;color:var(--amber);text-transform:uppercase;font-weight:500;margin-bottom:16px}
-.mod h3::before{content:"// "}
+/* ─ BRAIN ───────────────────────────────────── */
+.organ{display:grid;grid-template-columns:76px 1fr;gap:16px;padding:13px 0;border-bottom:1px solid var(--rule2)}
+.organ .ok{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--mag-t);text-transform:uppercase;padding-top:4px}
+.organ .ov{font-size:14px;line-height:1.65;color:var(--ink2)}
+.organ .ov b{color:var(--ink);font-weight:700}
+.cap{font-family:var(--mono);font-size:12px;color:var(--grey);margin-top:20px;line-height:1.7}
+.cap code{background:var(--ink);color:var(--paper);padding:2px 7px;font-size:11.5px}
+.term{border:1px solid var(--ink);background:var(--ink);color:var(--paper);align-self:start}
+.term-h{display:flex;justify-content:space-between;padding:9px 13px;border-bottom:1px solid rgba(244,242,236,.18);font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;color:rgba(244,242,236,.5);text-transform:uppercase}
+.term-b{padding:15px 14px;font-family:var(--mono);font-size:11.5px;line-height:1.95;min-height:236px}
+.term-b .q{color:var(--mag)}
+.term-b .o{color:rgba(244,242,236,.62)}
+.term-b .hl{color:var(--paper)}
+
+/* ─ MODULES ─────────────────────────────────── */
+.mods{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+@media(max-width:900px){.mods{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.mods{grid-template-columns:1fr}}
+.mod{background:var(--paper);padding:clamp(15px,2.2vw,22px)}
+.mod h3{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--mag-t);text-transform:uppercase;font-weight:400;margin-bottom:13px}
+.mod .jpx{font-family:var(--jp);font-size:11px;color:var(--faint);letter-spacing:.1em;margin-bottom:11px}
 .mod ul{list-style:none}
-.mod li{font-size:13px;color:var(--dim);padding:7px 0;border-bottom:1px dashed var(--line2)}
+.mod li{font-size:13.5px;color:var(--ink2);padding:6px 0;border-bottom:1px solid var(--rule2)}
 .mod li:last-child{border-bottom:none}
-.mod li i{font-style:normal;color:var(--dark);font-size:11px}
+.mod li i{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--faint)}
 
-/* == contact ================================================ */
-#contact{min-height:88vh;display:flex;align-items:center}
-.say .display{font-size:clamp(58px,13.5vw,180px)}
-.mailrow{margin-top:clamp(26px,4vw,44px)}
-.mailbtn{font-size:clamp(16px,3vw,30px);letter-spacing:.02em;color:var(--ink);border-bottom:2px solid var(--amber);padding-bottom:6px;word-break:break-all;text-align:left}
-.mailbtn:hover{color:var(--amber)}
-.mailhint{margin-top:12px;font-size:11px;letter-spacing:.14em;color:var(--dark);text-transform:uppercase}
-.linkrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(28px,4vw,44px)}
-.avail{margin-top:clamp(28px,4vw,40px);font-size:12px;letter-spacing:.14em;color:var(--amber);text-transform:uppercase}
-.avail::before{content:"▮ ";animation:blink 1.4s steps(1) infinite}
+/* ─ COLOPHON / CONTACT ──────────────────────── */
+#colo{border-bottom:none}
+.sayhi{font-family:var(--disp);font-weight:900;font-size:clamp(46px,12vw,168px);line-height:.83;letter-spacing:-.055em;text-transform:uppercase}
+.sayhi .mg{color:var(--mag)}
+.mail{font-family:var(--disp);font-weight:700;font-size:clamp(17px,3.2vw,38px);letter-spacing:-.03em;border-bottom:3px solid var(--mag);padding-bottom:5px;word-break:break-all;text-align:left;margin-top:clamp(22px,3vw,34px)}
+.mail:hover{color:var(--mag-t)}
+.mailhint{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--grey);margin-top:11px;text-transform:uppercase}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(22px,3vw,32px)}
+.colo{margin-top:clamp(40px,6vw,72px);border-top:1px solid var(--ink);padding-top:clamp(20px,3vw,28px);display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:clamp(18px,3vw,34px)}
+.colo dt{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase;margin-bottom:7px}
+.colo dd{font-size:13px;color:var(--ink2);line-height:1.7}
+.colo dd b{color:var(--ink);font-weight:700}
+.imprint{margin-top:clamp(34px,5vw,56px);padding-top:16px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase}
 
-/* footer strip */
-.foot{padding:26px clamp(20px,6vw,88px) 40px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:10.5px;letter-spacing:.18em;color:var(--dark);text-transform:uppercase}
-.foot .fr{display:flex;gap:6px;align-items:center}
-
-/* == ticker strip =========================================== */
-.tick-strip{border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);overflow:clip;padding:13px 0;position:relative;z-index:1}
-.tick-track{display:flex;gap:0;width:max-content;white-space:nowrap;font-size:11px;letter-spacing:.22em;color:var(--dark);text-transform:uppercase;animation:tick 34s linear infinite}
-.tick-track b{color:var(--amber);font-weight:400;padding:0 18px}
-@keyframes tick{to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion: reduce){.tick-track{animation:none}}
-
-/* == receipts row ============================================ */
-.rcp{display:flex;gap:clamp(14px,3vw,36px);flex-wrap:wrap;margin-top:24px;padding:16px 0 0;border-top:1px solid var(--line2)}
-.rcp .r1 .rn{font-size:clamp(22px,3vw,34px);color:var(--amber);font-weight:700;letter-spacing:.02em}
-.rcp .r1 .rl{font-size:10px;letter-spacing:.2em;color:var(--dark);text-transform:uppercase;margin-top:4px}
-
-/* == bank body cascade on open =============================== */
-.bank .bank-body>*{opacity:0;transform:translateY(6px);transition:opacity .24s steps(3),transform .24s steps(3)}
-.bank.open .bank-body>*{opacity:1;transform:none}
-.bank.open .bank-body>*:nth-child(1){transition-delay:.05s}.bank.open .bank-body>*:nth-child(2){transition-delay:.12s}
-.bank.open .bank-body>*:nth-child(3){transition-delay:.19s}.bank.open .bank-body>*:nth-child(4){transition-delay:.26s}
-.bank.open .bank-body>*:nth-child(5){transition-delay:.33s}
-.bnew{font-size:9px;letter-spacing:.2em;color:#050507;background:var(--cyan);padding:3px 7px;font-weight:700;margin-left:10px;vertical-align:middle}
-
-/* == hero display entrance + dot glow ======================== */
-.display .dl{display:block;overflow:hidden}
-.display .dl i{display:block;font-style:normal;transform:none}
-.js-pre .display .dl i{transform:translateY(105%)}
-.display .dl i.up{transform:none;transition:transform .5s cubic-bezier(.8,0,.2,1)}
-.display .dot{display:inline-block}
-@keyframes dotpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,176,0,.0)}50%{box-shadow:0 0 26px 4px rgba(255,176,0,.35)}}
-.display .dot{animation:dotpulse 3.2s ease-in-out infinite}
-@media (prefers-reduced-motion: reduce){.js-pre .display .dl i{transform:none}.display .dot{animation:none}}
-
-/* == cta flicker ============================================= */
-@keyframes flick{0%{filter:invert(0)}49%{filter:invert(1)}100%{filter:invert(0)}}
-.cta:hover,.kbtn:hover{animation:flick .16s steps(2) 1}
-
-/* == reveal primitive (JS-gated) ============================= */
-.spec .row,.proc tbody tr,.mod,[data-bank],.organ,.id-copy p,.linkrow .kbtn{transition:opacity .3s steps(4),transform .3s steps(4)}
-.rv-hide{opacity:0;transform:translateY(12px)}
-
-/* == second brain ============================================ */
-.brain-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,60px);align-items:start}
-@media(max-width:940px){.brain-grid{grid-template-columns:1fr}}
-.organ{display:grid;grid-template-columns:92px 1fr;gap:14px;padding:14px 0;border-bottom:1px dashed var(--line2);font-size:13.5px}
-.organ .ok{color:var(--amber);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;padding-top:3px}
-.organ .ov2{color:var(--dim)}
-.organ .ov2 b{color:var(--ink);font-weight:500}
-.capline{margin-top:20px;font-size:13px;color:var(--dim)}
-.capline code{color:var(--amber);background:var(--amber-ghost);border:1px solid var(--line2);padding:3px 8px}
-.bterm{border:1px solid var(--line);background:#070709}
-.bterm .bt-h{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line2);font-size:10.5px;letter-spacing:.18em;color:var(--dark);text-transform:uppercase}
-.bterm .bt-h b{color:var(--cyan);font-weight:500}
-.bterm .bt-b{padding:18px 18px 22px;min-height:190px;font-size:13px;line-height:2}
-.bterm .q{color:var(--ink)}
-.bterm .q::before{content:"kunal@hq:~$ ";color:var(--cyan)}
-.bterm .a{color:var(--dim)}
-.bterm .a b{color:var(--amber);font-weight:500}
-
-/* == crosshair cursor ======================================= */
-.xh-x,.xh-y{position:fixed;z-index:940;pointer-events:none;background:rgba(255,176,0,.28);opacity:0}
-.xh-x{left:0;right:0;height:1px}
-.xh-y{top:0;bottom:0;width:1px}
-.xh-tag{position:fixed;z-index:941;pointer-events:none;font-size:9px;letter-spacing:.14em;color:var(--amber);opacity:0;transform:translate(12px,14px)}
-
-/* == overlays (palette / colophon) ========================== */
-.ov{position:fixed;inset:0;z-index:1200;background:rgba(3,3,5,.72);display:none}
+/* ─ command palette ─────────────────────────── */
+.ov{position:fixed;inset:0;z-index:1500;background:rgba(20,20,28,.42);display:none}
 .ov.on{display:block}
-.panelbox{position:absolute;left:50%;top:14vh;transform:translateX(-50%);width:min(94vw,600px);background:var(--panel);border:1px solid var(--amber);box-shadow:0 0 0 1px rgba(255,176,0,.15),0 30px 80px rgba(0,0,0,.6)}
-.panelbox input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);color:var(--ink);font:inherit;font-size:14px;padding:16px 18px;outline:none}
-.plist{max-height:46vh;overflow-y:auto;padding:8px}
-.pgroup{font-size:9.5px;letter-spacing:.24em;color:var(--dark);padding:12px 12px 4px;text-transform:uppercase}
-.prowi{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 12px;font-size:13px;color:var(--dim)}
-.prowi.sel{background:var(--amber-dim);color:var(--ink)}
-.prowi .pk{margin-left:auto;font-size:10px;color:var(--dark);letter-spacing:.1em}
-.colobox{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(94vw,720px);max-height:84vh;overflow-y:auto;background:var(--panel);border:1px solid var(--line);padding:clamp(22px,4vw,40px)}
-.colobox h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(26px,4vw,44px);margin:8px 0 18px}
-.colobox .cl{display:grid;grid-template-columns:150px 1fr;gap:10px 18px;font-size:13px;padding:10px 0;border-bottom:1px dashed var(--line2)}
-.colobox .cl .k{color:var(--dark);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;padding-top:2px}
-.colobox .cl .v{color:var(--dim)}
-.colobox .cl .v b{color:var(--amber);font-weight:500}
-@media(max-width:640px){.colobox .cl{grid-template-columns:1fr;gap:4px}}
-.xclose{position:absolute;right:14px;top:14px;font-size:10px;letter-spacing:.14em;color:var(--dim);border:1px solid var(--line);padding:8px 12px}
-.xclose:hover{color:var(--amber);border-color:var(--amber)}
+.pal{position:absolute;left:50%;top:13vh;transform:translateX(-50%);width:min(94vw,560px);background:var(--paper);border:1px solid var(--ink);box-shadow:14px 14px 0 rgba(20,20,28,.14)}
+.pal input{width:100%;font-family:var(--mono);font-size:13px;padding:15px 17px;border:none;border-bottom:1px solid var(--ink);background:transparent;color:var(--ink);outline:none}
+.pal .list{max-height:48vh;overflow-y:auto}
+.pal .g{font-family:var(--mono);font-size:8.5px;letter-spacing:.22em;color:var(--grey);padding:11px 17px 4px;text-transform:uppercase}
+.pal .it{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:10px 17px;font-size:13.5px;color:var(--ink2)}
+.pal .it .d{width:6px;height:6px;background:var(--mag);flex:none}
+.pal .it.sel{background:var(--ink);color:var(--paper)}
+.pal .it .kb{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.1em}
+.pal .it.sel .kb{color:rgba(244,242,236,.5)}
 
-/* resume toast */
-.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);z-index:1100;font-size:11.5px;letter-spacing:.14em;color:var(--amber);background:var(--panel);border:1px solid var(--amber);padding:13px 18px;text-transform:uppercase}
-.toast:hover{background:var(--amber);color:#050507}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:1400;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;background:var(--ink);color:var(--paper);padding:12px 17px;text-transform:uppercase}
+.toast:hover{background:var(--mag)}
 
-/* glitch (party) */
-@keyframes glitchy{0%{transform:translate(0)}25%{transform:translate(-6px,2px) skewX(-2deg)}50%{transform:translate(4px,-3px)}75%{transform:translate(-3px,1px) skewX(1.4deg)}100%{transform:translate(0)}}
-.glitching main,.glitching .nav{animation:glitchy .14s steps(2) 5}
-.glitching body{}
-.confetti{position:fixed;z-index:1300;width:8px;height:8px;pointer-events:none}
-
-/* touch: 44px targets */
+/* ─ mobile / motion / print ─────────────────── */
 @media(max-width:700px){
-  .kbtn,.nav .links a{min-height:44px;display:inline-flex;align-items:center}
-  .bank-h{min-height:64px;grid-template-columns:auto 1fr auto;gap:12px}
-  .bank-h .btag{display:none}
-  .bank-h .btitle{font-size:clamp(19px,6vw,28px)}
-  .mailbtn{word-break:break-word}
+  .btn,.navlinks a{min-height:44px;display:inline-flex;align-items:center}
+  .workhead button{min-height:56px}
 }
-/* reduced motion: static everything */
-@media (prefers-reduced-motion: reduce){
-  .cursor,.st.run::before,.avail::before,.spec .v .live,.ll .blockc{animation:none}
-  html{scroll-behavior:auto}
-  .bank .bank-body>*{opacity:1!important;transform:none!important;transition:none!important}
-  .rv-hide{opacity:1!important;transform:none!important}
-}
-/* print: clean one-pager */
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 @media print{
-  body::before,body::after,.hud,.nav,.field,#memgrid,.xh-x,.xh-y,.xh-tag,#boot,.toast{display:none!important}
-  body{background:#fff;color:#000}
-  .sector{padding:24px 0}
-  *{color:#000!important;border-color:#bbb!important;background:transparent!important;animation:none!important}
-  .bank .bb{grid-template-rows:1fr!important}
+  body::before,.marks,.reg,.cbar,.rhead,.folio,nav.top,#press,.ov,.toast,#plate,.pf-ctl{display:none!important}
+  body{background:#fff}
+  .spread{padding:20px 0;break-inside:avoid}
+  .pl{display:block!important}
+  .workhead{display:none}
+  *{color:#000!important;border-color:#999!important;background:transparent!important}
 }
 </style>
 </head>
 <body>
-<a class="skip" href="#work">skip to work</a>
-<div class="field" aria-hidden="true"></div>
+<a class="skip" href="#works">skip to works</a>
 
-<div class="hud" aria-hidden="true"><i></i><i></i><i></i><i></i>
-  <b class="h-sys">KUNAL.SYS v2.0</b>
-  <b class="h-sector" data-hud-sector>SECTOR 0x00 // BOOT</b>
-  <b class="h-mem" data-hud-mem>MEM 000%</b>
-  <b class="h-clock" data-hud-clock>BLR --:--:--</b>
-</div>
+<div class="marks" aria-hidden="true"><i class="cm tl"></i><i class="cm tr"></i><i class="cm bl"></i><i class="cm br"></i></div>
+<div class="reg" aria-hidden="true"><svg viewBox="0 0 26 26" fill="none" stroke="#14141C" stroke-width="1"><circle cx="13" cy="13" r="8"/><circle cx="13" cy="13" r="3"/><path d="M13 0v26M0 13h26"/></svg></div>
+<div class="cbar" aria-hidden="true"><i style="background:#00B3C7"></i><i style="background:#FF2D6F"></i><i style="background:#FFCE00"></i><i style="background:#14141C"></i></div>
 
-<nav class="nav" aria-label="primary">
-  <a href="#hero" class="kbtn" style="border-color:transparent;color:var(--amber);font-weight:700;">K.</a>
-  <div class="links">
-    <a href="#id">0x01 ID</a><a href="#work">0x02 WORK</a><a href="#runtime">0x03 RUNTIME</a><a href="#log">0x04 LOG</a><a href="#brain">0x05 BRAIN</a><a href="#modules">0x06 MODULES</a><a href="#contact">0x07 CONTACT</a>
+<div class="band" aria-hidden="true"></div>
+<div class="rhead" aria-hidden="true"><span>KUNAL KUMAR — ISSUE Ø1</span><span data-rh>記憶 / MEMORY — BENGALURU</span></div>
+<div class="folio" aria-hidden="true"><b data-folio>00</b><span data-folio-name>COVER</span></div>
+
+<nav class="top" aria-label="primary">
+  <a class="brand" href="#cover">KUNAL KUMAR<i>.</i></a>
+  <div class="navlinks">
+    <a href="#contents">目次</a><a href="#profile">PROFILE</a><a href="#works">WORKS</a><a href="#runtime">RUNTIME</a><a href="#brain">BRAIN</a><a href="#log">LOG</a><a href="#modules">MODULES</a><a href="#colo">CONTACT</a>
   </div>
-  <div class="right">
-    <button class="kbtn" data-cmdk aria-label="⌘K — command palette">⌘K</button>
-    <a class="kbtn hot" href="mailto:kunalsain0324@gmail.com">HIRE →</a>
+  <div class="navr">
+    <button class="btn" data-cmdk aria-label="⌘K — command palette">⌘K</button>
+    <a class="btn fill" href="mailto:kunalsain0324@gmail.com">HIRE →</a>
   </div>
 </nav>
 
-<div id="boot" hidden><pre data-boot-pre></pre><button class="skipb" data-boot-skip>[ SKIP ]</button></div>
+<div id="press" hidden aria-hidden="true">
+  <div class="plate" style="color:#00B3C7" data-p="0">KUNAL<br>KUMAR</div>
+  <div class="plate" style="color:#FF2D6F" data-p="1">KUNAL<br>KUMAR</div>
+  <div class="plate" style="color:#FFCE00" data-p="2">KUNAL<br>KUMAR</div>
+  <div class="plate" style="color:#14141C" data-p="3">KUNAL<br>KUMAR</div>
+  <div class="pmeta">REGISTERING PLATES — C M Y K</div>
+</div>
 
-<main id="top">
+<main>
 
-  <!-- 0x00 HERO -->
-  <section class="sector" id="hero" data-sector="0x00" data-name="BOOT">
-    <canvas id="memgrid" aria-hidden="true"></canvas>
-    <div class="wrap hero-in">
-      <div class="prompt"><b>kunal@blr</b>:~$ whoami<span data-greet></span></div>
-      <h1 class="display"><span class="dl"><i>KUNAL</i></span><span class="dl"><i>KUMAR<span class="dot">.</span></i></span></h1>
-      <div class="typeline">&gt; building software worth <span class="tw" data-tw>remembering.</span><span class="cursor" aria-hidden="true"></span></div>
-      <div class="chips">
-        <span class="chip hotc">FRONTEND @ EMERGENT · YC S24</span>
-        <span class="chip">CS @ BITS PILANI</span>
-        <span class="chip">AI SAFETY</span>
-        <span class="chip">BENGALURU</span>
-      </div>
-      <div class="ctas">
-        <a class="cta" href="#work">[ OPEN WORK ]</a>
-        <a class="cta ghost" href="kunal-kumar-resume.pdf" target="_blank" rel="noopener">RESUME.PDF ↗</a>
-      </div>
-      <div class="lastlogin" data-lastlogin>LAST LOGIN: — · BENGALURU, IN</div>
+<!-- ═══ 00 COVER ═══ -->
+<section class="spread" id="cover" data-spread="00" data-name="COVER" data-jp="表紙">
+  <div class="wrap">
+    <div class="masthead">
+      <span>ISSUE Ø1 · 記憶</span><span>KUNAL KUMAR — PORTFOLIO ANNUAL</span><span data-mast-clock>BENGALURU · --:--</span>
     </div>
-  </section>
-
-  <div class="tick-strip" aria-hidden="true"><div class="tick-track"><span>EMERGENT (YC S24)<b>✦</b>BITS PILANI — CLASS OF 2027<b>✦</b>ACTIVATE FELLOW — 1 OF 15 FROM 500+<b>✦</b>HPAIR · HARVARD<b>✦</b>MATS — ROUND 2<b>✦</b>132/132 TESTS<b>✦</b>100K+ EPISODES<b>✦</b>AI SAFETY<b>✦</b>BENGALURU<b>✦</b></span><span>EMERGENT (YC S24)<b>✦</b>BITS PILANI — CLASS OF 2027<b>✦</b>ACTIVATE FELLOW — 1 OF 15 FROM 500+<b>✦</b>HPAIR · HARVARD<b>✦</b>MATS — ROUND 2<b>✦</b>132/132 TESTS<b>✦</b>100K+ EPISODES<b>✦</b>AI SAFETY<b>✦</b>BENGALURU<b>✦</b></span></div></div>
-
-  <!-- 0x01 IDENTITY -->
-  <section class="sector" id="id" data-sector="0x01" data-name="IDENTITY">
-    <div class="wrap">
-      <div class="sec-head"><span class="addr">0x01</span><h2>Identity</h2><span class="rule"></span><span class="cnt">CAT /ETC/KUNAL</span></div>
-      <div class="id-grid">
-        <div class="id-copy">
-          <p>I build systems that reach <b class="a">production</b> — not demos. A <b>memory engine</b> for unfinished work. An agent that <b>refuses to hallucinate</b>. An arena where machines <b>learn to negotiate</b>.</p>
-          <p>I work where memory, retrieval and reinforcement learning meet things that actually ship — and stay running long after the demo. Lately I'm chasing what makes them <b class="c">safe</b>.</p>
+    <div class="cov">
+      <div>
+        <h1 class="bigname"><span class="ln"><i>KUNAL</i></span><span class="ln"><i>KUMAR<span class="mg">.</span></i></span></h1>
+        <p class="subhead">Software <b>worth remembering</b> — a memory engine for unfinished work, an agent that refuses to hallucinate, an arena where machines learn to negotiate, and moderation you can actually audit.</p>
+        <div class="covmeta">
+          <div><div class="k">EDITION</div><div class="v">Ø1 / 2026</div></div>
+          <div><div class="k">NOW</div><div class="v">Emergent · YC S24</div></div>
+          <div><div class="k">STUDY</div><div class="v">BITS Pilani '27</div></div>
+          <div><div class="k">FOCUS</div><div class="v">AI Safety</div></div>
         </div>
-        <div class="spec">
-          <div class="row"><span class="k">host</span><span class="v">Bengaluru, IN</span></div>
-          <div class="row"><span class="k">proc</span><span class="v">Frontend Engineering Intern — Emergent (YC S24)</span></div>
-          <div class="row"><span class="k">edu</span><span class="v">CS @ BITS Pilani — class of 2027</span></div>
-          <div class="row"><span class="k">focus</span><span class="v">AI safety · MATS round 2</span></div>
-          <div class="row"><span class="k">state</span><span class="v"><span class="live"></span>open to opportunities</span></div>
-          <div class="row"><span class="k">uptime</span><span class="v" data-spec-clock>--:--:-- IST</span></div>
+        <div class="covcta">
+          <a class="btn fill" href="#works">READ THE WORK →</a>
+          <a class="btn" href="kunal-kumar-resume.pdf" target="_blank" rel="noopener">RÉSUMÉ.PDF ↗</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- 0x02 WORK -->
-  <section class="sector" id="work" data-sector="0x02" data-name="WORK">
-    <div class="wrap">
-      <div class="sec-head"><span class="addr">0x02</span><h2>Memory Banks</h2><span class="rule"></span><span class="cnt">4 MOUNTED</span></div>
-
-      <article class="bank open" data-bank>
-        <button class="bank-h" aria-expanded="true">
-          <span class="baddr">BANK.01</span>
-          <span class="btitle">Recall.me</span>
-          <span class="btag">memory / continuity</span>
-          <span class="tgl" aria-hidden="true">−</span>
-        </button>
-        <div class="bb"><div class="bbi"><div class="bank-body">
-          <p class="why">// because I kept losing my own unfinished work.</p>
-          <div class="bcols">
-            <div><div class="blabel">the problem</div><p class="btext">Work scatters. You start something, life interrupts, and the context — the tabs, the half-formed intent — evaporates between sessions. Tools remember files; <b>nothing remembers where you actually were.</b></p></div>
-            <div><div class="blabel">the build</div><p class="btext">A <b>local-first continuity OS</b>: a browser extension and watchers stream activity signals into a daemon — event storage, <b>recovery scoring, investigation ranking</b> and semantic search — with a Python/Qt launcher on top: live search, previews, one-key resume. Recall survives restarts.</p><p class="own">↳ solo build — extension → daemon → recovery interface. end to end.</p></div>
+      <div>
+        <figure class="plateframe">
+          <figcaption class="pf-h"><span><b>PLATE Ø1</b> — 1-BIT DITHER</span><span data-plate-mode>ATKINSON</span></figcaption>
+          <canvas id="plate" data-photo="" role="img" aria-label="A generative 1-bit dithered plate: a topographic portrait rendered from Kunal's commit activity."></canvas>
+          <div class="pf-ctl" role="group" aria-label="dither algorithm">
+            <button data-dith="atkinson" class="on">ATKINSON</button><button data-dith="floyd">FLOYD</button><button data-dith="bayer4">BAYER4</button><button data-dith="bayer8">BAYER8</button>
           </div>
-          <div class="pipe">
-            <div class="prow"><span class="pn">01</span><span class="pt"><b>ingest</b> <span>— browser, file &amp; dev activity stream in</span></span></div>
-            <div class="prow"><span class="pn">02</span><span class="pt"><b>store</b> <span>— events land in the local daemon</span></span></div>
-            <div class="prow"><span class="pn">03</span><span class="pt"><b>score</b> <span>— recovery scoring + investigation ranking</span></span></div>
-            <div class="prow"><span class="pn">04</span><span class="pt"><b>recall</b> <span>— semantic search across everything</span></span></div>
-            <div class="prow"><span class="pn">05</span><span class="pt"><b>resume</b> <span>— the Qt launcher puts you back mid-thought</span></span></div>
-          </div>
-          <div class="rcp"><div class="r1"><div class="rn"><span data-count="3">0</span></div><div class="rl">signal streams — browser · file · dev</div></div><div class="r1"><div class="rn">LIVE</div><div class="rl">daemon apis · real-time retrieval</div></div><div class="r1"><div class="rn">LOCAL</div><div class="rl">first — nothing leaves the machine</div></div></div>
-          <div class="bfoot">
-            <div class="stackrow"><span class="mchip">python</span><span class="mchip">qt</span><span class="mchip">browser extension</span><span class="mchip">daemon apis</span><span class="mchip">semantic search</span></div>
-            <a class="kbtn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">CODE ↗</a>
-          </div>
-        </div></div></div>
-      </article>
-
-      <article class="bank" data-bank>
-        <button class="bank-h" aria-expanded="false">
-          <span class="baddr">BANK.02</span>
-          <span class="btitle">Triage Agent</span>
-          <span class="btag">agents / grounding</span>
-          <span class="tgl" aria-hidden="true">+</span>
-        </button>
-        <div class="bb"><div class="bbi"><div class="bank-body">
-          <p class="why">// because agents lie when retrieval gets messy.</p>
-          <div class="bcols">
-            <div><div class="blabel">the problem</div><p class="btext">Support agents answer confidently even when retrieval hands them garbage — and <b>a confident wrong answer costs more than no answer.</b></p></div>
-            <div><div class="blabel">the build</div><p class="btext">A deterministic orchestration layer: <b>explicit policy enforcement, safe tool gating</b> and stateful multi-turn reasoning under adversarial inputs. Retrieval is a hybrid consensus — <b>BM25 + TF-IDF + reranking</b> with grounding diagnostics — plus multilingual injection defense, retrieval-poisoning defense, <b>PII redaction</b> and calibrated confidence. When grounding is weak it refuses, the same way every time.</p><p class="own">↳ built and tuned the full retrieval → refusal path.</p></div>
-          </div>
-          <div class="pipe">
-            <div class="prow"><span class="pn">01</span><span class="pt"><b>query</b> <span>— the user question comes in</span></span></div>
-            <div class="prow"><span class="pn">02</span><span class="pt"><b>retrieve</b> <span>— hybrid search: semantic + BM25 keyword</span></span></div>
-            <div class="prow"><span class="pn">03</span><span class="pt"><b>ground</b> <span>— answers must trace to the docs</span></span></div>
-            <div class="prow"><span class="pn">04</span><span class="pt"><b>answer / refuse</b> <span>— grounded reply, or a clean deterministic no</span></span></div>
-          </div>
-          <div class="rcp"><div class="r1"><div class="rn"><span data-count="132">0</span>/132</div><div class="rl">evaluation tests passing — reproducible</div></div><div class="r1"><div class="rn">MULTI</div><div class="rl">lingual injection + poisoning defense</div></div></div>
-          <div class="bfoot">
-            <div class="stackrow"><span class="mchip">llamaindex</span><span class="mchip">bm25 · tf-idf</span><span class="mchip">reranking</span><span class="mchip">pii redaction</span><span class="mchip">prompt defense</span></div>
-            <a class="kbtn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">CODE ↗</a>
-          </div>
-        </div></div></div>
-      </article>
-
-      <article class="bank" data-bank>
-        <button class="bank-h" aria-expanded="false">
-          <span class="baddr">BANK.03</span>
-          <span class="btitle">Watershed</span>
-          <span class="btag">rl / negotiation</span>
-          <span class="tgl" aria-hidden="true">+</span>
-        </button>
-        <div class="bb"><div class="bbi"><div class="bank-body">
-          <p class="why">// to watch machines learn to share something scarce.</p>
-          <div class="bcols">
-            <div><div class="blabel">the problem</div><p class="btext">Scarce shared resources force a choice: hold your ground or make the deal. <b>Could agents learn that balance from nothing but experience?</b></p></div>
-            <div><div class="blabel">the build</div><p class="btext">A multi-agent RL environment simulating resource allocation under constraints — fed by <b>live environmental data</b>, with <b>trust dynamics and coalition formation</b> modeled into the reward. A language model trained with <b>GRPO</b> (TRL loop, served behind FastAPI) across massive self-play. Run long enough, the agents stopped just competing: <b>alliances formed.</b></p><p class="own">↳ designed the environment, reward and training loop.</p></div>
-          </div>
-          <div class="pipe">
-            <div class="prow"><span class="pn">01</span><span class="pt"><b>arena</b> <span>— agents face a scarce shared resource</span></span></div>
-            <div class="prow"><span class="pn">02</span><span class="pt"><b>self-play</b> <span>— episode after episode against themselves</span></span></div>
-            <div class="prow"><span class="pn">03</span><span class="pt"><b>learn</b> <span>— GRPO updates from what worked</span></span></div>
-            <div class="prow"><span class="pn">04</span><span class="pt"><b>serve</b> <span>— the trained policy behind FastAPI</span></span></div>
-          </div>
-          <div class="rcp"><div class="r1"><div class="rn"><span data-count="100">0</span>K+</div><div class="rl">self-play episodes to convergence</div></div><div class="r1"><div class="rn">LIVE</div><div class="rl">environmental data in the loop</div></div></div>
-          <div class="bfoot">
-            <div class="stackrow"><span class="mchip">rl · grpo</span><span class="mchip">trl</span><span class="mchip">fastapi</span></div>
-            <a class="kbtn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">CODE ↗</a>
-          </div>
-        </div></div></div>
-      </article>
-
-      <article class="bank" data-bank>
-        <button class="bank-h" aria-expanded="false">
-          <span class="baddr">BANK.04</span>
-          <span class="btitle">Aegis<span class="bnew">NEW</span></span>
-          <span class="btag">trust &amp; safety / moderation</span>
-          <span class="tgl" aria-hidden="true">+</span>
-        </button>
-        <div class="bb"><div class="bbi"><div class="bank-body">
-          <p class="why">// because scaling trust shouldn't mean scaling the moderation team.</p>
-          <div class="bcols">
-            <div><div class="blabel">the problem</div><p class="btext">Platforms drown in user content. One-size-fits-all moderation misroutes everything — a kids' platform and an adult forum need different lines — and black-box decisions are <b>impossible to audit or appeal.</b></p></div>
-            <div><div class="blabel">the build</div><p class="btext">A multi-stage pipeline: an engine scores content across <b>7 harm categories</b> (Gemini, with a deterministic local fallback that always works), a <b>per-platform policy</b> applies thresholds, weights and custom rules, and confidence routes each item — <b>allow, human review, or block</b>. Every decision is explainable: the offending span, the category, the reasoning, the full routing trace.</p><p class="own">↳ solo — engine interface, policy system, review queue, dashboard.</p></div>
-          </div>
-          <div class="pipe">
-            <div class="prow"><span class="pn">01</span><span class="pt"><b>classify</b> <span>— 7 categories, 0–1 confidence, offending spans</span></span></div>
-            <div class="prow"><span class="pn">02</span><span class="pt"><b>apply policy</b> <span>— per-platform thresholds, toggles, custom rules</span></span></div>
-            <div class="prow"><span class="pn">03</span><span class="pt"><b>route</b> <span>— ALLOW · REVIEW · BLOCK, by calibrated confidence</span></span></div>
-            <div class="prow"><span class="pn">04</span><span class="pt"><b>review</b> <span>— priority queue for humans; verdicts feed back as audit</span></span></div>
-          </div>
-          <div class="rcp"><div class="r1"><div class="rn"><span data-count="7">0</span></div><div class="rl">harm categories, scored 0–1</div></div><div class="r1"><div class="rn"><span data-count="3">0</span></div><div class="rl">routes — allow / review / block</div></div><div class="r1"><div class="rn">FULL</div><div class="rl">audit trail — span · reasoning · trace</div></div></div>
-          <div class="bfoot">
-            <div class="stackrow"><span class="mchip">next.js 16</span><span class="mchip">react 19</span><span class="mchip">typescript</span><span class="mchip">prisma · sqlite</span><span class="mchip">vitest</span></div>
-            <a class="kbtn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">CODE ↗</a>
-          </div>
-        </div></div></div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- 0x03 RUNTIME -->
-  <section class="sector" id="runtime" data-sector="0x03" data-name="RUNTIME">
-    <div class="wrap">
-      <div class="sec-head"><span class="addr">0x03</span><h2>Runtime</h2><span class="rule"></span><span class="cnt">PS AUX | GREP KUNAL</span></div>
-      <div class="procwrap">
-        <table class="proc">
-          <thead><tr><th>pid</th><th>process</th><th>role</th><th>since</th><th>stat</th></tr></thead>
-          <tbody>
-            <tr><td>001</td><td><span class="pname">EMERGENT</span><span class="sub">yc s24 · ai startup</span></td><td>frontend engineering intern</td><td>jun 2026 —</td><td><span class="st run">RUNNING</span></td></tr>
-            <tr><td>002</td><td><span class="pname">OPEN_SOURCE_CLUB</span><span class="sub">scaler school of technology</span></td><td>operations lead</td><td>2026 —</td><td><span class="st run">RUNNING</span></td></tr>
-            <tr><td>003</td><td><span class="pname">ASPIRANTS_RELATIONS</span><span class="sub">scaler school of technology</span></td><td>head of immersions</td><td>2026 —</td><td><span class="st run">RUNNING</span></td></tr>
-            <tr><td>004</td><td><span class="pname">OSTRIUS_AI</span><span class="sub">shipped auth &amp; verification end to end</span></td><td>swe intern</td><td>apr–jun 2026</td><td><span class="st exit">EXIT 0</span></td></tr>
-            <tr><td>005</td><td><span class="pname">HACK_CLUB</span><span class="sub">campfire · daydream · codeday bengaluru — 500+ participants</span></td><td>growth &amp; ops lead</td><td>nov 2024 – mar 2026</td><td><span class="st exit">EXIT 0</span></td></tr>
-            <tr><td>006</td><td><span class="pname">DSA_TEACHING</span><span class="sub">50+ students mentored — algorithms &amp; structured thinking</span></td><td>teaching assistant</td><td>may–jun 2026</td><td><span class="st exit">EXIT 0</span></td></tr>
-            <tr><td>007</td><td><span class="pname">APPLE_DEV_ACADEMY</span><span class="sub">application in progress</span></td><td>applicant</td><td>2027 cohort</td><td><span class="st queue">QUEUED</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="heatp" data-heat>
-        <div class="hm-h">
-          <span><b>▸</b> COMMIT MAP — LAST 12 MONTHS</span>
-          <span class="hm-read" data-hm-read aria-live="polite"></span>
-          <a href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">GITHUB / KUNALKUMAR-13 ↗</a>
-        </div>
-        <div class="hm-wrap"><div class="hm-grid" data-hm-grid role="img" aria-label="GitHub contribution heatmap — loading"></div></div>
-        <div class="hm-stats" data-hm-stats hidden>
-          <div class="r1"><div class="rn" data-hm-total>·</div><div class="rl">contributions — last year</div></div>
-          <div class="r1"><div class="rn" data-hm-cur>·</div><div class="rl">current streak — days</div></div>
-          <div class="r1"><div class="rn" data-hm-max>·</div><div class="rl">longest streak — days</div></div>
-          <div class="r1"><div class="rn" data-hm-busy>·</div><div class="rl">busiest day</div></div>
+          <div class="pf-cap"><span>移動して現像 — MOVE TO DEVELOP</span><span data-plate-src>GEN</span></div>
+        </figure>
+        <div class="barcode">
+          <canvas id="barcode" aria-hidden="true"></canvas>
+          <div class="bmeta">KUNALKUMAR13<br>BENGALURU · IN<br>©2026 — MADE BY HAND</div>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- 0x04 LOG -->
-  <section class="sector" id="log" data-sector="0x04" data-name="LOG">
-    <div class="wrap">
-      <div class="sec-head"><span class="addr">0x04</span><h2>Life.log</h2><span class="rule"></span><span class="cnt">APPEND-ONLY</span></div>
-      <div class="logp">
-        <div class="log-h"><span><b>▸</b> ~/kunal — tail -f life.log</span><span data-log-count>8 LINES</span></div>
-        <div class="log-lines" data-log-lines>
-          <div class="ll"><span class="ts">[2024-11]</span><span class="m">▪</span><span class="tx">joined hack club — bengaluru ops</span></div>
-          <div class="ll"><span class="ts">[2026-01]</span><span class="m">▪</span><span class="tx">hpair delegate — <b>harvard university</b></span></div>
-          <div class="ll hot"><span class="ts">[2026]</span><span class="m">▪</span><span class="tx">selected — <b>activate ai fellowship · india's first cohort, 1 of 15</b></span></div>
-          <div class="ll"><span class="ts">[2026-04]</span><span class="m">▪</span><span class="tx">joined ostrius ai — swe intern</span></div>
-          <div class="ll"><span class="ts">[2026-06]</span><span class="m">▪</span><span class="tx">joined <b>emergent (yc s24)</b> — frontend</span></div>
-          <div class="ll"><span class="ts">[2026]</span><span class="m">▪</span><span class="tx">operations lead — open source club, scaler</span></div>
-          <div class="ll"><span class="ts">[2026]</span><span class="m">▪</span><span class="tx">advanced to <b>round 2 — mats</b> (ml alignment theory scholars)</span></div>
-          <div class="ll"><span class="ts">[ now  ]</span><span class="m">▪</span><span class="tx">reading: you, on this portfolio<span class="blockc" aria-hidden="true"></span></span></div>
-        </div>
-        <div class="guest" data-guest></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 0x05 MODULES -->
-  <section class="sector" id="brain" data-sector="0x05" data-name="SECOND BRAIN">
-    <div class="wrap">
-      <div class="sec-head"><span class="addr">0x05</span><h2>Second Brain</h2><span class="rule"></span><span class="cnt">KUNAL_HQ · v10 · PERSONAL SYSTEM</span></div>
-      <div class="brain-grid">
-        <div>
-          <p class="btext" style="font-size:15.5px;max-width:58ch"><b>July 2026:</b> an internship, college, three applications and a life — all carried in working memory. The result was fog. The fix wasn't discipline; <b>it was a place.</b> So I built one: an external brain that sorts, remembers, and shows only what matters now.</p>
-          <div style="margin-top:26px">
-            <div class="organ"><span class="ok">vault</span><span class="ov2"><b>plain-text files</b> on my machine — the single source of truth. journal, habits, goals, projects, reviews.</span></div>
-            <div class="organ"><span class="ok">agent</span><span class="ov2"><b>an AI that reads and writes the vault</b> — plus a silent pulse at 8:23 every morning that pulls the world in: weather, calendar, GitHub ×2, LeetCode.</span></div>
-            <div class="organ"><span class="ok">page</span><span class="ov2"><b>one dashboard</b> that mirrors it all — and always opens to exactly one thing.</span></div>
-          </div>
-          <p class="capline">capture from any terminal: <code>$ brain &lt;thought&gt;</code> — two seconds, zero judgment, sorted later.</p>
-          <p class="capline" style="margin-top:10px">the game layer earns XP <b style="color:var(--amber)">only from real, verified data</b> — never invented. it runs my mornings; this section is just its shadow.</p>
-        </div>
-        <div class="bterm" aria-label="neural link demo">
-          <div class="bt-h"><span><b>▸</b> NEURAL LINK — kunal_hq</span><span>LOCAL DEMO</span></div>
-          <div class="bt-b" data-bterm></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 0x06 MODULES -->
-  <section class="sector" id="modules" data-sector="0x06" data-name="MODULES">
-    <div class="wrap">
-      <div class="sec-head"><span class="addr">0x06</span><h2>Loaded Modules</h2><span class="rule"></span><span class="cnt">LSMOD</span></div>
-      <div class="mods">
-        <div class="mod"><h3>interface</h3><ul><li>react</li><li>typescript</li><li>next.js</li></ul></div>
-        <div class="mod"><h3>api</h3><ul><li>fastapi · node</li><li>pydantic · sql</li><li>go <i>— learning</i></li><li>java</li></ul></div>
-        <div class="mod"><h3>intelligence</h3><ul><li>llm orchestration</li><li>rag · retrieval</li><li>rl · agents · faiss</li><li>pytorch · llamaindex <i>— daily</i></li></ul></div>
-        <div class="mod"><h3>infra</h3><ul><li>docker · k8s <i>— when it matters</i></li><li>aws · linux</li><li>cloudflare · git</li></ul></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 0x06 CONTACT -->
-  <section class="sector" id="contact" data-sector="0x07" data-name="CONTACT">
-    <div class="wrap say">
-      <div class="sec-head"><span class="addr">0x07</span><h2>Transmit</h2><span class="rule"></span><span class="cnt">STDIN OPEN</span></div>
-      <h2 class="display">SAY<br>HELLO<span class="dot">.</span></h2>
-      <div class="mailrow">
-        <button class="mailbtn" data-mail>kunalsain0324@gmail.com</button>
-        <div class="mailhint" data-mail-hint>click to copy · click again to open mail</div>
-      </div>
-      <div class="linkrow">
-        <a class="kbtn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">GITHUB ↗</a>
-        <a class="kbtn" href="https://linkedin.com/in/sainkunal" target="_blank" rel="noopener">LINKEDIN ↗</a>
-        <a class="kbtn" href="kunal-kumar-resume.pdf" target="_blank" rel="noopener">RESUME.PDF ↗</a>
-        <button class="kbtn" data-colophon>COLOPHON</button>
-      </div>
-      <div class="avail">available for 2026 — full-time &amp; collabs</div>
-    </div>
-  </section>
-
-  <div class="foot">
-    <span>© 2026 KUNAL KUMAR — BUILT BY HAND</span>
-    <span class="fr">
-      <button class="kbtn" data-sound>SND: OFF</button>
-      <a class="kbtn" href="#top">TOP ↑</a>
-    </span>
-    <span>LOG RUNNING · <span data-signoff>NOTHING FORGOTTEN</span></span>
   </div>
+</section>
+
+<!-- ═══ 01 CONTENTS ═══ -->
+<section class="spread" id="contents" data-spread="01" data-name="CONTENTS" data-jp="目次">
+  <div class="wrap">
+    <div class="shead"><span class="no">Ø1</span><h2>Contents</h2><span class="jp">目次</span></div>
+    <nav class="toc" aria-label="contents">
+      <a href="#profile"><span class="tno">Ø2</span><span class="tnm">Profile</span><span class="tjp">識別</span><span class="tpg">— who is running</span></a>
+      <a href="#works"><span class="tno">Ø3</span><span class="tnm">Works</span><span class="tjp">作品</span><span class="tpg">— four systems, shipped</span></a>
+      <a href="#runtime"><span class="tno">Ø4</span><span class="tnm">Runtime</span><span class="tjp">経歴</span><span class="tpg">— roles &amp; the commit map</span></a>
+      <a href="#brain"><span class="tno">Ø5</span><span class="tnm">Second Brain</span><span class="tjp">第二の脳</span><span class="tpg">— the system behind the system</span></a>
+      <a href="#log"><span class="tno">Ø6</span><span class="tnm">Life.log</span><span class="tjp">記録</span><span class="tpg">— append-only</span></a>
+      <a href="#modules"><span class="tno">Ø7</span><span class="tnm">Modules</span><span class="tjp">道具</span><span class="tpg">— what I reach for</span></a>
+      <a href="#colo"><span class="tno">Ø8</span><span class="tnm">Colophon</span><span class="tjp">奥付</span><span class="tpg">— contact &amp; how this was made</span></a>
+    </nav>
+  </div>
+</section>
+
+<!-- ═══ 02 PROFILE ═══ -->
+<section class="spread" id="profile" data-spread="02" data-name="PROFILE" data-jp="識別">
+  <div class="wrap">
+    <div class="shead"><span class="no">Ø2</span><h2>Profile</h2><span class="jp">識別</span></div>
+    <div class="two">
+      <div>
+        <p class="lede">I build systems that reach <span class="mg">production</span> — <b>not demos.</b></p>
+        <div class="hair"></div>
+        <div class="body">
+          <p>A <b>memory engine</b> for unfinished work. An agent that <b>refuses to hallucinate</b>. An arena where machines <b>learn to negotiate</b>. A moderation pipeline whose every decision you can <b>open up and audit</b>.</p>
+          <p>I work where memory, retrieval and reinforcement learning meet things that actually ship — and stay running long after the demo. Lately I'm chasing what makes them <b>safe</b>: I'm through to round 2 at MATS, and I read alignment work the way other people read the news.</p>
+          <p>Before the AI work there were two years of community: Hack Club Bengaluru, 500+ participants fed and online, and a teaching assistantship that put 50+ students through algorithms. The through-line is the same — <b>build the thing that remembers, then hand it to people.</b></p>
+        </div>
+        <div class="pull"><b>「作ったものが、なぜ作られたかを覚えている」</b>Systems that remember why they were built.</div>
+      </div>
+      <div>
+        <div class="lbl" style="margin-bottom:11px"><b>◆</b> SPECIFICATION / 仕様</div>
+        <div class="spec">
+          <div class="r"><span class="k">host</span><span class="v">Bengaluru, India</span></div>
+          <div class="r"><span class="k">process</span><span class="v">Frontend Engineering Intern — Emergent (YC S24)</span></div>
+          <div class="r"><span class="k">study</span><span class="v">CS @ BITS Pilani — class of 2027</span></div>
+          <div class="r"><span class="k">focus</span><span class="v">AI safety · MATS round 2</span></div>
+          <div class="r"><span class="k">honours</span><span class="v">Activate AI Fellowship — India's first cohort, 1 of 15 · HPAIR delegate, Harvard</span></div>
+          <div class="r"><span class="k">state</span><span class="v"><span class="dot"></span>open to opportunities</span></div>
+          <div class="r"><span class="k">local time</span><span class="v" data-spec-clock>--:--:-- IST</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 03 WORKS ═══ -->
+<section class="spread" id="works" data-spread="03" data-name="WORKS" data-jp="作品">
+  <div class="wrap">
+    <div class="shead"><span class="no">Ø3</span><h2>Works</h2><span class="jp">作品 — 4 PLATES</span></div>
+
+    <div class="workhead" role="tablist" aria-label="works">
+      <button role="tab" aria-selected="true" aria-controls="w1" class="on" data-w="1"><span class="wn">PLATE Ø1</span><span class="wt">Recall.me</span></button>
+      <button role="tab" aria-selected="false" aria-controls="w2" data-w="2"><span class="wn">PLATE Ø2</span><span class="wt">Triage Agent</span></button>
+      <button role="tab" aria-selected="false" aria-controls="w3" data-w="3"><span class="wn">PLATE Ø3</span><span class="wt">Watershed</span></button>
+      <button role="tab" aria-selected="false" aria-controls="w4" data-w="4"><span class="wn">PLATE Ø4</span><span class="wt">Aegis</span></button>
+    </div>
+
+    <div class="plates">
+      <article class="pl on" id="w1" role="tabpanel" tabindex="0">
+        <div class="pl-top">
+          <div><h3 class="pl-title">Recall.me</h3><p class="pl-why">// because I kept losing my own unfinished work.</p></div>
+          <div class="pl-tag">記憶 · 継続<br>MEMORY / CONTINUITY</div>
+        </div>
+        <div class="pl-grid">
+          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE PROBLEM / 問題</div><div class="body"><p>Work scatters. You start something, life interrupts, and the context — the tabs, the half-formed intent — evaporates between sessions. Tools remember files; <b>nothing remembers where you actually were.</b></p></div></div>
+          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE BUILD / 構築</div><div class="body"><p>A <b>local-first continuity OS</b>: a browser extension and watchers stream activity signals into a daemon — event storage, <b>recovery scoring, investigation ranking</b> and semantic search — with a Python/Qt launcher on top: live search, previews, one-key resume. Recall survives restarts.</p><p style="color:var(--mag-t)">↳ solo build — extension → daemon → recovery interface. end to end.</p></div></div>
+        </div>
+        <div class="lbl" style="margin-bottom:9px"><b>◆</b> PIPELINE / 工程</div>
+        <div class="pipe">
+          <div class="pr"><span class="pn">Ø1</span><span class="pt"><b>ingest</b> <span>— browser, file &amp; dev activity stream in</span></span></div>
+          <div class="pr"><span class="pn">Ø2</span><span class="pt"><b>store</b> <span>— events land in the local daemon</span></span></div>
+          <div class="pr"><span class="pn">Ø3</span><span class="pt"><b>score</b> <span>— recovery scoring + investigation ranking</span></span></div>
+          <div class="pr"><span class="pn">Ø4</span><span class="pt"><b>recall</b> <span>— semantic search across everything</span></span></div>
+          <div class="pr"><span class="pn">Ø5</span><span class="pt"><b>resume</b> <span>— the Qt launcher puts you back mid-thought</span></span></div>
+        </div>
+        <div class="figs">
+          <div class="f"><div class="fn" data-count="3">0</div><div class="fl">signal streams — browser · file · dev</div></div>
+          <div class="f"><div class="fn">LIVE</div><div class="fl">daemon apis · real-time retrieval</div></div>
+          <div class="f"><div class="fn">LOCAL</div><div class="fl">first — nothing leaves the machine</div></div>
+        </div>
+        <div class="plfoot"><div class="chips"><span class="chip">python</span><span class="chip">qt</span><span class="chip">browser extension</span><span class="chip">daemon apis</span><span class="chip">semantic search</span></div><a class="btn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">CODE ↗</a></div>
+      </article>
+
+      <article class="pl" id="w2" role="tabpanel" tabindex="0">
+        <div class="pl-top">
+          <div><h3 class="pl-title">Triage<br>Agent</h3><p class="pl-why">// because agents lie when retrieval gets messy.</p></div>
+          <div class="pl-tag">接地 · 拒否<br>AGENTS / GROUNDING</div>
+        </div>
+        <div class="pl-grid">
+          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE PROBLEM / 問題</div><div class="body"><p>Support agents answer confidently even when retrieval hands them garbage — and <b>a confident wrong answer costs more than no answer.</b></p></div></div>
+          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE BUILD / 構築</div><div class="body"><p>A deterministic orchestration layer: <b>explicit policy enforcement, safe tool gating</b> and stateful multi-turn reasoning under adversarial inputs. Retrieval is a hybrid consensus — <b>BM25 + TF-IDF + reranking</b> with grounding diagnostics — plus multilingual injection defense, retrieval-poisoning defense, <b>PII redaction</b> and calibrated confidence. When grounding is weak it refuses, the same way every time.</p><p style="color:var(--mag-t)">↳ built and tuned the full retrieval → refusal path.</p></div></div>
+        </div>
+        <div class="lbl" style="margin-bottom:9px"><b>◆</b> PIPELINE / 工程</div>
+        <div class="pipe">
+          <div class="pr"><span class="pn">Ø1</span><span class="pt"><b>query</b> <span>— the user question comes in</span></span></div>
+          <div class="pr"><span class="pn">Ø2</span><span class="pt"><b>retrieve</b> <span>— hybrid search: semantic + BM25 keyword</span></span></div>
+          <div class="pr"><span class="pn">Ø3</span><span class="pt"><b>ground</b> <span>— answers must trace to the docs</span></span></div>
+          <div class="pr"><span class="pn">Ø4</span><span class="pt"><b>answer / refuse</b> <span>— grounded reply, or a clean deterministic no</span></span></div>
+        </div>
+        <div class="figs">
+          <div class="f"><div class="fn"><span data-count="132">0</span>/132</div><div class="fl">evaluation tests passing — reproducible</div></div>
+          <div class="f"><div class="fn">MULTI</div><div class="fl">lingual injection + poisoning defense</div></div>
+          <div class="f"><div class="fn">PII</div><div class="fl">redaction · calibrated confidence</div></div>
+        </div>
+        <div class="plfoot"><div class="chips"><span class="chip">llamaindex</span><span class="chip">bm25 · tf-idf</span><span class="chip">reranking</span><span class="chip">pii redaction</span><span class="chip">prompt defense</span></div><a class="btn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">CODE ↗</a></div>
+      </article>
+
+      <article class="pl" id="w3" role="tabpanel" tabindex="0">
+        <div class="pl-top">
+          <div><h3 class="pl-title">Watershed</h3><p class="pl-why">// to watch machines learn to share something scarce.</p></div>
+          <div class="pl-tag">交渉 · 強化学習<br>RL / NEGOTIATION</div>
+        </div>
+        <div class="pl-grid">
+          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE PROBLEM / 問題</div><div class="body"><p>Scarce shared resources force a choice: hold your ground or make the deal. <b>Could agents learn that balance from nothing but experience?</b></p></div></div>
+          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE BUILD / 構築</div><div class="body"><p>A multi-agent RL environment simulating resource allocation under constraints — fed by <b>live environmental data</b>, with <b>trust dynamics and coalition formation</b> modeled into the reward. A language model trained with <b>GRPO</b> (TRL loop, served behind FastAPI) across massive self-play. Run long enough, the agents stopped just competing: <b>alliances formed.</b></p><p style="color:var(--mag-t)">↳ designed the environment, reward and training loop.</p></div></div>
+        </div>
+        <div class="lbl" style="margin-bottom:9px"><b>◆</b> PIPELINE / 工程</div>
+        <div class="pipe">
+          <div class="pr"><span class="pn">Ø1</span><span class="pt"><b>arena</b> <span>— agents face a scarce shared resource</span></span></div>
+          <div class="pr"><span class="pn">Ø2</span><span class="pt"><b>self-play</b> <span>— episode after episode against themselves</span></span></div>
+          <div class="pr"><span class="pn">Ø3</span><span class="pt"><b>learn</b> <span>— GRPO updates from what worked</span></span></div>
+          <div class="pr"><span class="pn">Ø4</span><span class="pt"><b>serve</b> <span>— the trained policy behind FastAPI</span></span></div>
+        </div>
+        <div class="figs">
+          <div class="f"><div class="fn"><span data-count="100">0</span>K+</div><div class="fl">self-play episodes to convergence</div></div>
+          <div class="f"><div class="fn">LIVE</div><div class="fl">environmental data in the loop</div></div>
+          <div class="f"><div class="fn">COAL</div><div class="fl">-ition formation · trust dynamics</div></div>
+        </div>
+        <div class="plfoot"><div class="chips"><span class="chip">rl · grpo</span><span class="chip">trl</span><span class="chip">fastapi</span><span class="chip">multi-agent</span></div><a class="btn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">CODE ↗</a></div>
+      </article>
+
+      <article class="pl" id="w4" role="tabpanel" tabindex="0">
+        <div class="pl-top">
+          <div><h3 class="pl-title">Aegis<span class="nw">NEW</span></h3><p class="pl-why">// because scaling trust shouldn't mean scaling the moderation team.</p></div>
+          <div class="pl-tag">信頼 · 安全<br>TRUST &amp; SAFETY</div>
+        </div>
+        <div class="pl-grid">
+          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE PROBLEM / 問題</div><div class="body"><p>Platforms drown in user content. One-size-fits-all moderation misroutes everything — a kids' platform and an adult forum need different lines — and black-box decisions are <b>impossible to audit or appeal.</b></p></div></div>
+          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE BUILD / 構築</div><div class="body"><p>A multi-stage pipeline: an engine scores content across <b>7 harm categories</b> (Gemini, with a deterministic local fallback that always works), a <b>per-platform policy</b> applies thresholds, weights and custom rules, and confidence routes each item — <b>allow, human review, or block</b>. Every decision is explainable: the offending span, the category, the reasoning, the full routing trace.</p><p style="color:var(--mag-t)">↳ solo — engine interface, policy system, review queue, dashboard.</p></div></div>
+        </div>
+        <div class="lbl" style="margin-bottom:9px"><b>◆</b> PIPELINE / 工程</div>
+        <div class="pipe">
+          <div class="pr"><span class="pn">Ø1</span><span class="pt"><b>classify</b> <span>— 7 categories, 0–1 confidence, offending spans</span></span></div>
+          <div class="pr"><span class="pn">Ø2</span><span class="pt"><b>apply policy</b> <span>— per-platform thresholds, toggles, custom rules</span></span></div>
+          <div class="pr"><span class="pn">Ø3</span><span class="pt"><b>route</b> <span>— ALLOW · REVIEW · BLOCK, by calibrated confidence</span></span></div>
+          <div class="pr"><span class="pn">Ø4</span><span class="pt"><b>review</b> <span>— priority queue for humans; verdicts feed back as audit</span></span></div>
+        </div>
+        <div class="figs">
+          <div class="f"><div class="fn" data-count="7">0</div><div class="fl">harm categories, scored 0–1</div></div>
+          <div class="f"><div class="fn" data-count="3">0</div><div class="fl">routes — allow / review / block</div></div>
+          <div class="f"><div class="fn">FULL</div><div class="fl">audit trail — span · reasoning · trace</div></div>
+        </div>
+        <div class="plfoot"><div class="chips"><span class="chip">next.js 16</span><span class="chip">react 19</span><span class="chip">typescript</span><span class="chip">prisma · sqlite</span><span class="chip">vitest</span></div><a class="btn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">CODE ↗</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 04 RUNTIME ═══ -->
+<section class="spread" id="runtime" data-spread="04" data-name="RUNTIME" data-jp="経歴">
+  <div class="wrap">
+    <div class="shead"><span class="no">Ø4</span><h2>Runtime</h2><span class="jp">経歴 — 7 PROCESSES</span></div>
+    <div class="lbl" style="margin-bottom:8px" data-swipe-hint><b>◆</b> SWIPE THE TABLE →</div>
+    <div class="tblwrap">
+      <table class="rt">
+        <thead><tr><th>pid</th><th>process</th><th>role</th><th>since</th><th>state</th></tr></thead>
+        <tbody>
+          <tr><td>001</td><td><span class="nm">Emergent</span><span class="sb">yc s24 · ai startup</span></td><td>frontend engineering intern</td><td>jun 2026 —</td><td><span class="st run">RUNNING</span></td></tr>
+          <tr><td>002</td><td><span class="nm">Open Source Club</span><span class="sb">scaler school of technology</span></td><td>operations lead</td><td>2026 —</td><td><span class="st run">RUNNING</span></td></tr>
+          <tr><td>003</td><td><span class="nm">Aspirants Relations</span><span class="sb">scaler school of technology</span></td><td>head of immersions</td><td>2026 —</td><td><span class="st run">RUNNING</span></td></tr>
+          <tr><td>004</td><td><span class="nm">Ostrius AI</span><span class="sb">shipped auth &amp; verification end to end</span></td><td>swe intern</td><td>apr–jun 2026</td><td><span class="st done">EXIT Ø</span></td></tr>
+          <tr><td>005</td><td><span class="nm">Hack Club</span><span class="sb">campfire · daydream · codeday bengaluru — 500+ participants</span></td><td>growth &amp; ops lead</td><td>nov 2024 – mar 2026</td><td><span class="st done">EXIT Ø</span></td></tr>
+          <tr><td>006</td><td><span class="nm">DSA Teaching</span><span class="sb">50+ students mentored — algorithms &amp; structured thinking</span></td><td>teaching assistant</td><td>may–jun 2026</td><td><span class="st done">EXIT Ø</span></td></tr>
+          <tr><td>007</td><td><span class="nm">Apple Dev Academy</span><span class="sb">application in progress</span></td><td>applicant</td><td>2027 cohort</td><td><span class="st q">QUEUED</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="heat" data-heat>
+      <div class="heat-h"><span><b>◆</b> COMMIT MAP — LAST 12 MONTHS / 記録</span><span class="rd" data-hm-read aria-live="polite"></span><a href="https://github.com/kunalKumar-13" target="_blank" rel="noopener" style="border-bottom:1px solid var(--rule)">GITHUB / KUNALKUMAR-13 ↗</a></div>
+      <div class="heat-w"><div class="hg" data-hm-grid role="img" aria-label="GitHub contribution heatmap — loading"></div></div>
+      <div class="heat-s" data-hm-stats hidden>
+        <div class="f"><div class="fn" data-hm-total style="font-family:var(--disp);font-weight:900;font-size:30px;letter-spacing:-.04em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">contributions — last year</div></div>
+        <div class="f"><div class="fn" data-hm-cur style="font-family:var(--disp);font-weight:900;font-size:30px;letter-spacing:-.04em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">current streak — days</div></div>
+        <div class="f"><div class="fn" data-hm-max style="font-family:var(--disp);font-weight:900;font-size:30px;letter-spacing:-.04em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">longest streak — days</div></div>
+        <div class="f"><div class="fn" data-hm-busy style="font-family:var(--disp);font-weight:900;font-size:30px;letter-spacing:-.04em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">busiest day</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 05 SECOND BRAIN ═══ -->
+<section class="spread" id="brain" data-spread="05" data-name="SECOND BRAIN" data-jp="第二の脳">
+  <div class="wrap">
+    <div class="shead"><span class="no">Ø5</span><h2>Second Brain</h2><span class="jp">第二の脳 — KUNAL_HQ v10</span></div>
+    <div class="two">
+      <div>
+        <div class="body"><p><b>July 2026:</b> an internship, college, three applications and a life — all carried in working memory. The result was fog. The fix wasn't discipline; <b>it was a place.</b> So I built one: an external brain that sorts, remembers, and shows only what matters now.</p></div>
+        <div style="margin-top:24px">
+          <div class="organ"><span class="ok">vault</span><span class="ov"><b>plain-text files</b> on my machine — the single source of truth. journal, habits, goals, projects, reviews.</span></div>
+          <div class="organ"><span class="ok">agent</span><span class="ov"><b>an AI that reads and writes the vault</b> — plus a silent pulse at 8:23 every morning that pulls the world in: weather, calendar, GitHub ×2, LeetCode.</span></div>
+          <div class="organ"><span class="ok">page</span><span class="ov"><b>one dashboard</b> that mirrors it all — and always opens to exactly one thing.</span></div>
+        </div>
+        <p class="cap">capture from any terminal: <code>$ brain &lt;thought&gt;</code> — two seconds, zero judgment, sorted later.</p>
+        <p class="cap" style="margin-top:9px">the game layer earns XP <b style="color:var(--mag-t)">only from real, verified data</b> — never invented. it runs my mornings; this section is just its shadow.</p>
+      </div>
+      <div class="term" aria-label="neural link demo">
+        <div class="term-h"><span>◆ NEURAL LINK — kunal_hq</span><span>LOCAL DEMO</span></div>
+        <div class="term-b" data-bterm></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 06 LOG ═══ -->
+<section class="spread" id="log" data-spread="06" data-name="LIFE.LOG" data-jp="記録">
+  <div class="wrap">
+    <div class="shead"><span class="no">Ø6</span><h2>Life.log</h2><span class="jp">記録 — APPEND-ONLY</span></div>
+    <div class="log">
+      <div class="log-h"><span>◆ ~/kunal — tail -f life.log</span><span>8 LINES</span></div>
+      <div class="log-b">
+        <div class="ll"><span class="ts">[2024-11]</span><span class="m">▪</span><span class="tx">joined hack club — bengaluru ops</span></div>
+        <div class="ll"><span class="ts">[2026-01]</span><span class="m">▪</span><span class="tx">hpair delegate — <b>harvard university</b></span></div>
+        <div class="ll hi"><span class="ts">[2026]</span><span class="m">▪</span><span class="tx">selected — <b>activate ai fellowship · india's first cohort, 1 of 15</b></span></div>
+        <div class="ll"><span class="ts">[2026-04]</span><span class="m">▪</span><span class="tx">joined ostrius ai — swe intern</span></div>
+        <div class="ll"><span class="ts">[2026-06]</span><span class="m">▪</span><span class="tx">joined <b>emergent (yc s24)</b> — frontend</span></div>
+        <div class="ll"><span class="ts">[2026]</span><span class="m">▪</span><span class="tx">operations lead — open source club, scaler</span></div>
+        <div class="ll"><span class="ts">[2026]</span><span class="m">▪</span><span class="tx">advanced to <b>round 2 — mats</b> (ml alignment theory scholars)</span></div>
+        <div class="ll"><span class="ts">[ now ]</span><span class="m">▪</span><span class="tx">reading: you, on this page<span class="cur" aria-hidden="true"></span></span></div>
+      </div>
+      <div class="guest" data-guest></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 07 MODULES ═══ -->
+<section class="spread" id="modules" data-spread="07" data-name="MODULES" data-jp="道具">
+  <div class="wrap">
+    <div class="shead"><span class="no">Ø7</span><h2>Modules</h2><span class="jp">道具 — WHAT I REACH FOR</span></div>
+    <div class="mods">
+      <div class="mod"><h3>interface</h3><div class="jpx">界面</div><ul><li>react</li><li>typescript</li><li>next.js</li></ul></div>
+      <div class="mod"><h3>api</h3><div class="jpx">通信</div><ul><li>fastapi · node</li><li>pydantic · sql</li><li>go <i>— learning</i></li><li>java</li></ul></div>
+      <div class="mod"><h3>intelligence</h3><div class="jpx">知能</div><ul><li>llm orchestration</li><li>rag · retrieval</li><li>rl · agents · faiss</li><li>pytorch · llamaindex <i>— daily</i></li></ul></div>
+      <div class="mod"><h3>infra</h3><div class="jpx">基盤</div><ul><li>docker · k8s <i>— when it matters</i></li><li>aws · linux</li><li>cloudflare · git</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 08 COLOPHON ═══ -->
+<section class="spread" id="colo" data-spread="08" data-name="COLOPHON" data-jp="奥付">
+  <div class="wrap">
+    <div class="shead"><span class="no">Ø8</span><h2>Colophon</h2><span class="jp">奥付</span></div>
+    <h2 class="sayhi">SAY<br>HELLO<span class="mg">.</span></h2>
+    <button class="mail" data-mail>kunalsain0324@gmail.com</button>
+    <div class="mailhint" data-mail-hint>click to copy · click again to open mail</div>
+    <div class="links">
+      <a class="btn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">GITHUB ↗</a>
+      <a class="btn" href="https://linkedin.com/in/sainkunal" target="_blank" rel="noopener">LINKEDIN ↗</a>
+      <a class="btn" href="kunal-kumar-resume.pdf" target="_blank" rel="noopener">RÉSUMÉ.PDF ↗</a>
+      <button class="btn" data-print>PRINT ISSUE</button>
+    </div>
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--mag-t);text-transform:uppercase;margin-top:26px">● available for 2026 — full-time &amp; collabs</div>
+
+    <dl class="colo">
+      <div><dt>Typeface / 書体</dt><dd><b>Archivo</b> — display &amp; text<br><b>JetBrains Mono</b> — labels<br><b>Noto Sans JP</b> — 日本語</dd></div>
+      <div><dt>Built with / 制作</dt><dd>Hand-written <b>HTML, CSS &amp; vanilla JS</b>.<br>No framework. No build step.<br>One page, one script.</dd></div>
+      <div><dt>Plate / 図版</dt><dd>A live <b>1-bit dither engine</b> — Atkinson, Floyd–Steinberg and Bayer ordered — rendering a topography of real commit data. It develops under your cursor. Point <code style="font-family:var(--mono);font-size:11px">data-photo</code> at an image and it dithers that instead.</dd></div>
+      <div><dt>Live data / 実データ</dt><dd>Bengaluru clock, GitHub commit map and streaks are <b>fetched, not typed</b>. If a feed is down it says so.</dd></div>
+      <div><dt>Field guide / 秘密</dt><dd><b>⌘K</b> — command palette<br><b>1–4</b> — switch plates<br><b>D</b> — cycle dither<br><b>G</b> — sign the log</dd></div>
+      <div><dt>Imprint / 奥付</dt><dd>Edition Ø1, 2026.<br>Set in Bengaluru, India.<br>© Kunal Kumar — made by hand.</dd></div>
+    </dl>
+
+    <div class="imprint"><span>KUNAL KUMAR — ISSUE Ø1</span><span data-signoff>NOTHING FORGOTTEN</span><span>© 2026 · 記憶</span></div>
+  </div>
+</section>
 
 </main>
 
-<div class="xh-x" aria-hidden="true"></div><div class="xh-y" aria-hidden="true"></div><div class="xh-tag" aria-hidden="true">x:0000 y:0000</div>
+<div class="ov" data-pal-ov><div class="pal" role="dialog" aria-modal="true" aria-label="command palette"><input data-pal-in placeholder="type a command…" aria-label="command"><div class="list" data-pal-list></div></div></div>
 
 <script defer src="script.js"></script>
 </body>
