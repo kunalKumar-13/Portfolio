@@ -93,7 +93,7 @@ nav.top>*{pointer-events:auto}
 
 /* ─ layout ──────────────────────────────────── */
 main{position:relative;z-index:1}
-.spread{padding:clamp(90px,13vh,150px) var(--gut);position:relative;border-bottom:1px solid var(--rule)}
+.spread{scroll-margin-top:92px;padding:clamp(90px,13vh,150px) var(--gut);position:relative;border-bottom:1px solid var(--rule)}
 .spread:last-of-type{border-bottom:none}
 .wrap{max-width:1400px;margin:0 auto}
 .shead{display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:clamp(14px,3vw,34px);padding-bottom:14px;border-bottom:2px solid var(--ink);margin-bottom:clamp(30px,4.5vw,54px)}
@@ -185,23 +185,41 @@ main{position:relative;z-index:1}
 .workhead button.on .wt{color:var(--paper)}
 .workhead button.on .wn{color:var(--mag)}
 @media(max-width:760px){.workhead{grid-template-columns:repeat(2,1fr)}}
-.workshot{position:relative;border:1px solid var(--ink);background:var(--paper2);overflow:hidden;margin-bottom:clamp(18px,2.6vw,26px);display:block}
-.workshot img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top center;display:block;
-  filter:grayscale(.42) contrast(1.06) sepia(.14) brightness(1.02);transition:filter .55s cubic-bezier(.2,.7,.3,1),transform .55s cubic-bezier(.2,.7,.3,1)}
-.workshot::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.5;mix-blend-mode:multiply;transition:opacity .55s ease;
+.proj{border-top:1px solid var(--line);padding:clamp(26px,3.6vw,46px) 0}
+.proj:last-of-type{border-bottom:1px solid var(--line)}
+.p-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:clamp(16px,2.2vw,26px)}
+.p-no{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--mag-t)}
+.p-jp{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--grey);text-transform:uppercase}
+.p-body{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(24px,4vw,58px);align-items:center}
+.proj:nth-of-type(even) .p-shot{order:2}
+@media(max-width:900px){.p-body{grid-template-columns:1fr;gap:22px}.proj:nth-of-type(even) .p-shot{order:0}}
+.p-shot{position:relative;display:block;border:1px solid var(--ink);background:var(--paper2);overflow:hidden}
+.p-shot img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top center;display:block;
+  filter:grayscale(.16) contrast(1.02);transition:filter .5s cubic-bezier(.2,.7,.3,1),transform .5s cubic-bezier(.2,.7,.3,1)}
+.p-shot::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.34;mix-blend-mode:multiply;transition:opacity .5s ease;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/></svg>")}
-.workshot:hover img,.workshot.dev img{filter:none;transform:scale(1.012)}
-.workshot:hover::before,.workshot.dev::before{opacity:0}
-.ws-h{position:absolute;z-index:3;left:0;right:0;top:0;display:flex;justify-content:space-between;gap:10px;padding:9px 12px;
-  font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--ink);text-transform:uppercase;
-  background:linear-gradient(var(--paper),color-mix(in srgb,var(--paper) 55%,transparent) 70%,transparent);pointer-events:none}
-.ws-h b{color:var(--mag-t);font-weight:400}
-.ws-f{position:absolute;z-index:3;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:10px;padding:9px 12px;
+.p-shot:hover img,.p-shot.dev img{filter:none;transform:scale(1.015)}
+.p-shot:hover::before,.p-shot.dev::before{opacity:0}
+.p-cap{position:absolute;z-index:3;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:10px;padding:7px 10px;
   font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--ink);text-transform:uppercase;
-  background:linear-gradient(transparent,color-mix(in srgb,var(--paper) 55%,transparent) 30%,var(--paper));pointer-events:none}
-.ws-live{display:inline-flex;align-items:center;gap:6px}
-.ws-live i{width:6px;height:6px;border-radius:50%;background:#12B76A;display:block}
-@media(prefers-reduced-motion:reduce){.workshot canvas{opacity:0}}
+  background:linear-gradient(transparent,color-mix(in srgb,var(--paper) 70%,transparent) 40%,var(--paper))}
+.p-live{position:absolute;z-index:3;top:9px;left:9px;display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;
+  background:var(--paper);color:var(--ink);padding:5px 9px;text-transform:uppercase;border:1px solid var(--ink)}
+.p-live i{width:5px;height:5px;border-radius:50%;background:#12B76A;display:block}
+.p-name{font-family:var(--disp);font-weight:400;font-size:clamp(30px,4.4vw,58px);letter-spacing:.01em;line-height:.98;text-transform:uppercase}
+.p-why{font-family:var(--mono);font-size:clamp(12px,1.4vw,14px);color:var(--mag-t);margin-top:10px;letter-spacing:.01em}
+.p-desc{font-size:14.5px;line-height:1.72;color:var(--dim);margin-top:16px;max-width:54ch}
+.p-desc b{color:var(--ink);font-weight:500}
+.p-own{font-family:var(--mono);font-size:11.5px;color:var(--grey);margin-top:11px}
+.p-flow{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:16px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--grey)}
+.p-flow b{color:var(--ink);font-weight:500}
+.p-flow i{color:var(--mag-t);font-style:normal}
+.p-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.p-figs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line2);border:1px solid var(--line2);margin-top:clamp(20px,2.6vw,30px)}
+@media(max-width:700px){.p-figs{grid-template-columns:1fr}}
+.p-figs .f{background:var(--paper);padding:13px 15px}
+.p-figs .fn{font-family:var(--disp);font-weight:400;font-size:clamp(20px,2.4vw,28px);letter-spacing:.01em;line-height:1}
+.p-figs .fl{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--grey);margin-top:6px;text-transform:uppercase;line-height:1.5}
 .plates{position:relative}
 .pl{display:none}
 .pl.on{display:block;animation:pin .42s cubic-bezier(.2,.7,.3,1)}
@@ -368,7 +386,7 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
 <nav class="top" aria-label="primary">
   <a class="brand" href="#cover">KUNAL KUMAR<i>.</i></a>
   <div class="navlinks">
-    <a href="#contents">目次</a><a href="#profile">PROFILE</a><a href="#works">WORKS</a><a href="#runtime">RUNTIME</a><a href="#brain">BRAIN</a><a href="#log">LOG</a><a href="#modules">MODULES</a><a href="#colo">CONTACT</a>
+    <a href="#profile">PROFILE</a><a href="#works">WORKS</a><a href="#runtime">RUNTIME</a><a href="#brain">BRAIN</a><a href="#log">LOG</a><a href="#modules">MODULES</a><a href="#colo">CONTACT</a>
   </div>
   <div class="navr">
     <button class="btn" data-cmdk aria-label="⌘K — command palette">⌘K</button>
@@ -425,26 +443,10 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
   </div>
 </section>
 
-<!-- ═══ 01 CONTENTS ═══ -->
-<section class="spread" id="contents" data-spread="01" data-name="CONTENTS" data-jp="目次">
+<!-- ═══ 01 PROFILE ═══ -->
+<section class="spread" id="profile" data-spread="01" data-name="PROFILE" data-jp="識別">
   <div class="wrap">
-    <div class="shead"><span class="no">Ø1</span><h2>Contents</h2><span class="jp">目次</span></div>
-    <nav class="toc" aria-label="contents">
-      <a href="#profile"><span class="tno">Ø2</span><span class="tnm">Profile</span><span class="tjp">識別</span><span class="tpg">— who is running</span></a>
-      <a href="#works"><span class="tno">Ø3</span><span class="tnm">Works</span><span class="tjp">作品</span><span class="tpg">— four systems, shipped</span></a>
-      <a href="#runtime"><span class="tno">Ø4</span><span class="tnm">Runtime</span><span class="tjp">経歴</span><span class="tpg">— roles &amp; the commit map</span></a>
-      <a href="#brain"><span class="tno">Ø5</span><span class="tnm">Second Brain</span><span class="tjp">第二の脳</span><span class="tpg">— the system behind the system</span></a>
-      <a href="#log"><span class="tno">Ø6</span><span class="tnm">Life.log</span><span class="tjp">記録</span><span class="tpg">— append-only</span></a>
-      <a href="#modules"><span class="tno">Ø7</span><span class="tnm">Modules</span><span class="tjp">道具</span><span class="tpg">— what I reach for</span></a>
-      <a href="#colo"><span class="tno">Ø8</span><span class="tnm">Colophon</span><span class="tjp">奥付</span><span class="tpg">— contact &amp; how this was made</span></a>
-    </nav>
-  </div>
-</section>
-
-<!-- ═══ 02 PROFILE ═══ -->
-<section class="spread" id="profile" data-spread="02" data-name="PROFILE" data-jp="識別">
-  <div class="wrap">
-    <div class="shead"><span class="no">Ø2</span><h2>Profile</h2><span class="jp">識別</span></div>
+    <div class="shead"><span class="no">Ø1</span><h2>Profile</h2><span class="jp">識別</span></div>
     <div class="two">
       <div>
         <p class="lede">I build systems that reach <span class="mg">production</span> — <b>not demos.</b></p>
@@ -472,146 +474,119 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
   </div>
 </section>
 
-<!-- ═══ 03 WORKS ═══ -->
-    <section class="spread" id="works" data-spread="03" data-name="WORKS" data-jp="作品">
+<!-- ═══ 02 WORKS ═══ -->
+    <section class="spread" id="works" data-spread="02" data-name="WORKS" data-jp="作品">
       <div class="wrap">
-        <div class="shead"><span class="no">Ø3</span><h2>Works</h2><span class="jp">作品 — 4 PLATES, ALL LIVE</span></div>
-
-        <div class="workhead" role="tablist" aria-label="works">
-          <button role="tab" aria-selected="true" aria-controls="w1" class="on" data-w="1"><span class="wn">PLATE Ø1</span><span class="wt">Recall</span></button>
-          <button role="tab" aria-selected="false" aria-controls="w2" data-w="2"><span class="wn">PLATE Ø2</span><span class="wt">Aegis</span></button>
-          <button role="tab" aria-selected="false" aria-controls="w3" data-w="3"><span class="wn">PLATE Ø3</span><span class="wt">PDFChat</span></button>
-          <button role="tab" aria-selected="false" aria-controls="w4" data-w="4"><span class="wn">PLATE Ø4</span><span class="wt">Code-Guardian</span></button>
+        <div class="shead"><span class="no">Ø2</span><h2>Works</h2><span class="jp">作品 — 4 SHIPPED, ALL LIVE</span></div>
+      <article class="proj">
+        <div class="p-head"><span class="p-no">PLATE Ø1</span><span class="p-jp">記憶 · 継続 / MEMORY · CONTINUITY</span></div>
+        <div class="p-body">
+          <a class="p-shot" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener" aria-label="Recall — open the live site">
+            <span class="p-live"><i></i>LIVE</span>
+            <img src="shots/recall.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Recall’s live site: a memory-graph visualisation beside the headline “Never lose the thread”.">
+            <span class="p-cap"><span>web-seven-puce-99.vercel.app</span><span>実物 — HOVER FOR COLOUR</span></span>
+          </a>
+          <div class="p-txt">
+            <h3 class="p-name">Recall</h3>
+            <p class="p-why">// because I kept losing my own unfinished work.</p>
+            <p class="p-desc">Work scatters — the tabs, the files, the half-finished chat — and the context evaporates between sessions. Recall is a <b>local-first continuity engine</b>: a browser extension and watchers stream activity into a daemon that stores events, scores recovery and ranks what mattered, with semantic search across all of it. A Qt launcher hands the thread back — <b>one keystroke, 100% on your machine.</b> No cloud, no telemetry, plain files you can read and delete.</p>
+            <p class="p-own">↳ solo build — extension → daemon → recovery interface, end to end.</p>
+            <div class="p-flow"><b>ingest</b> <i>→</i> <b>store</b> <i>→</i> <b>score</b> <i>→</i> <b>recall</b> <i>→</i> <b>resume</b></div>
+            <div class="chips" style="margin-top:16px"><span class="chip">python</span><span class="chip">qt</span><span class="chip">browser extension</span><span class="chip">daemon apis</span><span class="chip">semantic search</span></div>
+            <div class="p-links"><a class="btn fill" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/Recall-me" target="_blank" rel="noopener">CODE ↗</a></div>
+          </div>
         </div>
-
-        <div class="plates">
-      <article class="pl on" id="w1" role="tabpanel" tabindex="0">
-        <a class="workshot" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener" aria-label="Recall — open the live site">
-          <span class="ws-h"><span><b>PLATE Ø1</b> — RECALL · 実物</span><span class="ws-live"><i></i>LIVE</span></span>
-          <img src="shots/recall.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Recall’s live site: a memory-graph visualisation beside the headline “Never lose the thread”.">
-          <span class="ws-f"><span>web-seven-puce-99.vercel.app</span><span>移動して現像 — HOVER FOR FULL COLOUR</span></span>
-        </a>
-        <div class="pl-top">
-          <div><h3 class="pl-title">Recall</h3><p class="pl-why">// because I kept losing my own unfinished work.</p></div>
-          <div class="pl-tag">記憶 · 継続<br>MEMORY / CONTINUITY</div>
+        <div class="p-figs">
+        <div class="f"><div class="fn"><span data-count="3">0</span></div><div class="fl">signal streams — browser · file · dev</div></div>
+        <div class="f"><div class="fn">LOCAL</div><div class="fl">first — nothing leaves the machine</div></div>
+        <div class="f"><div class="fn">macOS</div><div class="fl">site &amp; download shipped</div></div>
         </div>
-        <div class="pl-grid">
-          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE PROBLEM / 問題</div><div class="body"><p>Work scatters. You start something, life interrupts, and the context — the tabs, the files, the half-finished chat — evaporates between sessions. Tools remember files; <b>nothing remembers where you actually were.</b></p></div></div>
-          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE BUILD / 構築</div><div class="body"><p>A <b>local-first continuity engine</b>: a browser extension and watchers stream activity into a daemon that stores events, scores recovery and ranks what mattered, with semantic search across everything. A Python/Qt launcher puts you back mid-thought — <b>one keystroke, 100% on your machine.</b> No cloud, no telemetry, plain files you can read and delete.</p><p style="color:var(--mag-t)">↳ solo build — extension → daemon → recovery interface. end to end.</p></div></div>
-        </div>
-        <div class="lbl" style="margin-bottom:9px"><b>◆</b> PIPELINE / 工程</div>
-        <div class="pipe">
-          <div class="pr"><span class="pn">Ø1</span><span class="pt"><b>ingest</b> <span>— browser, file &amp; dev activity stream in</span></span></div>
-          <div class="pr"><span class="pn">Ø2</span><span class="pt"><b>store</b> <span>— events land in the local daemon</span></span></div>
-          <div class="pr"><span class="pn">Ø3</span><span class="pt"><b>score</b> <span>— recovery scoring + investigation ranking</span></span></div>
-          <div class="pr"><span class="pn">Ø4</span><span class="pt"><b>recall</b> <span>— semantic search across everything</span></span></div>
-          <div class="pr"><span class="pn">Ø5</span><span class="pt"><b>resume</b> <span>— the Qt launcher puts you back mid-thought</span></span></div>
-        </div>
-        <div class="figs">
-          <div class="f"><div class="fn"><span data-count="3">0</span></div><div class="fl">signal streams — browser · file · dev</div></div>
-          <div class="f"><div class="fn">LOCAL</div><div class="fl">first — nothing leaves the machine</div></div>
-          <div class="f"><div class="fn">LIVE</div><div class="fl">site &amp; macOS download shipped</div></div>
-        </div>
-        <div class="plfoot"><div class="chips"><span class="chip">python</span><span class="chip">qt</span><span class="chip">browser extension</span><span class="chip">daemon apis</span><span class="chip">semantic search</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn fill" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/Recall-me" target="_blank" rel="noopener">CODE ↗</a></div></div>
       </article>
-      <article class="pl" id="w2" role="tabpanel" tabindex="0">
-        <a class="workshot" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener" aria-label="Aegis — open the live site">
-          <span class="ws-h"><span><b>PLATE Ø2</b> — AEGIS · 実物</span><span class="ws-live"><i></i>LIVE</span></span>
-          <img src="shots/aegis.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Aegis dashboard: decisions processed, routing outcomes donut and flagged harm categories.">
-          <span class="ws-f"><span>aegis-one-livid.vercel.app</span><span>移動して現像 — HOVER FOR FULL COLOUR</span></span>
-        </a>
-        <div class="pl-top">
-          <div><h3 class="pl-title">Aegis</h3><p class="pl-why">// scaling trust shouldn’t mean scaling the moderation team.</p></div>
-          <div class="pl-tag">信頼 · 安全<br>TRUST &amp; SAFETY</div>
+      <article class="proj">
+        <div class="p-head"><span class="p-no">PLATE Ø2</span><span class="p-jp">信頼 · 安全 / TRUST &amp; SAFETY</span></div>
+        <div class="p-body">
+          <a class="p-shot" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener" aria-label="Aegis — open the live site">
+            <span class="p-live"><i></i>LIVE</span>
+            <img src="shots/aegis.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Aegis dashboard: decisions processed, routing outcomes donut and flagged harm categories.">
+            <span class="p-cap"><span>aegis-one-livid.vercel.app</span><span>実物 — HOVER FOR COLOUR</span></span>
+          </a>
+          <div class="p-txt">
+            <h3 class="p-name">Aegis</h3>
+            <p class="p-why">// scaling trust shouldn’t mean scaling the moderation team.</p>
+            <p class="p-desc">A kids’ platform and an adult forum need different lines, and black-box calls can’t be appealed. Aegis scores content across <b>7 harm categories</b>, applies a <b>per-platform policy</b> of thresholds and custom rules, then routes by calibrated confidence — <b>allow, review, or block</b>. Every decision keeps the offending span, the reasoning and the full routing trace, so it can be audited.</p>
+            <p class="p-own">↳ solo — engine interface, policy system, review queue, dashboard.</p>
+            <div class="p-flow"><b>classify</b> <i>→</i> <b>apply policy</b> <i>→</i> <b>route</b> <i>→</i> <b>human review</b></div>
+            <div class="chips" style="margin-top:16px"><span class="chip">next.js 16</span><span class="chip">react 19</span><span class="chip">typescript</span><span class="chip">prisma · sqlite</span><span class="chip">vitest</span></div>
+            <div class="p-links"><a class="btn fill" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/aegis" target="_blank" rel="noopener">CODE ↗</a></div>
+          </div>
         </div>
-        <div class="pl-grid">
-          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE PROBLEM / 問題</div><div class="body"><p>Platforms drown in user content. One-size-fits-all moderation misroutes everything — a kids’ platform and an adult forum need different lines — and black-box decisions are <b>impossible to audit or appeal.</b></p></div></div>
-          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE BUILD / 構築</div><div class="body"><p>A multi-stage pipeline: an engine scores content across <b>7 harm categories</b> (with a deterministic local fallback that always works), a <b>per-platform policy</b> applies thresholds, weights and custom rules, and calibrated confidence routes each item — <b>allow, human review, or block</b>. Every decision is explainable: the offending span, the category, the reasoning, the full routing trace.</p><p style="color:var(--mag-t)">↳ solo — engine interface, policy system, review queue, dashboard.</p></div></div>
+        <div class="p-figs">
+        <div class="f"><div class="fn"><span data-count="7">0</span></div><div class="fl">harm categories, scored 0–1</div></div>
+        <div class="f"><div class="fn"><span data-count="3">0</span></div><div class="fl">routes — allow / review / block</div></div>
+        <div class="f"><div class="fn">FULL</div><div class="fl">audit trail — span · reasoning · trace</div></div>
         </div>
-        <div class="lbl" style="margin-bottom:9px"><b>◆</b> PIPELINE / 工程</div>
-        <div class="pipe">
-          <div class="pr"><span class="pn">Ø1</span><span class="pt"><b>classify</b> <span>— 7 categories, 0–1 confidence, offending spans</span></span></div>
-          <div class="pr"><span class="pn">Ø2</span><span class="pt"><b>apply policy</b> <span>— per-platform thresholds, toggles, custom rules</span></span></div>
-          <div class="pr"><span class="pn">Ø3</span><span class="pt"><b>route</b> <span>— ALLOW · REVIEW · BLOCK, by calibrated confidence</span></span></div>
-          <div class="pr"><span class="pn">Ø4</span><span class="pt"><b>review</b> <span>— priority queue for humans; verdicts feed back as audit</span></span></div>
-        </div>
-        <div class="figs">
-          <div class="f"><div class="fn"><span data-count="7">0</span></div><div class="fl">harm categories, scored 0–1</div></div>
-          <div class="f"><div class="fn"><span data-count="3">0</span></div><div class="fl">routes — allow / review / block</div></div>
-          <div class="f"><div class="fn">FULL</div><div class="fl">audit trail — span · reasoning · trace</div></div>
-        </div>
-        <div class="plfoot"><div class="chips"><span class="chip">next.js 16</span><span class="chip">react 19</span><span class="chip">typescript</span><span class="chip">prisma · sqlite</span><span class="chip">vitest</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn fill" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/aegis" target="_blank" rel="noopener">CODE ↗</a></div></div>
       </article>
-      <article class="pl" id="w3" role="tabpanel" tabindex="0">
-        <a class="workshot" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener" aria-label="PDFChat — open the live site">
-          <span class="ws-h"><span><b>PLATE Ø3</b> — PDFCHAT · 実物</span><span class="ws-live"><i></i>LIVE</span></span>
-          <img src="shots/pdfchat.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="PDFChat: upload a PDF, with the upload / retrieve / answer pipeline explained.">
-          <span class="ws-f"><span>pdf-reviewer-ten.vercel.app</span><span>移動して現像 — HOVER FOR FULL COLOUR</span></span>
-        </a>
-        <div class="pl-top">
-          <div><h3 class="pl-title">PDFChat</h3><p class="pl-why">// agents lie when retrieval gets messy.</p></div>
-          <div class="pl-tag">接地 · 拒否<br>GROUNDING / REFUSAL</div>
+      <article class="proj">
+        <div class="p-head"><span class="p-no">PLATE Ø3</span><span class="p-jp">接地 · 拒否 / GROUNDING · REFUSAL</span></div>
+        <div class="p-body">
+          <a class="p-shot" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener" aria-label="PDFChat — open the live site">
+            <span class="p-live"><i></i>LIVE</span>
+            <img src="shots/pdfchat.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="PDFChat: upload a PDF, with the upload / retrieve / answer pipeline explained.">
+            <span class="p-cap"><span>pdf-reviewer-ten.vercel.app</span><span>実物 — HOVER FOR COLOUR</span></span>
+          </a>
+          <div class="p-txt">
+            <h3 class="p-name">PDFChat</h3>
+            <p class="p-why">// agents lie when retrieval gets messy.</p>
+            <p class="p-desc">A confident wrong answer costs more than no answer. PDFChat extracts, chunks and <b>indexes locally</b>, rewrites queries against the relevant chunks, and every response either <b>cites its pages or refuses clearly</b>. Multi-turn chat keeps session context for retrieval only, and <b>multilingual grounding</b> answers in your language while still treating the document as the sole evidence.</p>
+            <p class="p-own">↳ built the full retrieval → citation → refusal path.</p>
+            <div class="p-flow"><b>upload</b> <i>→</i> <b>retrieve</b> <i>→</i> <b>ground</b> <i>→</i> <b>answer / refuse</b></div>
+            <div class="chips" style="margin-top:16px"><span class="chip">python</span><span class="chip">retrieval</span><span class="chip">citations</span><span class="chip">refusal policy</span><span class="chip">multilingual</span></div>
+            <div class="p-links"><a class="btn fill" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/PDF-Reviewer" target="_blank" rel="noopener">CODE ↗</a></div>
+          </div>
         </div>
-        <div class="pl-grid">
-          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE PROBLEM / 問題</div><div class="body"><p>Agents answer confidently even when retrieval hands them garbage — and <b>a confident wrong answer costs more than no answer.</b></p></div></div>
-          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE BUILD / 構築</div><div class="body"><p>A PDF-constrained conversational agent. Text is extracted, chunked and <b>indexed locally</b>; queries are rewritten and matched against relevant chunks; every response either <b>cites its pages or refuses clearly</b>. Stateful multi-turn chat keeps session context for retrieval only, and <b>multilingual grounding</b> answers in your language while still using the document as the sole evidence.</p><p style="color:var(--mag-t)">↳ built the full retrieval → citation → refusal path.</p></div></div>
+        <div class="p-figs">
+        <div class="f"><div class="fn">CITED</div><div class="fl">every answer points at its pages</div></div>
+        <div class="f"><div class="fn">MULTI</div><div class="fl">lingual — one source of truth</div></div>
+        <div class="f"><div class="fn">50MB</div><div class="fl">per document upload</div></div>
         </div>
-        <div class="lbl" style="margin-bottom:9px"><b>◆</b> PIPELINE / 工程</div>
-        <div class="pipe">
-          <div class="pr"><span class="pn">Ø1</span><span class="pt"><b>upload</b> <span>— text extracted, cleaned, chunked, indexed locally</span></span></div>
-          <div class="pr"><span class="pn">Ø2</span><span class="pt"><b>retrieve</b> <span>— queries rewritten, matched against relevant chunks</span></span></div>
-          <div class="pr"><span class="pn">Ø3</span><span class="pt"><b>ground</b> <span>— answers must trace to the pages</span></span></div>
-          <div class="pr"><span class="pn">Ø4</span><span class="pt"><b>answer / refuse</b> <span>— cited reply, or a clean refusal</span></span></div>
-        </div>
-        <div class="figs">
-          <div class="f"><div class="fn">CITED</div><div class="fl">every answer points at its pages</div></div>
-          <div class="f"><div class="fn">MULTI</div><div class="fl">lingual grounding — one source of truth</div></div>
-          <div class="f"><div class="fn">50MB</div><div class="fl">documents handled per upload</div></div>
-        </div>
-        <div class="plfoot"><div class="chips"><span class="chip">python</span><span class="chip">retrieval</span><span class="chip">citations</span><span class="chip">refusal policy</span><span class="chip">multilingual</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn fill" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/PDF-Reviewer" target="_blank" rel="noopener">CODE ↗</a></div></div>
       </article>
-      <article class="pl" id="w4" role="tabpanel" tabindex="0">
-        <a class="workshot" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener" aria-label="Code-Guardian — open the live site">
-          <span class="ws-h"><span><b>PLATE Ø4</b> — CODE-GUARDIAN · 実物</span><span class="ws-live"><i></i>LIVE</span></span>
-          <img src="shots/codeguardian.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Code-Guardian landing page — “Autonomous Security Engineering”.">
-          <span class="ws-f"><span>zeus1205-codeguardian-ai.hf.space</span><span>移動して現像 — HOVER FOR FULL COLOUR</span></span>
-        </a>
-        <div class="pl-top">
-          <div><h3 class="pl-title">Code-Guardian</h3><p class="pl-why">// a scanner report is not a fix.</p></div>
-          <div class="pl-tag">警備 · 自律<br>AGENTS / SECURITY</div>
+      <article class="proj">
+        <div class="p-head"><span class="p-no">PLATE Ø4</span><span class="p-jp">警備 · 自律 / AGENTS · SECURITY</span></div>
+        <div class="p-body">
+          <a class="p-shot" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener" aria-label="Code-Guardian — open the live site">
+            <span class="p-live"><i></i>LIVE</span>
+            <img src="shots/codeguardian.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Code-Guardian landing page — “Autonomous Security Engineering”.">
+            <span class="p-cap"><span>zeus1205-codeguardian-ai.hf.space</span><span>実物 — HOVER FOR COLOUR</span></span>
+          </a>
+          <div class="p-txt">
+            <h3 class="p-name">Code-Guardian</h3>
+            <p class="p-why">// a scanner report is not a fix.</p>
+            <p class="p-desc">Security tooling buries teams in findings; the hard part is <b>judging what matters and doing something about it.</b> Code-Guardian is an agentic system for security and maintenance work on real codebases, built on <b>OpenEnv</b> — agents investigate the repository, reason about risk in context, and propose concrete changes instead of dumping a list. Public demo on Hugging Face Spaces.</p>
+            <p class="p-own">↳ agent design, environment and the demo deployment.</p>
+            <div class="p-flow"><b>ingest</b> <i>→</i> <b>investigate</b> <i>→</i> <b>reason</b> <i>→</i> <b>propose</b></div>
+            <div class="chips" style="margin-top:16px"><span class="chip">agents</span><span class="chip">openenv</span><span class="chip">python</span><span class="chip">hf spaces</span></div>
+            <div class="p-links"><a class="btn fill" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/codeguardian-ai-" target="_blank" rel="noopener">CODE ↗</a></div>
+          </div>
         </div>
-        <div class="pl-grid">
-          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE PROBLEM / 問題</div><div class="body"><p>Security tooling buries teams in findings. The hard part isn’t detection — it’s <b>judging what actually matters and doing something about it.</b></p></div></div>
-          <div><div class="lbl" style="margin-bottom:9px"><b>◆</b> THE BUILD / 構築</div><div class="body"><p>An agentic system for security and maintenance work on real codebases, built on <b>OpenEnv</b>. Agents investigate the repository, reason about risk in context, and propose concrete changes rather than dumping a list. Deployed as a public demo on Hugging Face Spaces.</p><p style="color:var(--mag-t)">↳ agent design, environment and the demo deployment.</p></div></div>
+        <div class="p-figs">
+        <div class="f"><div class="fn">AGENTIC</div><div class="fl">investigation over static scanning</div></div>
+        <div class="f"><div class="fn">OPENENV</div><div class="fl">the environment agents act in</div></div>
+        <div class="f"><div class="fn">DEMO</div><div class="fl">public, on HF Spaces</div></div>
         </div>
-        <div class="lbl" style="margin-bottom:9px"><b>◆</b> PIPELINE / 工程</div>
-        <div class="pipe">
-          <div class="pr"><span class="pn">Ø1</span><span class="pt"><b>ingest</b> <span>— the repository and its history</span></span></div>
-          <div class="pr"><span class="pn">Ø2</span><span class="pt"><b>investigate</b> <span>— agents explore, not just pattern-match</span></span></div>
-          <div class="pr"><span class="pn">Ø3</span><span class="pt"><b>reason</b> <span>— risk judged in context</span></span></div>
-          <div class="pr"><span class="pn">Ø4</span><span class="pt"><b>propose</b> <span>— concrete maintenance &amp; security changes</span></span></div>
-        </div>
-        <div class="figs">
-          <div class="f"><div class="fn">AGENTIC</div><div class="fl">investigation over static scanning</div></div>
-          <div class="f"><div class="fn">OPENENV</div><div class="fl">the environment agents act in</div></div>
-          <div class="f"><div class="fn">DEMO</div><div class="fl">public, running on HF Spaces</div></div>
-        </div>
-        <div class="plfoot"><div class="chips"><span class="chip">agents</span><span class="chip">openenv</span><span class="chip">python</span><span class="chip">hf spaces</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn fill" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/codeguardian-ai-" target="_blank" rel="noopener">CODE ↗</a></div></div>
       </article>
-        </div>
 
         <div class="lbl" style="margin:clamp(30px,4vw,44px) 0 14px"><b>◆</b> ALSO BUILT / その他 — no public artefact</div>
-        <div class="pl-grid" style="padding-top:0">
-          <div><div class="pl-title" style="font-size:clamp(20px,2.6vw,30px)">Watershed</div><div class="body" style="margin-top:10px"><p>A multi-agent RL arena for scarce resources — <b>GRPO over 100k+ self-play episodes</b>, with trust dynamics and coalition formation modelled into the reward, served behind FastAPI. Run it long enough and the agents stopped simply competing: <b>alliances formed.</b></p></div><div class="chips" style="margin-top:14px"><span class="chip">rl · grpo</span><span class="chip">trl</span><span class="chip">fastapi</span><span class="chip">multi-agent</span></div><p style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--grey);margin-top:14px;text-transform:uppercase">private repository</p></div>
-          <div><div class="pl-title" style="font-size:clamp(20px,2.6vw,30px)">Support Triage</div><div class="body" style="margin-top:10px"><p>A deterministic support agent that answers from the docs or refuses, every time — hybrid <b>BM25 + TF-IDF retrieval with reranking</b>, multilingual injection and retrieval-poisoning defense, PII redaction and calibrated confidence. <b>132/132 evaluation tests passing.</b></p></div><div class="chips" style="margin-top:14px"><span class="chip">llamaindex</span><span class="chip">bm25 · tf-idf</span><span class="chip">reranking</span><span class="chip">prompt defense</span></div><div style="margin-top:14px"><a class="btn" href="https://github.com/kunalKumar-13/deterministic-support-triage" target="_blank" rel="noopener">CODE ↗</a></div></div>
+        <div class="p-body" style="align-items:start">
+          <div><div class="p-name" style="font-size:clamp(22px,2.8vw,32px)">Watershed</div><p class="p-desc">A multi-agent RL arena for scarce resources — <b>GRPO over 100k+ self-play episodes</b>, with trust dynamics and coalition formation modelled into the reward, served behind FastAPI. Run it long enough and the agents stopped simply competing: <b>alliances formed.</b></p><div class="chips" style="margin-top:14px"><span class="chip">rl · grpo</span><span class="chip">trl</span><span class="chip">fastapi</span><span class="chip">multi-agent</span></div><p class="p-own" style="margin-top:12px">private repository</p></div>
+          <div><div class="p-name" style="font-size:clamp(22px,2.8vw,32px)">Support Triage</div><p class="p-desc">A deterministic support agent that answers from the docs or refuses, every time — hybrid <b>BM25 + TF-IDF retrieval with reranking</b>, multilingual injection and retrieval-poisoning defense, PII redaction and calibrated confidence. <b>132/132 evaluation tests passing.</b></p><div class="chips" style="margin-top:14px"><span class="chip">llamaindex</span><span class="chip">bm25 · tf-idf</span><span class="chip">reranking</span><span class="chip">prompt defense</span></div><div class="p-links"><a class="btn" href="https://github.com/kunalKumar-13/deterministic-support-triage" target="_blank" rel="noopener">CODE ↗</a></div></div>
         </div>
       </div>
     </section>
 
-    <!-- ═══ 04 RUNTIME ═══ -->
-<section class="spread" id="runtime" data-spread="04" data-name="RUNTIME" data-jp="経歴">
+    <!-- ═══ 03 RUNTIME ═══ -->
+<section class="spread" id="runtime" data-spread="03" data-name="RUNTIME" data-jp="経歴">
   <div class="wrap">
-    <div class="shead"><span class="no">Ø4</span><h2>Runtime</h2><span class="jp">経歴 — 7 PROCESSES</span></div>
+    <div class="shead"><span class="no">Ø3</span><h2>Runtime</h2><span class="jp">経歴 — 7 PROCESSES</span></div>
     <div class="lbl" style="margin-bottom:8px" data-swipe-hint><b>◆</b> SWIPE THE TABLE →</div>
     <div class="tblwrap">
       <table class="rt">
@@ -641,10 +616,10 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
   </div>
 </section>
 
-<!-- ═══ 05 SECOND BRAIN ═══ -->
-<section class="spread" id="brain" data-spread="05" data-name="SECOND BRAIN" data-jp="第二の脳">
+<!-- ═══ 04 SECOND BRAIN ═══ -->
+<section class="spread" id="brain" data-spread="04" data-name="SECOND BRAIN" data-jp="第二の脳">
   <div class="wrap">
-    <div class="shead"><span class="no">Ø5</span><h2>Second Brain</h2><span class="jp">第二の脳 — KUNAL_HQ v10</span></div>
+    <div class="shead"><span class="no">Ø4</span><h2>Second Brain</h2><span class="jp">第二の脳 — KUNAL_HQ v10</span></div>
     <div class="two">
       <div>
         <div class="body"><p><b>July 2026:</b> an internship, college, three applications and a life — all carried in working memory. The result was fog. The fix wasn't discipline; <b>it was a place.</b> So I built one: an external brain that sorts, remembers, and shows only what matters now.</p></div>
@@ -665,9 +640,9 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
 </section>
 
 <!-- ═══ 06 LOG ═══ -->
-<section class="spread" id="log" data-spread="06" data-name="LIFE.LOG" data-jp="記録">
+<section class="spread" id="log" data-spread="05" data-name="LIFE.LOG" data-jp="記録">
   <div class="wrap">
-    <div class="shead"><span class="no">Ø6</span><h2>Life.log</h2><span class="jp">記録 — APPEND-ONLY</span></div>
+    <div class="shead"><span class="no">Ø5</span><h2>Life.log</h2><span class="jp">記録 — APPEND-ONLY</span></div>
     <div class="log">
       <div class="log-h"><span>◆ ~/kunal — tail -f life.log</span><span>8 LINES</span></div>
       <div class="log-b">
@@ -685,10 +660,10 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
   </div>
 </section>
 
-<!-- ═══ 07 MODULES ═══ -->
-<section class="spread" id="modules" data-spread="07" data-name="MODULES" data-jp="道具">
+<!-- ═══ 06 MODULES ═══ -->
+<section class="spread" id="modules" data-spread="06" data-name="MODULES" data-jp="道具">
   <div class="wrap">
-    <div class="shead"><span class="no">Ø7</span><h2>Modules</h2><span class="jp">道具 — WHAT I REACH FOR</span></div>
+    <div class="shead"><span class="no">Ø6</span><h2>Modules</h2><span class="jp">道具 — WHAT I REACH FOR</span></div>
     <div class="mods">
       <div class="mod"><h3>interface</h3><div class="jpx">界面</div><ul><li>react</li><li>typescript</li><li>next.js</li></ul></div>
       <div class="mod"><h3>api</h3><div class="jpx">通信</div><ul><li>fastapi · node</li><li>pydantic · sql</li><li>go <i>— learning</i></li><li>java</li></ul></div>
@@ -698,10 +673,10 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
   </div>
 </section>
 
-<!-- ═══ 08 COLOPHON ═══ -->
-<section class="spread" id="colo" data-spread="08" data-name="COLOPHON" data-jp="奥付">
+<!-- ═══ 07 COLOPHON ═══ -->
+<section class="spread" id="colo" data-spread="07" data-name="COLOPHON" data-jp="奥付">
   <div class="wrap">
-    <div class="shead"><span class="no">Ø8</span><h2>Colophon</h2><span class="jp">奥付</span></div>
+    <div class="shead"><span class="no">Ø7</span><h2>Colophon</h2><span class="jp">奥付</span></div>
     <h2 class="sayhi">SAY<br>HELLO<span class="mg">.</span></h2>
     <button class="mail" data-mail>kunalsain0324@gmail.com</button>
     <div class="mailhint" data-mail-hint>click to copy · click again to open mail</div>

@@ -328,35 +328,21 @@ class Issue {
     pick();
   }
 
-  /* ── works · plate tabs ─────────────────────────────────── */
+  /* ── works ──────────────────────────────────────────────── */
   works(){
-    const tabs = $$('[data-w]');
     this.showWork = (n) => {
-      tabs.forEach(t => {
-        const on = t.getAttribute('data-w') === String(n);
-        t.classList.toggle('on', on);
-        t.setAttribute('aria-selected', on ? 'true' : 'false');
-      });
-      $$('.pl').forEach(p => p.classList.toggle('on', p.id === 'w' + n));
-      this.runCounters($('#w' + n));
+      const el = $$('.proj')[(+n)-1];
+      if (el) el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block:'center' });
     };
-    tabs.forEach(t => t.addEventListener('click', () => this.showWork(t.getAttribute('data-w'))));
-    tabs.forEach((t,i) => t.addEventListener('keydown', e => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft'){
-        e.preventDefault();
-        const n = (i + (e.key === 'ArrowRight' ? 1 : tabs.length-1)) % tabs.length;
-        tabs[n].focus(); tabs[n].click();
-      }
-    }));
   }
 
-  /* ── work plates: tap once to reveal full colour on touch ── */
+  /* ── work plates ────────────────────────────────────────── */
   workPlates(){
-    /* warm the hidden tabs after load so switching plates never flashes empty */
-    const warm = () => $$('.workshot img').forEach(i => { const im = new Image(); im.src = i.getAttribute('src'); });
+    /* warm the images on idle so nothing pops in late */
+    const warm = () => $$('.p-shot img').forEach(i => { const im = new Image(); im.src = i.getAttribute('src'); });
     'requestIdleCallback' in window ? requestIdleCallback(warm, { timeout:2500 }) : setTimeout(warm, 1800);
-    if (!TOUCH) return;
-    $$('.workshot').forEach(a => a.addEventListener('click', ev => {
+    /* touch: first tap reveals full colour, second opens the site */
+    if (TOUCH) $$('.p-shot').forEach(a => a.addEventListener('click', ev => {
       if (!a.classList.contains('dev')){ ev.preventDefault(); a.classList.add('dev'); }
     }));
   }
@@ -382,7 +368,7 @@ class Issue {
     const io = new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting){ this.runCounters(e.target); io.unobserve(e.target); }
     }), { threshold:.3 });
-    $$('.figs, .heat-s').forEach(f => io.observe(f));
+    $$('.p-figs, .heat-s').forEach(f => io.observe(f));
   }
 
   /* ── commit map ─────────────────────────────────────────── */
@@ -628,7 +614,7 @@ class Issue {
   /* ── reveal on scroll ───────────────────────────────────── */
   reveal(){
     if (RM || !('IntersectionObserver' in window)) return;
-    const els = $$('.shead, .cov > div, .toc a, .two > div, .workhead, .pl.on, .tblwrap, .heat, .log, .mods, .sayhi, .colo, .figs');
+    const els = $$('.shead, .cov > div, .two > div, .proj, .tblwrap, .heat, .log, .mods, .sayhi, .colo');
     els.forEach(e => { e.style.opacity = '0'; e.style.transform = 'translateY(14px)'; e.style.transition = 'opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1)'; });
     const io = new IntersectionObserver(es => es.forEach((e,i) => {
       if (!e.isIntersecting) return;
@@ -646,7 +632,7 @@ class Issue {
       const tag = (document.activeElement && document.activeElement.tagName) || '';
       if (tag === 'INPUT' || tag === 'TEXTAREA') return;
       const k = e.key.toLowerCase();
-      if (k >= '1' && k <= '4'){ this.showWork(k); $('#works').scrollIntoView({ behavior: RM?'auto':'smooth', block:'start' }); }
+      if (k >= '1' && k <= '4'){ this.showWork(k); }   // showWork scrolls to that project
       else if (k === 'd'){ this.cycleDither && this.cycleDither(); }
       else if (k === 'g'){ $('#log').scrollIntoView({ behavior: RM?'auto':'smooth', block:'start' }); setTimeout(() => this.signLog(), 700); }
     });
