@@ -151,7 +151,7 @@ class Issue {
     const prev = $('[data-rail-prev]'), next = $('[data-rail-next]');
     if (!rail || !projs.length){ this.showWork = () => {}; return; }
 
-    const names = projs.map(p => { const n = p.querySelector('.p-name'); return n ? n.textContent.trim() : ''; });
+    const names = projs.map(p => { const n = p.querySelector('.p-name'); return n ? n.textContent.trim().toUpperCase() : ''; });
     const index = () => Math.round(rail.scrollLeft / Math.max(1, rail.clientWidth));
     const paint = () => {
       const i = Math.min(projs.length-1, Math.max(0, index()));

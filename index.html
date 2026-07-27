@@ -17,24 +17,23 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F4F2EC'/%3E%3Crect x='4' y='4' width='24' height='24' fill='%23FF2D6F'/%3E%3Ctext x='8.5' y='24' font-family='Helvetica,Arial' font-size='20' font-weight='700' fill='%23F4F2EC'%3EK%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
 <style>
 :root{
-  --paper:#F7F5F0; --paper2:#EFECE5; --ink:#1A1815; --ink2:#4A463F;
-  --grey:#6B665C; --faint:#8A8478;
-  --mag:#C2402A; --mag-t:#A8371F; --navy:#26303A; --cy:#3F6B63;
+  --paper:#F4F2EC; --paper2:#EAE7DE; --ink:#14141C; --ink2:#3A3A44;
+  --grey:#63615A; --faint:#97948B;
+  --mag:#FF2D6F; --mag-t:#C81E5B; --navy:#171B4D; --cy:#00B3C7;
   --rule:rgba(20,20,28,.18); --rule2:rgba(20,20,28,.09);
-  --disp:'Instrument Serif',Georgia,'Times New Roman',serif;
-  --sans:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --disp:'Archivo',Helvetica,Arial,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
-  --jp:'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',sans-serif;
+  --jp:'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP','Archivo',sans-serif;
   --gut:clamp(18px,4.4vw,64px);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
-body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.62;letter-spacing:-.005em;overflow-x:clip;-webkit-font-smoothing:antialiased}
+body{background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16px;line-height:1.55;overflow-x:clip;-webkit-font-smoothing:antialiased}
 ::selection{background:var(--mag);color:var(--paper)}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
@@ -54,7 +53,12 @@ body::before{content:"";position:fixed;inset:0;z-index:600;pointer-events:none;o
 .marks .cm::before{width:100%;height:1px;top:50%}
 .marks .cm::after{height:100%;width:1px;left:50%}
 .marks .tl{left:8px;top:8px}.marks .tr{right:8px;top:8px}.marks .bl{left:8px;bottom:8px}.marks .br{right:8px;bottom:8px}
-@media(max-width:820px){.marks .cm{width:16px}}
+.reg{position:fixed;right:16px;top:50%;z-index:560;width:26px;height:26px;pointer-events:none;opacity:.55}
+.reg svg{width:100%;height:100%}
+.cbar{position:fixed;left:0;bottom:0;z-index:560;display:flex;pointer-events:none}
+.cbar i{width:26px;height:7px;opacity:.5;transition:opacity .4s,height .4s}
+.cbar i.on{opacity:1;height:11px}
+@media(max-width:820px){.reg,.cbar{display:none}.marks .cm{width:16px}}
 
 /* ─ running head + folio ────────────────────── */
 .band{position:fixed;top:0;left:0;right:0;height:78px;background:var(--paper);border-bottom:1px solid var(--rule);z-index:500}
@@ -62,29 +66,29 @@ body::before{content:"";position:fixed;inset:0;z-index:600;pointer-events:none;o
 @media(max-width:820px){.band{height:60px}}
 .rhead{position:fixed;top:0;left:0;right:0;z-index:520;display:flex;justify-content:space-between;padding:16px var(--gut) 0;font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--grey);text-transform:uppercase;pointer-events:none}
 .folio{position:fixed;right:var(--gut);bottom:18px;z-index:520;background:var(--paper);padding:6px 9px 5px 12px;border-left:1px solid var(--rule);font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--ink);pointer-events:none;text-align:right}
-.folio b{font-family:var(--disp);font-weight:400;font-size:26px;letter-spacing:-.02em;display:block;line-height:.9}
+.folio b{font-family:var(--disp);font-weight:900;font-size:26px;letter-spacing:-.02em;display:block;line-height:.9}
 .folio span{color:var(--grey)}
 @media(max-width:820px){.folio{bottom:10px;right:12px}.folio b{font-size:18px}.rhead{display:none}}
 
 /* ─ nav ─────────────────────────────────────── */
 nav.top{position:fixed;top:0;left:0;right:0;z-index:540;display:flex;justify-content:space-between;align-items:center;gap:14px;height:78px;padding:26px var(--gut) 0;pointer-events:none}
 nav.top>*{pointer-events:auto}
-.brand{font-family:var(--disp);font-weight:400;font-size:19px;letter-spacing:-.01em}
+.brand{font-family:var(--disp);font-weight:900;font-size:15px;letter-spacing:-.04em}
 .brand i{color:var(--mag-t);font-style:normal}
 .navlinks{display:flex;gap:0}
-.navlinks a{font-family:var(--sans);font-size:13.5px;letter-spacing:0;color:var(--grey);padding:8px 12px;border-bottom:1px solid transparent}
+.navlinks a{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--grey);padding:8px 11px;text-transform:uppercase;border-bottom:1px solid transparent}
 .navlinks a:hover,.navlinks a.on{color:var(--ink);border-bottom-color:var(--mag-t)}
 .navr{display:flex;gap:7px;align-items:center}
-.btn{font-family:var(--sans);font-weight:500;font-size:12.5px;letter-spacing:.01em;text-transform:none;border:1px solid var(--ink);padding:11px 18px;border-radius:999px;background:transparent;transition:background .2s,color .2s,transform .2s}
-.btn:hover{background:var(--ink);color:var(--paper);transform:translateY(-1px)}
-.btn.fill{background:var(--ink);border-color:var(--ink);color:var(--paper);font-weight:500}
-.btn.fill:hover{background:var(--mag);border-color:var(--mag);color:var(--paper)}
+.btn{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--ink);padding:9px 13px;background:transparent;transition:background .18s,color .18s}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.fill{background:var(--mag);border-color:var(--mag);color:var(--ink);font-weight:700}
+.btn.fill:hover{background:var(--ink);border-color:var(--ink)}
 @media(max-width:1080px){.navlinks{display:none}}
 @media(max-width:820px){nav.top{height:60px;padding-top:0}}
 
 /* ─ press-run loader ────────────────────────── */
 #press{position:fixed;inset:0;z-index:2000;background:var(--paper);display:grid;place-items:center}
-#press .plate{position:absolute;font-family:var(--disp);font-weight:400;font-size:clamp(56px,15vw,190px);letter-spacing:-.018em;line-height:.82;text-align:center;mix-blend-mode:multiply;will-change:transform,opacity}
+#press .plate{position:absolute;font-family:var(--disp);font-weight:900;font-size:clamp(56px,15vw,190px);letter-spacing:-.05em;line-height:.82;text-align:center;mix-blend-mode:multiply;will-change:transform,opacity}
 #press .pmeta{position:absolute;bottom:9vh;left:0;right:0;text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--grey)}
 
 /* ─ layout ──────────────────────────────────── */
@@ -92,11 +96,11 @@ main{position:relative;z-index:1}
 .spread{scroll-margin-top:92px;padding:clamp(90px,13vh,150px) var(--gut);position:relative;border-bottom:1px solid var(--rule)}
 .spread:last-of-type{border-bottom:none}
 .wrap{max-width:1400px;margin:0 auto}
-.shead{display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:clamp(14px,3vw,34px);padding-bottom:16px;border-bottom:1px solid var(--ink);margin-bottom:clamp(34px,5vw,62px)}
+.shead{display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:clamp(14px,3vw,34px);padding-bottom:14px;border-bottom:2px solid var(--ink);margin-bottom:clamp(30px,4.5vw,54px)}
 .shead .no{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--mag-t)}
-.shead h2{font-family:var(--disp);font-weight:400;font-size:clamp(30px,4.4vw,54px);letter-spacing:-.012em;line-height:1}
+.shead h2{font-family:var(--disp);font-weight:900;font-size:clamp(26px,4.6vw,58px);letter-spacing:-.045em;line-height:.92;text-transform:uppercase}
 .shead .jp{font-family:var(--jp);font-weight:400;font-size:clamp(11px,1.4vw,15px);color:var(--grey);letter-spacing:.14em;white-space:nowrap}
-.lbl{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase}
+.lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--grey);text-transform:uppercase}
 .lbl b{color:var(--mag-t);font-weight:400}
 .hair{border-top:1px solid var(--rule);margin:clamp(22px,3vw,34px) 0}
 
@@ -105,7 +109,7 @@ main{position:relative;z-index:1}
 .cov{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(20px,4vw,58px);width:100%;align-items:center}
 @media(max-width:940px){.cov{grid-template-columns:1fr;gap:26px}}
 .masthead{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--grey);display:flex;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:9px;margin-bottom:clamp(18px,2.6vw,30px);text-transform:uppercase}
-.bigname{font-family:var(--disp);font-weight:400;font-size:clamp(48px,10.2vw,146px);line-height:.83;letter-spacing:-.018em;text-transform:uppercase}
+.bigname{font-family:var(--disp);font-weight:900;font-size:clamp(48px,10.2vw,146px);line-height:.83;letter-spacing:-.055em;text-transform:uppercase}
 .bigname .ln{display:block;overflow:hidden}
 .bigname .ln i{display:block;font-style:normal}
 .bigname .mg{color:var(--mag)}
@@ -151,7 +155,7 @@ main{position:relative;z-index:1}
 .toc a:hover{background:var(--ink);color:var(--paper)}
 .toc a:hover .tno,.toc a:hover .tjp,.toc a:hover .tpg{color:var(--paper)}
 .tno{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--mag-t)}
-.tnm{font-family:var(--disp);font-weight:400;font-size:clamp(19px,2.8vw,34px);letter-spacing:-.035em;text-transform:uppercase}
+.tnm{font-family:var(--disp);font-weight:900;font-size:clamp(19px,2.8vw,34px);letter-spacing:-.035em;text-transform:uppercase}
 .tjp{font-family:var(--jp);font-size:12px;color:var(--grey);letter-spacing:.12em}
 .tpg{font-family:var(--mono);font-size:11px;color:var(--grey)}
 @media(max-width:640px){.toc a{grid-template-columns:40px 1fr auto}.tjp{display:none}}
@@ -162,7 +166,7 @@ main{position:relative;z-index:1}
 .lede{font-size:clamp(19px,2.5vw,31px);line-height:1.42;letter-spacing:-.02em;font-weight:500}
 .lede b{font-weight:900}
 .lede .mg{color:var(--mag-t)}
-.body p{font-family:var(--sans);font-size:15.5px;line-height:1.7;color:var(--ink2);max-width:62ch}
+.body p{font-size:15.5px;line-height:1.72;color:var(--ink2);max-width:60ch}
 .body p+p{margin-top:1.15em}
 .body b{color:var(--ink);font-weight:700}
 .spec{border-top:1px solid var(--ink)}
@@ -171,13 +175,13 @@ main{position:relative;z-index:1}
 .spec .v{color:var(--ink)}
 .spec .v .dot{display:inline-block;width:6px;height:6px;background:var(--mag);margin-right:7px;vertical-align:1px}
 .pull{border-left:3px solid var(--mag);padding:4px 0 4px 18px;margin:clamp(22px,3vw,32px) 0;font-family:var(--jp);font-size:13px;color:var(--grey);letter-spacing:.06em}
-.pull b{display:block;font-family:var(--disp);font-weight:400;font-size:clamp(16px,2vw,21px);color:var(--ink);letter-spacing:-.02em;margin-bottom:5px}
+.pull b{display:block;font-family:var(--disp);font-weight:700;font-size:clamp(16px,2vw,21px);color:var(--ink);letter-spacing:-.02em;margin-bottom:5px}
 
 /* ─ WORKS ───────────────────────────────────── */
 .workhead{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:clamp(22px,3vw,32px)}
 .workhead button{background:var(--paper);padding:13px 12px;text-align:left}
 .workhead button .wn{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--grey)}
-.workhead button .wt{font-family:var(--disp);font-weight:400;font-size:14px;letter-spacing:-.02em;margin-top:4px;text-transform:uppercase}
+.workhead button .wt{font-family:var(--disp);font-weight:900;font-size:14px;letter-spacing:-.02em;margin-top:4px;text-transform:uppercase}
 .workhead button.on{background:var(--ink)}
 .workhead button.on .wt{color:var(--paper)}
 .workhead button.on .wn{color:var(--mag)}
@@ -212,14 +216,14 @@ main{position:relative;z-index:1}
 .p-shot:hover img,.p-shot.dev img{filter:none;transform:scale(1.015)}
 .p-shot:hover::before,.p-shot.dev::before{opacity:0}
 .p-cap{position:absolute;z-index:3;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:10px;padding:7px 10px;
-  font-family:var(--sans);font-size:11.5px;color:var(--ink2);
+  font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--ink);text-transform:uppercase;
   background:linear-gradient(transparent,color-mix(in srgb,var(--paper) 70%,transparent) 40%,var(--paper))}
-.p-live{position:absolute;z-index:3;top:10px;left:10px;display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:11px;
-  background:var(--paper);color:var(--ink);padding:5px 11px;border-radius:999px;border:1px solid var(--line)}
+.p-live{position:absolute;z-index:3;top:9px;left:9px;display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;
+  background:var(--paper);color:var(--ink);padding:5px 9px;text-transform:uppercase;border:1px solid var(--ink)}
 .p-live i{width:5px;height:5px;border-radius:50%;background:#12B76A;display:block}
-.p-name{font-family:var(--disp);font-weight:400;font-size:clamp(34px,4.6vw,60px);letter-spacing:-.012em;line-height:1}
-.p-why{font-family:var(--disp);font-style:italic;font-size:clamp(16px,1.9vw,21px);color:var(--mag);margin-top:12px;letter-spacing:0}
-.p-desc{font-family:var(--sans);font-size:15px;line-height:1.72;color:var(--ink2);margin-top:16px;max-width:52ch}
+.p-name{font-family:var(--disp);font-weight:400;font-size:clamp(30px,4.4vw,58px);letter-spacing:.01em;line-height:.98;text-transform:uppercase}
+.p-why{font-family:var(--mono);font-size:clamp(12px,1.4vw,14px);color:var(--mag-t);margin-top:10px;letter-spacing:.01em}
+.p-desc{font-size:14.5px;line-height:1.72;color:var(--dim);margin-top:16px;max-width:54ch}
 .p-desc b{color:var(--ink);font-weight:500}
 .p-own{font-family:var(--mono);font-size:11.5px;color:var(--grey);margin-top:11px}
 .p-flow{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:16px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--grey)}
@@ -229,7 +233,7 @@ main{position:relative;z-index:1}
 .p-figs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line2);border:1px solid var(--line2);margin-top:clamp(20px,2.6vw,30px)}
 @media(max-width:700px){.p-figs{grid-template-columns:1fr}}
 .p-figs .f{background:var(--paper);padding:13px 15px}
-.p-figs .fn{font-family:var(--disp);font-weight:400;font-size:clamp(24px,2.8vw,34px);letter-spacing:-.01em;line-height:1}
+.p-figs .fn{font-family:var(--disp);font-weight:400;font-size:clamp(20px,2.4vw,28px);letter-spacing:.01em;line-height:1}
 .p-figs .fl{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--grey);margin-top:6px;text-transform:uppercase;line-height:1.5}
 .plates{position:relative}
 .pl{display:none}
@@ -237,7 +241,7 @@ main{position:relative;z-index:1}
 @keyframes pin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.pl.on{animation:none}}
 .pl-top{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;padding-bottom:clamp(16px,2.4vw,24px);border-bottom:1px solid var(--ink)}
-.pl-title{font-family:var(--disp);font-weight:400;font-size:clamp(34px,7vw,90px);line-height:.86;letter-spacing:-.018em;text-transform:uppercase}
+.pl-title{font-family:var(--disp);font-weight:900;font-size:clamp(34px,7vw,90px);line-height:.86;letter-spacing:-.05em;text-transform:uppercase}
 .pl-title .nw{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--ink);background:var(--mag);padding:4px 7px;vertical-align:middle;margin-left:12px;text-transform:uppercase;font-weight:400}
 .pl-why{font-family:var(--jp);font-size:clamp(13px,1.7vw,17px);color:var(--mag-t);margin-top:12px;letter-spacing:.02em}
 .pl-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase;text-align:right;white-space:nowrap}
@@ -250,7 +254,7 @@ main{position:relative;z-index:1}
 .pipe .pt span{color:var(--grey)}
 .figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:clamp(20px,3vw,28px)}
 .figs .f{background:var(--paper);padding:15px 14px}
-.figs .fn{font-family:var(--disp);font-weight:400;font-size:clamp(26px,3.6vw,40px);letter-spacing:-.014em;line-height:1}
+.figs .fn{font-family:var(--disp);font-weight:900;font-size:clamp(26px,3.6vw,40px);letter-spacing:-.04em;line-height:1}
 .figs .fl{font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:7px;text-transform:uppercase;line-height:1.5}
 .plfoot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:clamp(20px,3vw,28px)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -264,9 +268,9 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
 .rt th{font-family:var(--mono);font-size:8.5px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase;text-align:left;font-weight:400;padding:10px 12px 10px 0;border-bottom:1px solid var(--rule)}
 .rt td{padding:15px 12px 15px 0;border-bottom:1px solid var(--rule2);font-size:13.5px;color:var(--ink2);vertical-align:top}
 .rt tbody tr:hover{background:var(--paper2)}
-.rt .nm{font-family:var(--disp);font-weight:400;font-size:20px;letter-spacing:-.01em;color:var(--ink)}
+.rt .nm{font-family:var(--disp);font-weight:900;font-size:16px;letter-spacing:-.02em;color:var(--ink);text-transform:uppercase}
 .rt .sb{display:block;font-family:var(--mono);font-size:10.5px;color:var(--grey);margin-top:4px;letter-spacing:.02em}
-.st{font-family:var(--sans);font-size:12.5px;letter-spacing:0;white-space:nowrap}
+.st{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;white-space:nowrap}
 .st.run{color:var(--mag-t)}.st.run::before{content:"● "}
 .st.done{color:var(--grey)}.st.done::before{content:"○ "}
 .st.q{color:var(--cy)}.st.q::before{content:"◐ "}
@@ -339,9 +343,9 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
 
 /* ─ COLOPHON / CONTACT ──────────────────────── */
 #colo{border-bottom:none}
-.sayhi{font-family:var(--disp);font-weight:400;font-size:clamp(46px,12vw,168px);line-height:.83;letter-spacing:-.018em;text-transform:uppercase}
+.sayhi{font-family:var(--disp);font-weight:900;font-size:clamp(46px,12vw,168px);line-height:.83;letter-spacing:-.055em;text-transform:uppercase}
 .sayhi .mg{color:var(--mag)}
-.mail{font-family:var(--disp);font-weight:400;font-size:clamp(17px,3.2vw,38px);letter-spacing:-.03em;border-bottom:3px solid var(--mag);padding-bottom:5px;word-break:break-all;text-align:left;margin-top:clamp(22px,3vw,34px)}
+.mail{font-family:var(--disp);font-weight:700;font-size:clamp(17px,3.2vw,38px);letter-spacing:-.03em;border-bottom:3px solid var(--mag);padding-bottom:5px;word-break:break-all;text-align:left;margin-top:clamp(22px,3vw,34px)}
 .mail:hover{color:var(--mag-t)}
 .mailhint{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--grey);margin-top:11px;text-transform:uppercase}
 .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(22px,3vw,32px)}
@@ -374,7 +378,7 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
 }
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 @media print{
-  body::before,.marks,.rhead,.folio,nav.top,#press,.ov,.toast,#plate,.pf-ctl{display:none!important}
+  body::before,.marks,.reg,.cbar,.rhead,.folio,nav.top,#press,.ov,.toast,#plate,.pf-ctl{display:none!important}
   body{background:#fff}
   .spread{padding:20px 0;break-inside:avoid}
   .pl{display:block!important}
@@ -387,6 +391,8 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
 <a class="skip" href="#works">skip to works</a>
 
 <div class="marks" aria-hidden="true"><i class="cm tl"></i><i class="cm tr"></i><i class="cm bl"></i><i class="cm br"></i></div>
+<div class="reg" aria-hidden="true"><svg viewBox="0 0 26 26" fill="none" stroke="#14141C" stroke-width="1"><circle cx="13" cy="13" r="8"/><circle cx="13" cy="13" r="3"/><path d="M13 0v26M0 13h26"/></svg></div>
+<div class="cbar" aria-hidden="true"><i style="background:#00B3C7"></i><i style="background:#FF2D6F"></i><i style="background:#FFCE00"></i><i style="background:#14141C"></i></div>
 
 <div class="band" aria-hidden="true"></div>
 <div class="rhead" aria-hidden="true"><span>KUNAL KUMAR — ISSUE Ø1</span><span data-rh>記憶 / MEMORY — BENGALURU</span></div>
@@ -395,11 +401,11 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
 <nav class="top" aria-label="primary">
   <a class="brand" href="#cover">KUNAL KUMAR<i>.</i></a>
   <div class="navlinks">
-    <a href="#profile">Profile</a><a href="#works">Work</a><a href="#runtime">Experience</a><a href="#brain">Second brain</a><a href="#log">Log</a><a href="#colo">Contact</a>
+    <a href="#profile">PROFILE</a><a href="#works">WORKS</a><a href="#runtime">RUNTIME</a><a href="#brain">BRAIN</a><a href="#log">LOG</a><a href="#modules">MODULES</a><a href="#colo">CONTACT</a>
   </div>
   <div class="navr">
     <button class="btn" data-cmdk aria-label="⌘K — command palette">⌘K</button>
-    <a class="btn fill" href="mailto:kunalsain0324@gmail.com">Get in touch</a>
+    <a class="btn fill" href="mailto:kunalsain0324@gmail.com">HIRE →</a>
   </div>
 </nav>
 
@@ -416,6 +422,9 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
 <!-- ═══ 00 COVER ═══ -->
 <section class="spread" id="cover" data-spread="00" data-name="COVER" data-jp="表紙">
   <div class="wrap">
+    <div class="masthead">
+      <span>ISSUE Ø1 · 記憶</span><span>KUNAL KUMAR — PORTFOLIO ANNUAL</span><span data-mast-clock>BENGALURU · --:--</span>
+    </div>
     <div class="cov">
       <div>
         <h1 class="bigname"><span class="ln"><i>KUNAL</i></span><span class="ln"><i>KUMAR<span class="mg">.</span></i></span></h1>
@@ -427,8 +436,8 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
           <div><div class="k">FOCUS</div><div class="v">AI Safety</div></div>
         </div>
         <div class="covcta">
-          <a class="btn fill" href="#works">See the work</a>
-          <a class="btn" href="kunal-kumar-resume.pdf" target="_blank" rel="noopener">Résumé ↗</a>
+          <a class="btn fill" href="#works">READ THE WORK →</a>
+          <a class="btn" href="kunal-kumar-resume.pdf" target="_blank" rel="noopener">RÉSUMÉ.PDF ↗</a>
         </div>
       </div>
       <div>
@@ -437,9 +446,9 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
           <a class="p-shot plate-shot" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">
             <img id="plate" src="shots/plate.jpg" width="559" height="700" decoding="async" fetchpriority="high"
                  alt="Recall's memory graph — nodes and a traced recovery path across events, sessions and threads.">
-            <span class="p-cap"><span>Recall — the flagship, running</span><span>hover for colour</span></span>
+            <span class="p-cap"><span>WEB-SEVEN-PUCE-99.VERCEL.APP</span><span>HOVER FOR COLOUR</span></span>
           </a>
-          <div class="pf-cap"><span>記録 — web-seven-puce-99.vercel.app</span><span data-plate-total>—</span></div>
+          <div class="pf-cap"><span>記録 — THE FLAGSHIP, RUNNING</span><span data-plate-total>—</span></div>
         </figure>
         <div class="barcode">
           <canvas id="barcode" aria-hidden="true"></canvas>
@@ -484,10 +493,10 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
 <!-- ═══ 02 WORKS ═══ -->
     <section class="spread" id="works" data-spread="02" data-name="WORKS" data-jp="作品">
       <div class="wrap">
-        <div class="shead"><span class="no">Ø2</span><h2>Works</h2><span class="jp">作品 — four shipped, all live</span></div>
+        <div class="shead"><span class="no">Ø2</span><h2>Works</h2><span class="jp">作品 — 4 SHIPPED, ALL LIVE</span></div>
         <div class="railbar">
-          <span class="railcount"><b data-rail-i>Ø1</b> / Ø4 — <span data-rail-name>Recall</span></span>
-          <span>ドラッグ — drag, swipe or use ← →</span>
+          <span class="railcount"><b data-rail-i>Ø1</b> / Ø4 — <span data-rail-name>RECALL</span></span>
+          <span>ドラッグ — DRAG, SWIPE OR USE ← →</span>
           <span class="railnav"><button data-rail-prev aria-label="previous project" disabled>←</button><button data-rail-next aria-label="next project">→</button></span>
         </div>
         <div class="rail" data-rail tabindex="0" role="group" aria-label="projects, scroll horizontally">
@@ -495,9 +504,9 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
         <div class="p-head"><span class="p-no">PLATE Ø1</span><span class="p-jp">記憶 · 継続 / MEMORY · CONTINUITY</span></div>
         <div class="p-body">
           <a class="p-shot" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">
-            <span class="p-live"><i></i>Live</span>
+            <span class="p-live"><i></i>LIVE</span>
             <img src="shots/recall.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Recall’s live site: a memory-graph visualisation beside the headline “Never lose the thread”.">
-            <span class="p-cap"><span>web-seven-puce-99.vercel.app</span><span>hover for colour</span></span>
+            <span class="p-cap"><span>web-seven-puce-99.vercel.app</span><span>実物 — HOVER FOR COLOUR</span></span>
           </a>
           <div class="p-txt">
             <h3 class="p-name">Recall</h3>
@@ -506,7 +515,7 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
             <p class="p-own">↳ solo build — extension → daemon → recovery interface, end to end.</p>
             <div class="p-flow"><b>ingest</b> <i>→</i> <b>store</b> <i>→</i> <b>score</b> <i>→</i> <b>recall</b> <i>→</i> <b>resume</b></div>
             <div class="chips" style="margin-top:16px"><span class="chip">python</span><span class="chip">qt</span><span class="chip">browser extension</span><span class="chip">daemon apis</span><span class="chip">semantic search</span></div>
-            <div class="p-links"><a class="btn fill" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">Live ↗</a><a class="btn" href="https://github.com/kunalKumar-13/Recall-me" target="_blank" rel="noopener">Code ↗</a></div>
+            <div class="p-links"><a class="btn fill" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/Recall-me" target="_blank" rel="noopener">CODE ↗</a></div>
           </div>
         </div>
         <div class="p-figs">
@@ -519,9 +528,9 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
         <div class="p-head"><span class="p-no">PLATE Ø2</span><span class="p-jp">信頼 · 安全 / TRUST &amp; SAFETY</span></div>
         <div class="p-body">
           <a class="p-shot" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener">
-            <span class="p-live"><i></i>Live</span>
+            <span class="p-live"><i></i>LIVE</span>
             <img src="shots/aegis.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Aegis dashboard: decisions processed, routing outcomes donut and flagged harm categories.">
-            <span class="p-cap"><span>aegis-one-livid.vercel.app</span><span>hover for colour</span></span>
+            <span class="p-cap"><span>aegis-one-livid.vercel.app</span><span>実物 — HOVER FOR COLOUR</span></span>
           </a>
           <div class="p-txt">
             <h3 class="p-name">Aegis</h3>
@@ -530,7 +539,7 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
             <p class="p-own">↳ solo — engine interface, policy system, review queue, dashboard.</p>
             <div class="p-flow"><b>classify</b> <i>→</i> <b>apply policy</b> <i>→</i> <b>route</b> <i>→</i> <b>human review</b></div>
             <div class="chips" style="margin-top:16px"><span class="chip">next.js 16</span><span class="chip">react 19</span><span class="chip">typescript</span><span class="chip">prisma · sqlite</span><span class="chip">vitest</span></div>
-            <div class="p-links"><a class="btn fill" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener">Live ↗</a><a class="btn" href="https://github.com/kunalKumar-13/aegis" target="_blank" rel="noopener">Code ↗</a></div>
+            <div class="p-links"><a class="btn fill" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/aegis" target="_blank" rel="noopener">CODE ↗</a></div>
           </div>
         </div>
         <div class="p-figs">
@@ -543,9 +552,9 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
         <div class="p-head"><span class="p-no">PLATE Ø3</span><span class="p-jp">接地 · 拒否 / GROUNDING · REFUSAL</span></div>
         <div class="p-body">
           <a class="p-shot" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener">
-            <span class="p-live"><i></i>Live</span>
+            <span class="p-live"><i></i>LIVE</span>
             <img src="shots/pdfchat.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="PDFChat: upload a PDF, with the upload / retrieve / answer pipeline explained.">
-            <span class="p-cap"><span>pdf-reviewer-ten.vercel.app</span><span>hover for colour</span></span>
+            <span class="p-cap"><span>pdf-reviewer-ten.vercel.app</span><span>実物 — HOVER FOR COLOUR</span></span>
           </a>
           <div class="p-txt">
             <h3 class="p-name">PDFChat</h3>
@@ -554,7 +563,7 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
             <p class="p-own">↳ built the full retrieval → citation → refusal path.</p>
             <div class="p-flow"><b>upload</b> <i>→</i> <b>retrieve</b> <i>→</i> <b>ground</b> <i>→</i> <b>answer / refuse</b></div>
             <div class="chips" style="margin-top:16px"><span class="chip">python</span><span class="chip">retrieval</span><span class="chip">citations</span><span class="chip">refusal policy</span><span class="chip">multilingual</span></div>
-            <div class="p-links"><a class="btn fill" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener">Live ↗</a><a class="btn" href="https://github.com/kunalKumar-13/PDF-Reviewer" target="_blank" rel="noopener">Code ↗</a></div>
+            <div class="p-links"><a class="btn fill" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/PDF-Reviewer" target="_blank" rel="noopener">CODE ↗</a></div>
           </div>
         </div>
         <div class="p-figs">
@@ -567,9 +576,9 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
         <div class="p-head"><span class="p-no">PLATE Ø4</span><span class="p-jp">警備 · 自律 / AGENTS · SECURITY</span></div>
         <div class="p-body">
           <a class="p-shot" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener">
-            <span class="p-live"><i></i>Live</span>
+            <span class="p-live"><i></i>LIVE</span>
             <img src="shots/codeguardian.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Code-Guardian landing page — “Autonomous Security Engineering”.">
-            <span class="p-cap"><span>zeus1205-codeguardian-ai.hf.space</span><span>hover for colour</span></span>
+            <span class="p-cap"><span>zeus1205-codeguardian-ai.hf.space</span><span>実物 — HOVER FOR COLOUR</span></span>
           </a>
           <div class="p-txt">
             <h3 class="p-name">Code-Guardian</h3>
@@ -578,7 +587,7 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
             <p class="p-own">↳ agent design, environment and the demo deployment.</p>
             <div class="p-flow"><b>ingest</b> <i>→</i> <b>investigate</b> <i>→</i> <b>reason</b> <i>→</i> <b>propose</b></div>
             <div class="chips" style="margin-top:16px"><span class="chip">agents</span><span class="chip">openenv</span><span class="chip">python</span><span class="chip">hf spaces</span></div>
-            <div class="p-links"><a class="btn fill" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener">Live ↗</a><a class="btn" href="https://github.com/kunalKumar-13/codeguardian-ai-" target="_blank" rel="noopener">Code ↗</a></div>
+            <div class="p-links"><a class="btn fill" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/codeguardian-ai-" target="_blank" rel="noopener">CODE ↗</a></div>
           </div>
         </div>
         <div class="p-figs">
@@ -593,27 +602,27 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
         <div class="lbl" style="margin:clamp(30px,4vw,44px) 0 14px"><b>◆</b> ALSO BUILT / その他 — no public artefact</div>
         <div class="p-body" style="align-items:start">
           <div><div class="p-name" style="font-size:clamp(22px,2.8vw,32px)">Watershed</div><p class="p-desc">A multi-agent RL arena for scarce resources — <b>GRPO over 100k+ self-play episodes</b>, with trust dynamics and coalition formation modelled into the reward, served behind FastAPI. Run it long enough and the agents stopped simply competing: <b>alliances formed.</b></p><div class="chips" style="margin-top:14px"><span class="chip">rl · grpo</span><span class="chip">trl</span><span class="chip">fastapi</span><span class="chip">multi-agent</span></div><p class="p-own" style="margin-top:12px">private repository</p></div>
-          <div><div class="p-name" style="font-size:clamp(22px,2.8vw,32px)">Support Triage</div><p class="p-desc">A deterministic support agent that answers from the docs or refuses, every time — hybrid <b>BM25 + TF-IDF retrieval with reranking</b>, multilingual injection and retrieval-poisoning defense, PII redaction and calibrated confidence. <b>132/132 evaluation tests passing.</b></p><div class="chips" style="margin-top:14px"><span class="chip">llamaindex</span><span class="chip">bm25 · tf-idf</span><span class="chip">reranking</span><span class="chip">prompt defense</span></div><div class="p-links"><a class="btn" href="https://github.com/kunalKumar-13/deterministic-support-triage" target="_blank" rel="noopener">Code ↗</a></div></div>
+          <div><div class="p-name" style="font-size:clamp(22px,2.8vw,32px)">Support Triage</div><p class="p-desc">A deterministic support agent that answers from the docs or refuses, every time — hybrid <b>BM25 + TF-IDF retrieval with reranking</b>, multilingual injection and retrieval-poisoning defense, PII redaction and calibrated confidence. <b>132/132 evaluation tests passing.</b></p><div class="chips" style="margin-top:14px"><span class="chip">llamaindex</span><span class="chip">bm25 · tf-idf</span><span class="chip">reranking</span><span class="chip">prompt defense</span></div><div class="p-links"><a class="btn" href="https://github.com/kunalKumar-13/deterministic-support-triage" target="_blank" rel="noopener">CODE ↗</a></div></div>
         </div>
       </div>
     </section>
 
     <!-- ═══ 03 RUNTIME ═══ -->
-<section class="spread" id="runtime" data-spread="03" data-name="EXPERIENCE" data-jp="経歴">
+<section class="spread" id="runtime" data-spread="03" data-name="RUNTIME" data-jp="経歴">
   <div class="wrap">
-    <div class="shead"><span class="no">Ø3</span><h2>Experience</h2><span class="jp">経歴 — seven roles</span></div>
+    <div class="shead"><span class="no">Ø3</span><h2>Runtime</h2><span class="jp">経歴 — 7 PROCESSES</span></div>
     <div class="lbl" style="margin-bottom:8px" data-swipe-hint><b>◆</b> SWIPE THE TABLE →</div>
     <div class="tblwrap">
       <table class="rt">
-        <thead><tr><th>no</th><th>organisation</th><th>role</th><th>period</th><th>status</th></tr></thead>
+        <thead><tr><th>pid</th><th>process</th><th>role</th><th>since</th><th>state</th></tr></thead>
         <tbody>
-          <tr><td>001</td><td><span class="nm">Emergent</span><span class="sb">yc s24 · ai startup</span></td><td>frontend engineering intern</td><td>jun 2026 —</td><td><span class="st run">Current</span></td></tr>
-          <tr><td>002</td><td><span class="nm">Open Source Club</span><span class="sb">scaler school of technology</span></td><td>operations lead</td><td>2026 —</td><td><span class="st run">Current</span></td></tr>
-          <tr><td>003</td><td><span class="nm">Aspirants Relations</span><span class="sb">scaler school of technology</span></td><td>head of immersions</td><td>2026 —</td><td><span class="st run">Current</span></td></tr>
-          <tr><td>004</td><td><span class="nm">Ostrius AI</span><span class="sb">shipped auth &amp; verification end to end</span></td><td>swe intern</td><td>apr–jun 2026</td><td><span class="st done">Completed</span></td></tr>
-          <tr><td>005</td><td><span class="nm">Hack Club</span><span class="sb">campfire · daydream · codeday bengaluru — 500+ participants</span></td><td>growth &amp; ops lead</td><td>nov 2024 – mar 2026</td><td><span class="st done">Completed</span></td></tr>
-          <tr><td>006</td><td><span class="nm">DSA Teaching</span><span class="sb">50+ students mentored — algorithms &amp; structured thinking</span></td><td>teaching assistant</td><td>may–jun 2026</td><td><span class="st done">Completed</span></td></tr>
-          <tr><td>007</td><td><span class="nm">Apple Dev Academy</span><span class="sb">application in progress</span></td><td>applicant</td><td>2027 cohort</td><td><span class="st q">Applying</span></td></tr>
+          <tr><td>001</td><td><span class="nm">Emergent</span><span class="sb">yc s24 · ai startup</span></td><td>frontend engineering intern</td><td>jun 2026 —</td><td><span class="st run">RUNNING</span></td></tr>
+          <tr><td>002</td><td><span class="nm">Open Source Club</span><span class="sb">scaler school of technology</span></td><td>operations lead</td><td>2026 —</td><td><span class="st run">RUNNING</span></td></tr>
+          <tr><td>003</td><td><span class="nm">Aspirants Relations</span><span class="sb">scaler school of technology</span></td><td>head of immersions</td><td>2026 —</td><td><span class="st run">RUNNING</span></td></tr>
+          <tr><td>004</td><td><span class="nm">Ostrius AI</span><span class="sb">shipped auth &amp; verification end to end</span></td><td>swe intern</td><td>apr–jun 2026</td><td><span class="st done">EXIT Ø</span></td></tr>
+          <tr><td>005</td><td><span class="nm">Hack Club</span><span class="sb">campfire · daydream · codeday bengaluru — 500+ participants</span></td><td>growth &amp; ops lead</td><td>nov 2024 – mar 2026</td><td><span class="st done">EXIT Ø</span></td></tr>
+          <tr><td>006</td><td><span class="nm">DSA Teaching</span><span class="sb">50+ students mentored — algorithms &amp; structured thinking</span></td><td>teaching assistant</td><td>may–jun 2026</td><td><span class="st done">EXIT Ø</span></td></tr>
+          <tr><td>007</td><td><span class="nm">Apple Dev Academy</span><span class="sb">application in progress</span></td><td>applicant</td><td>2027 cohort</td><td><span class="st q">QUEUED</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -622,10 +631,10 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
       <div class="heat-h"><span><b>◆</b> COMMIT MAP — LAST 12 MONTHS / 記録</span><span class="rd" data-hm-read aria-live="polite"></span><a href="https://github.com/kunalKumar-13" target="_blank" rel="noopener" style="border-bottom:1px solid var(--rule)">GITHUB / KUNALKUMAR-13 ↗</a></div>
       <div class="heat-w"><div class="hg" data-hm-grid role="img" aria-label="GitHub contribution heatmap — loading"></div></div>
       <div class="heat-s" data-hm-stats hidden>
-        <div class="f"><div class="fn" data-hm-total style="font-family:var(--disp);font-weight:400;font-size:30px;letter-spacing:-.014em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">contributions — last year</div></div>
-        <div class="f"><div class="fn" data-hm-cur style="font-family:var(--disp);font-weight:400;font-size:30px;letter-spacing:-.014em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">current streak — days</div></div>
-        <div class="f"><div class="fn" data-hm-max style="font-family:var(--disp);font-weight:400;font-size:30px;letter-spacing:-.014em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">longest streak — days</div></div>
-        <div class="f"><div class="fn" data-hm-busy style="font-family:var(--disp);font-weight:400;font-size:30px;letter-spacing:-.014em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">busiest day</div></div>
+        <div class="f"><div class="fn" data-hm-total style="font-family:var(--disp);font-weight:900;font-size:30px;letter-spacing:-.04em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">contributions — last year</div></div>
+        <div class="f"><div class="fn" data-hm-cur style="font-family:var(--disp);font-weight:900;font-size:30px;letter-spacing:-.04em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">current streak — days</div></div>
+        <div class="f"><div class="fn" data-hm-max style="font-family:var(--disp);font-weight:900;font-size:30px;letter-spacing:-.04em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">longest streak — days</div></div>
+        <div class="f"><div class="fn" data-hm-busy style="font-family:var(--disp);font-weight:900;font-size:30px;letter-spacing:-.04em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">busiest day</div></div>
       </div>
     </div>
   </div>
@@ -696,10 +705,10 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
     <button class="mail" data-mail>kunalsain0324@gmail.com</button>
     <div class="mailhint" data-mail-hint>click to copy · click again to open mail</div>
     <div class="links">
-      <a class="btn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">GitHub ↗</a>
-      <a class="btn" href="https://linkedin.com/in/sainkunal" target="_blank" rel="noopener">LinkedIn ↗</a>
-      <a class="btn" href="kunal-kumar-resume.pdf" target="_blank" rel="noopener">Résumé ↗</a>
-      <button class="btn" data-print>Print this issue</button>
+      <a class="btn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">GITHUB ↗</a>
+      <a class="btn" href="https://linkedin.com/in/sainkunal" target="_blank" rel="noopener">LINKEDIN ↗</a>
+      <a class="btn" href="kunal-kumar-resume.pdf" target="_blank" rel="noopener">RÉSUMÉ.PDF ↗</a>
+      <button class="btn" data-print>PRINT ISSUE</button>
     </div>
     <div style="font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--mag-t);text-transform:uppercase;margin-top:26px">● available for 2026 — full-time &amp; collabs</div>
 

@@ -49,12 +49,6 @@ it shows with JavaScript disabled.
 - **Commit map** — last 12 months from the public contributions API, with computed streaks and
   busiest day, cached for an hour. If the feed is down it says so instead of inventing data.
 
-## Typography
-
-Set in **Instrument Serif** (display) and **Instrument Sans** (text) — a harmonised
-superfamily — with **JetBrains Mono** reserved for true metadata: dates, labels, tags.
-Accent is a single seal red (`#C2402A`).
-
 ## Quality
 
 Lighthouse **100 / 100 / 100 / 100** — desktop *and* mobile.
