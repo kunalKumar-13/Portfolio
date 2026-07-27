@@ -3,732 +3,439 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KUNAL KUMAR — ISSUE Ø1 / 記憶</title>
-<meta name="description" content="Kunal Kumar — Issue Ø1. CS @ BITS Pilani, frontend @ Emergent (YC S24), going deep on AI safety. A memory engine for unfinished work, an agent that refuses to hallucinate, an arena where machines learn to negotiate, and a moderation system you can audit.">
+<title>Kunal Kumar — AI & systems engineer</title>
+<meta name="description" content="Kunal Kumar — CS @ BITS Pilani, frontend at Emergent (YC S24), going deep on AI safety. Recall, Aegis, PDFChat and Code-Guardian — four systems shipped and running.">
 <meta name="author" content="Kunal Kumar">
-<meta name="theme-color" content="#F4F2EC">
-<meta property="og:title" content="KUNAL KUMAR — ISSUE Ø1 / 記憶">
-<meta property="og:description" content="A memory engine for unfinished work · an agent that refuses to hallucinate · an arena where machines learn to negotiate · moderation you can audit.">
+<meta name="theme-color" content="#08080A">
+<meta property="og:title" content="Kunal Kumar — AI & systems engineer">
+<meta property="og:description" content="Four systems shipped and running: a memory engine, moderation you can audit, a grounded PDF agent, and autonomous security review.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Kunal Kumar","jobTitle":"Frontend Engineering Intern","worksFor":{"@type":"Organization","name":"Emergent"},"alumniOf":{"@type":"CollegeOrUniversity","name":"BITS Pilani"},"sameAs":["https://github.com/kunalKumar-13","https://linkedin.com/in/sainkunal"]}</script>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F4F2EC'/%3E%3Crect x='4' y='4' width='24' height='24' fill='%23FF2D6F'/%3E%3Ctext x='8.5' y='24' font-family='Helvetica,Arial' font-size='20' font-weight='700' fill='%23F4F2EC'%3EK%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111114'/%3E%3Ctext x='7' y='23' font-family='Inter,Helvetica' font-size='17' font-weight='700' fill='%23EDEDEF'%3EK%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
 <style>
+/* Metric-matched stand-in for Inter: the web font swaps in without reflowing a single line. */
+@font-face{font-family:'Inter Fallback';src:local('Arial'),local('Liberation Sans'),local('Helvetica');size-adjust:107.4%;ascent-override:90.2%;descent-override:22.48%;line-gap-override:0%}
 :root{
-  --paper:#F4F2EC; --paper2:#EAE7DE; --ink:#14141C; --ink2:#3A3A44;
-  --grey:#63615A; --faint:#97948B;
-  --mag:#FF2D6F; --mag-t:#C81E5B; --navy:#171B4D; --cy:#00B3C7;
-  --rule:rgba(20,20,28,.18); --rule2:rgba(20,20,28,.09);
-  --disp:'Archivo',Helvetica,Arial,sans-serif;
-  --mono:'JetBrains Mono',ui-monospace,monospace;
-  --jp:'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP','Archivo',sans-serif;
-  --gut:clamp(18px,4.4vw,64px);
+  --bg:#08080A; --bg2:#0C0C10; --panel:#101014; --panel2:#15151A;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.05);
+  --t1:#EDEDEF; --t2:#A2A2AC; --t3:#8C8C96; --t4:#7E7E87;
+  --acc:#7C87FF; --acc2:#A78BFA; --ok:#3DD68C;
+  --s:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --m:'JetBrains Mono',ui-monospace,monospace;
+  --pad:clamp(20px,5vw,72px); --max:1120px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
-body{background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16px;line-height:1.55;overflow-x:clip;-webkit-font-smoothing:antialiased}
-::selection{background:var(--mag);color:var(--paper)}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{background:var(--bg);color:var(--t1);font-family:var(--s);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:clip;letter-spacing:-.011em}
+::selection{background:var(--acc);color:#0A0A0C}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
-:focus-visible{outline:2px solid var(--mag);outline-offset:3px}
-img,canvas{display:block;max-width:100%}
-.skip{position:fixed;left:14px;top:-70px;z-index:3000;background:var(--ink);color:var(--paper);padding:12px 18px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;transition:top .18s}
-.skip:focus{top:14px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:6px}
+img{display:block;max-width:100%}
+.skip{position:fixed;left:16px;top:-60px;z-index:200;background:var(--t1);color:#000;padding:13px 18px;border-radius:8px;font-size:13px;transition:top .2s}
+.skip:focus{top:16px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
 
-/* ─ paper grain ─────────────────────────────── */
-body::before{content:"";position:fixed;inset:0;z-index:600;pointer-events:none;opacity:.5;mix-blend-mode:multiply;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='.42'/></svg>")}
+/* ambient light — the only decoration */
+.glow{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.glow i{position:absolute;display:block;border-radius:50%;filter:blur(120px);opacity:.5}
+.glow i:nth-child(1){width:620px;height:620px;top:-280px;left:50%;transform:translateX(-50%);background:radial-gradient(circle,rgba(124,135,255,.22),transparent 68%)}
+.glow i:nth-child(2){width:520px;height:520px;top:44%;right:-220px;background:radial-gradient(circle,rgba(167,139,250,.12),transparent 68%)}
+body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.16;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+main,nav{position:relative;z-index:2}
 
-/* ─ press marks (crop + registration + colour bar) ─ */
-.marks{position:fixed;inset:0;z-index:560;pointer-events:none}
-.marks .cm{position:absolute;width:26px;height:26px}
-.marks .cm::before,.marks .cm::after{content:"";position:absolute;background:var(--ink);opacity:.5}
-.marks .cm::before{width:100%;height:1px;top:50%}
-.marks .cm::after{height:100%;width:1px;left:50%}
-.marks .tl{left:8px;top:8px}.marks .tr{right:8px;top:8px}.marks .bl{left:8px;bottom:8px}.marks .br{right:8px;bottom:8px}
-.reg{position:fixed;right:16px;top:50%;z-index:560;width:26px;height:26px;pointer-events:none;opacity:.55}
-.reg svg{width:100%;height:100%}
-.cbar{position:fixed;left:0;bottom:0;z-index:560;display:flex;pointer-events:none}
-.cbar i{width:26px;height:7px;opacity:.5;transition:opacity .4s,height .4s}
-.cbar i.on{opacity:1;height:11px}
-@media(max-width:820px){.reg,.cbar{display:none}.marks .cm{width:16px}}
+/* nav */
+nav{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:16px var(--pad);transition:background .3s,border-color .3s,padding .3s;border-bottom:1px solid transparent}
+nav.stuck{background:rgba(8,8,10,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom-color:var(--line2);padding:11px var(--pad)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14.5px;letter-spacing:-.02em}
+.brand .av{width:26px;height:26px;border-radius:7px;background:linear-gradient(150deg,var(--acc),var(--acc2));display:grid;place-items:center;font-size:12.5px;font-weight:700;color:#0A0A0C}
+.nlinks{display:flex;gap:4px}
+.nlinks a{font-size:13.5px;color:var(--t3);padding:7px 12px;border-radius:8px;transition:color .2s,background .2s}
+.nlinks a:hover,.nlinks a.on{color:var(--t1);background:rgba(255,255,255,.05)}
+.ncta{font-size:13.5px;font-weight:500;padding:9px 16px;border-radius:9px;background:var(--t1);color:#0A0A0C;transition:opacity .2s,transform .2s}
+.ncta:hover{opacity:.86;transform:translateY(-1px)}
+@media(max-width:860px){.nlinks{display:none}}
 
-/* ─ running head + folio ────────────────────── */
-.band{position:fixed;top:0;left:0;right:0;height:78px;background:var(--paper);border-bottom:1px solid var(--rule);z-index:500}
-.band::after{content:"";position:absolute;left:0;right:0;bottom:-14px;height:14px;background:linear-gradient(var(--paper),transparent)}
-@media(max-width:820px){.band{height:60px}}
-.rhead{position:fixed;top:0;left:0;right:0;z-index:520;display:flex;justify-content:space-between;padding:16px var(--gut) 0;font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--grey);text-transform:uppercase;pointer-events:none}
-.folio{position:fixed;right:var(--gut);bottom:18px;z-index:520;background:var(--paper);padding:6px 9px 5px 12px;border-left:1px solid var(--rule);font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--ink);pointer-events:none;text-align:right}
-.folio b{font-family:var(--disp);font-weight:900;font-size:26px;letter-spacing:-.02em;display:block;line-height:.9}
-.folio span{color:var(--grey)}
-@media(max-width:820px){.folio{bottom:10px;right:12px}.folio b{font-size:18px}.rhead{display:none}}
+/* section furniture */
+section{padding:clamp(76px,10vh,128px) 0;scroll-margin-top:78px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--m);font-size:11.5px;letter-spacing:.1em;
+  color:var(--t3);text-transform:uppercase;margin-bottom:18px}
+.eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--acc)}
+h2.title{font-size:clamp(27px,3.4vw,40px);font-weight:600;letter-spacing:-.032em;line-height:1.12}
+.lead{color:var(--t2);font-size:clamp(15.5px,1.6vw,17.5px);line-height:1.65;max-width:60ch;margin-top:14px}
 
-/* ─ nav ─────────────────────────────────────── */
-nav.top{position:fixed;top:0;left:0;right:0;z-index:540;display:flex;justify-content:space-between;align-items:center;gap:14px;height:78px;padding:26px var(--gut) 0;pointer-events:none}
-nav.top>*{pointer-events:auto}
-.brand{font-family:var(--disp);font-weight:900;font-size:15px;letter-spacing:-.04em}
-.brand i{color:var(--mag-t);font-style:normal}
-.navlinks{display:flex;gap:0}
-.navlinks a{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--grey);padding:8px 11px;text-transform:uppercase;border-bottom:1px solid transparent}
-.navlinks a:hover,.navlinks a.on{color:var(--ink);border-bottom-color:var(--mag-t)}
-.navr{display:flex;gap:7px;align-items:center}
-.btn{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--ink);padding:9px 13px;background:transparent;transition:background .18s,color .18s}
-.btn:hover{background:var(--ink);color:var(--paper)}
-.btn.fill{background:var(--mag);border-color:var(--mag);color:var(--ink);font-weight:700}
-.btn.fill:hover{background:var(--ink);border-color:var(--ink)}
-@media(max-width:1080px){.navlinks{display:none}}
-@media(max-width:820px){nav.top{height:60px;padding-top:0}}
+/* hero */
+#top{min-height:100svh;display:flex;align-items:center;padding-top:120px;padding-bottom:70px}
+.avail{display:inline-flex;align-items:center;gap:9px;font-size:13px;color:var(--t2);
+  border:1px solid var(--line);background:rgba(255,255,255,.03);padding:7px 14px;border-radius:999px;margin-bottom:clamp(22px,3vw,30px)}
+.avail .d{width:6px;height:6px;border-radius:50%;background:var(--ok);position:relative}
+.avail .d::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--ok);animation:pulse 2.4s cubic-bezier(0,0,.2,1) infinite}
+@keyframes pulse{0%{transform:scale(1);opacity:.65}75%,100%{transform:scale(3.2);opacity:0}}
+h1{font-size:clamp(38px,6.4vw,76px);font-weight:600;letter-spacing:-.042em;line-height:1.03}
+h1 .muted{color:#8A8A95}
+.hlead{color:var(--t2);font-size:clamp(16px,1.85vw,20px);line-height:1.6;max-width:56ch;margin-top:clamp(20px,2.6vw,28px)}
+.hlead b{color:var(--t1);font-weight:500}
+.hacts{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(28px,3.4vw,38px)}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:500;padding:12px 20px;border-radius:10px;
+  border:1px solid var(--line);color:var(--t1);transition:background .2s,border-color .2s,transform .2s}
+.btn:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.16);transform:translateY(-1px)}
+.btn.pri{background:var(--t1);color:#0A0A0C;border-color:var(--t1)}
+.btn.pri:hover{opacity:.88;background:var(--t1)}
+.btn .ar{transition:transform .22s}
+.btn:hover .ar{transform:translate(2px,-2px)}
+.hmeta{display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,52px);margin-top:clamp(38px,5vw,58px);padding-top:clamp(22px,3vw,30px);border-top:1px solid var(--line2)}
+.hmeta div .k{font-family:var(--m);font-size:11px;letter-spacing:.08em;color:var(--t4);text-transform:uppercase}
+.hmeta div .v{font-size:14.5px;color:var(--t1);margin-top:6px;font-weight:500}
+.hmeta div .v span{color:var(--t3);font-weight:400}
 
-/* ─ press-run loader ────────────────────────── */
-#press{position:fixed;inset:0;z-index:2000;background:var(--paper);display:grid;place-items:center}
-#press .plate{position:absolute;font-family:var(--disp);font-weight:900;font-size:clamp(56px,15vw,190px);letter-spacing:-.05em;line-height:.82;text-align:center;mix-blend-mode:multiply;will-change:transform,opacity}
-#press .pmeta{position:absolute;bottom:9vh;left:0;right:0;text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--grey)}
+/* work */
+.proj{padding:clamp(30px,4vw,52px) 0;border-top:1px solid var(--line2)}
+.proj:first-of-type{border-top:none}
+.pgrid{display:grid;grid-template-columns:.92fr 1.08fr;gap:clamp(26px,4vw,56px);align-items:center}
+.proj.flip .pgrid{grid-template-columns:1.08fr .92fr}   /* the screenshot always takes the wider column */
+.proj.flip .shot{order:-1}
+/* Single column: the screenshot leads, the story follows. */
+@media(max-width:940px){.pgrid,.proj.flip .pgrid{grid-template-columns:1fr;gap:24px}.shot,.proj.flip .shot{order:-1}}
+.pnum{font-family:var(--m);font-size:11.5px;color:var(--t4);letter-spacing:.08em}
+.pname{font-size:clamp(24px,2.9vw,34px);font-weight:600;letter-spacing:-.032em;margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chipnew{font-family:var(--m);font-size:10.5px;letter-spacing:.06em;color:var(--acc);border:1px solid rgba(124,135,255,.35);
+  background:rgba(124,135,255,.1);padding:3px 8px;border-radius:6px;text-transform:uppercase}
+.pline{color:var(--t2);font-size:15.5px;line-height:1.7;margin-top:14px;max-width:52ch}
+.pline b{color:var(--t1);font-weight:500}
+.pmeta{display:flex;flex-wrap:wrap;gap:7px;margin-top:20px}
+.pmeta span{font-family:var(--m);font-size:11.5px;color:var(--t3);border:1px solid var(--line);background:rgba(255,255,255,.02);padding:5px 10px;border-radius:7px}
+.pacts{display:flex;gap:9px;margin-top:24px;flex-wrap:wrap}
+.pacts .btn{font-size:13.5px;padding:10px 16px}
+.pfacts{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,26px);margin-top:24px;padding-top:18px;border-top:1px solid var(--line2)}
+.pfacts .n{font-size:19px;font-weight:600;letter-spacing:-.02em}
+.pfacts .l{font-family:var(--m);font-size:10px;color:var(--t4);letter-spacing:.05em;text-transform:uppercase;margin-top:5px;line-height:1.45}
 
-/* ─ layout ──────────────────────────────────── */
-main{position:relative;z-index:1}
-.spread{scroll-margin-top:92px;padding:clamp(90px,13vh,150px) var(--gut);position:relative;border-bottom:1px solid var(--rule)}
-.spread:last-of-type{border-bottom:none}
-.wrap{max-width:1400px;margin:0 auto}
-.shead{display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:clamp(14px,3vw,34px);padding-bottom:14px;border-bottom:2px solid var(--ink);margin-bottom:clamp(30px,4.5vw,54px)}
-.shead .no{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--mag-t)}
-.shead h2{font-family:var(--disp);font-weight:900;font-size:clamp(26px,4.6vw,58px);letter-spacing:-.045em;line-height:.92;text-transform:uppercase}
-.shead .jp{font-family:var(--jp);font-weight:400;font-size:clamp(11px,1.4vw,15px);color:var(--grey);letter-spacing:.14em;white-space:nowrap}
-.lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--grey);text-transform:uppercase}
-.lbl b{color:var(--mag-t);font-weight:400}
-.hair{border-top:1px solid var(--rule);margin:clamp(22px,3vw,34px) 0}
+/* the screenshot frame — the whole point */
+.shot{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--panel);
+  box-shadow:0 1px 0 rgba(255,255,255,.05) inset, 0 24px 60px -24px rgba(0,0,0,.9);
+  transition:transform .45s cubic-bezier(.2,.7,.3,1),box-shadow .45s,border-color .3s;display:block}
+.shot .bar{display:flex;align-items:center;gap:7px;padding:9px 12px;border-bottom:1px solid var(--line2);background:rgba(255,255,255,.02)}
+.shot .bar i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.14);display:block}
+.shot .bar .url{margin-left:8px;font-family:var(--m);font-size:11px;color:var(--t4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shot img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top center;
+  transition:transform .5s cubic-bezier(.2,.7,.3,1)}
+.proj:hover .shot{transform:translateY(-4px);border-color:rgba(255,255,255,.16);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 36px 80px -28px rgba(0,0,0,1),0 0 0 1px rgba(124,135,255,.12)}
+.proj:hover .shot img{transform:scale(1.015)}
+.shot .live{position:absolute;top:9px;right:12px;display:inline-flex;align-items:center;gap:6px;font-size:10.5px;
+  color:var(--t3);letter-spacing:.02em}
+.shot .live i{width:5px;height:5px;border-radius:50%;background:var(--ok)}
 
-/* ─ COVER ───────────────────────────────────── */
-#cover{min-height:100vh;display:flex;align-items:center;padding-top:clamp(92px,11vh,124px);padding-bottom:clamp(48px,6vh,74px);border-bottom:2px solid var(--ink)}
-.cov{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(20px,4vw,58px);width:100%;align-items:center}
-@media(max-width:940px){.cov{grid-template-columns:1fr;gap:26px}}
-.masthead{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--grey);display:flex;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:9px;margin-bottom:clamp(18px,2.6vw,30px);text-transform:uppercase}
-.bigname{font-family:var(--disp);font-weight:900;font-size:clamp(48px,10.2vw,146px);line-height:.83;letter-spacing:-.055em;text-transform:uppercase}
-.bigname .ln{display:block;overflow:hidden}
-.bigname .ln i{display:block;font-style:normal}
-.bigname .mg{color:var(--mag)}
-.subhead{margin-top:clamp(13px,1.9vw,21px);font-size:clamp(15px,1.75vw,21px);line-height:1.5;max-width:46ch;color:var(--ink2)}
-.subhead b{color:var(--ink);font-weight:700}
-.covmeta{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:clamp(18px,2.4vw,26px)}
-.covmeta div{background:var(--paper);padding:9px 11px}
-.covmeta .k{font-family:var(--mono);font-size:8.5px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase}
-.covmeta .v{font-family:var(--mono);font-size:11.5px;margin-top:5px;color:var(--ink)}
-@media(max-width:600px){.covmeta{grid-template-columns:repeat(2,1fr)}}
-.covcta{display:flex;flex-wrap:wrap;gap:9px;margin-top:clamp(16px,2.2vw,24px)}
-.covcta .btn{font-size:10.5px;padding:13px 20px}
-/* short laptop viewports — keep the whole cover above the fold */
-@media(max-height:870px) and (min-width:940px){
-  .bigname{font-size:clamp(44px,8.2vw,112px)}
-  .subhead{font-size:15px;margin-top:11px}
-  .covmeta{margin-top:13px}.covmeta div{padding:8px 10px}
-  .covcta{margin-top:13px}
-  #cover{padding-top:clamp(84px,10vh,104px)}
-}
+/* also built */
+.more{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:clamp(26px,3.4vw,40px)}
+@media(max-width:780px){.more{grid-template-columns:1fr}}
+.mcard{border:1px solid var(--line);border-radius:12px;padding:22px;background:linear-gradient(180deg,rgba(255,255,255,.025),transparent);transition:border-color .25s,transform .25s}
+a.mcard:hover{border-color:rgba(255,255,255,.16);transform:translateY(-2px)}
+.mcard h3{font-size:17px;font-weight:600;letter-spacing:-.02em;display:flex;justify-content:space-between;gap:10px}
+.mcard h3 .ar{color:var(--t4);transition:color .2s,transform .2s}
+a.mcard:hover h3 .ar{color:var(--acc);transform:translate(2px,-2px)}
+.mcard p{color:var(--t2);font-size:14px;line-height:1.65;margin-top:9px}
+.mcard .tags{font-family:var(--m);font-size:11px;color:var(--t4);margin-top:14px}
 
-/* plate (dither) */
-.plateframe{border:1px solid var(--ink);background:var(--paper2);position:relative}
-.plateframe .pf-h{background:var(--paper);display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 11px;border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase}
-.plateframe .pf-h b{color:var(--mag-t);font-weight:400}
-.plate-shot{display:block;position:relative;overflow:hidden}
-#plate{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:center;display:block}
-@media(max-width:940px){#plate{aspect-ratio:16/10;object-position:center}}
-.pf-ctl{display:flex;border-top:1px solid var(--ink)}
-.pf-ctl button{flex:1;font-family:var(--mono);font-size:8.5px;letter-spacing:.13em;padding:9px 3px;color:var(--grey);border-right:1px solid var(--rule);text-transform:uppercase}
-.pf-ctl button:last-child{border-right:none}
-.pf-ctl button.on{background:var(--ink);color:var(--paper)}
-.pf-ctl button:hover{color:var(--ink)}
-.pf-ctl button.on:hover{color:var(--paper)}
-.pf-cap{padding:8px 11px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--grey);display:flex;justify-content:space-between;gap:10px}
-.barcode{margin-top:12px;display:flex;align-items:flex-end;gap:10px;justify-content:space-between}
-#barcode{height:44px;width:170px}
-.barcode .bmeta{font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;color:var(--grey);text-align:right;text-transform:uppercase}
+/* experience */
+.xp{margin-top:clamp(26px,3.4vw,40px)}
+.row{display:grid;grid-template-columns:150px 1fr auto;gap:clamp(14px,3vw,32px);padding:20px 0;border-top:1px solid var(--line2);align-items:baseline;transition:padding-left .3s}
+.row:hover{padding-left:8px}
+.row .per{font-family:var(--m);font-size:12.5px;color:var(--t4);letter-spacing:-.01em}
+.row .org{font-size:16.5px;font-weight:600;letter-spacing:-.022em}
+.row .org .sub{display:block;font-size:14px;font-weight:400;color:var(--t2);margin-top:5px;letter-spacing:-.01em}
+.row .st{font-size:12.5px;color:var(--t3);white-space:nowrap;display:inline-flex;align-items:center;gap:7px}
+.row .st i{width:5px;height:5px;border-radius:50%;background:var(--t4);display:block}
+.row.now .st{color:var(--ok)}.row.now .st i{background:var(--ok)}
+@media(max-width:720px){.row{grid-template-columns:1fr;gap:7px}}
 
-/* ─ CONTENTS ────────────────────────────────── */
-.toc{border-top:1px solid var(--ink)}
-.toc a{display:grid;grid-template-columns:52px 1fr auto auto;gap:clamp(12px,2.6vw,28px);align-items:baseline;padding:clamp(13px,1.9vw,20px) 4px;border-bottom:1px solid var(--rule2)}
-.toc a:hover{background:var(--ink);color:var(--paper)}
-.toc a:hover .tno,.toc a:hover .tjp,.toc a:hover .tpg{color:var(--paper)}
-.tno{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--mag-t)}
-.tnm{font-family:var(--disp);font-weight:900;font-size:clamp(19px,2.8vw,34px);letter-spacing:-.035em;text-transform:uppercase}
-.tjp{font-family:var(--jp);font-size:12px;color:var(--grey);letter-spacing:.12em}
-.tpg{font-family:var(--mono);font-size:11px;color:var(--grey)}
-@media(max-width:640px){.toc a{grid-template-columns:40px 1fr auto}.tjp{display:none}}
-
-/* ─ PROFILE ─────────────────────────────────── */
-.two{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,5vw,72px)}
-@media(max-width:940px){.two{grid-template-columns:1fr;gap:30px}}
-.lede{font-size:clamp(19px,2.5vw,31px);line-height:1.42;letter-spacing:-.02em;font-weight:500}
-.lede b{font-weight:900}
-.lede .mg{color:var(--mag-t)}
-.body p{font-size:15.5px;line-height:1.72;color:var(--ink2);max-width:60ch}
-.body p+p{margin-top:1.15em}
-.body b{color:var(--ink);font-weight:700}
-.spec{border-top:1px solid var(--ink)}
-.spec .r{display:grid;grid-template-columns:88px 1fr;gap:14px;padding:11px 2px;border-bottom:1px solid var(--rule2);font-size:13.5px}
-.spec .k{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase;padding-top:3px}
-.spec .v{color:var(--ink)}
-.spec .v .dot{display:inline-block;width:6px;height:6px;background:var(--mag);margin-right:7px;vertical-align:1px}
-.pull{border-left:3px solid var(--mag);padding:4px 0 4px 18px;margin:clamp(22px,3vw,32px) 0;font-family:var(--jp);font-size:13px;color:var(--grey);letter-spacing:.06em}
-.pull b{display:block;font-family:var(--disp);font-weight:700;font-size:clamp(16px,2vw,21px);color:var(--ink);letter-spacing:-.02em;margin-bottom:5px}
-
-/* ─ WORKS ───────────────────────────────────── */
-.workhead{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:clamp(22px,3vw,32px)}
-.workhead button{background:var(--paper);padding:13px 12px;text-align:left}
-.workhead button .wn{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--grey)}
-.workhead button .wt{font-family:var(--disp);font-weight:900;font-size:14px;letter-spacing:-.02em;margin-top:4px;text-transform:uppercase}
-.workhead button.on{background:var(--ink)}
-.workhead button.on .wt{color:var(--paper)}
-.workhead button.on .wn{color:var(--mag)}
-@media(max-width:760px){.workhead{grid-template-columns:repeat(2,1fr)}}
-.railbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:clamp(12px,1.8vw,20px);
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--grey);text-transform:uppercase}
-.railcount b{color:var(--ink);font-weight:500}
-.railnav{display:flex;gap:6px}
-.railnav button{width:40px;height:34px;border:1px solid var(--ink);display:grid;place-items:center;font-size:13px;transition:background .2s,color .2s,opacity .2s}
-.railnav button:hover:not(:disabled){background:var(--ink);color:var(--paper)}
-.railnav button:disabled{opacity:.28;cursor:default}
-.rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;
-  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);cursor:grab;overscroll-behavior-x:contain}
-.rail::-webkit-scrollbar{display:none}
-.rail.dragging{cursor:grabbing;scroll-snap-type:none}
-.rail.dragging *{pointer-events:none}
-.proj{flex:0 0 100%;min-width:0;scroll-snap-align:start;padding:clamp(24px,3.2vw,40px) 0}
-.proj + .proj{border-left:1px dashed var(--line)}
-.proj + .proj{padding-left:clamp(18px,2.4vw,34px)}
-@media(prefers-reduced-motion:reduce){.rail{scroll-behavior:auto}}
-.p-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:clamp(16px,2.2vw,26px)}
-.p-no{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--mag-t)}
-.p-jp{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--grey);text-transform:uppercase}
-.p-body{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(24px,4vw,58px);align-items:center}
-.proj:nth-of-type(even) .p-shot{order:2}
-@media(max-width:900px){.p-body{grid-template-columns:1fr;gap:22px}.proj:nth-of-type(even) .p-shot{order:0}}
-.p-shot{position:relative;display:block;border:1px solid var(--ink);background:var(--paper2);overflow:hidden}
-.p-shot img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top center;display:block;
-  filter:grayscale(.16) contrast(1.02);transition:filter .5s cubic-bezier(.2,.7,.3,1),transform .5s cubic-bezier(.2,.7,.3,1)}
-.p-shot::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.34;mix-blend-mode:multiply;transition:opacity .5s ease;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/></svg>")}
-.p-shot:hover img,.p-shot.dev img{filter:none;transform:scale(1.015)}
-.p-shot:hover::before,.p-shot.dev::before{opacity:0}
-.p-cap{position:absolute;z-index:3;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:10px;padding:7px 10px;
-  font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--ink);text-transform:uppercase;
-  background:linear-gradient(transparent,color-mix(in srgb,var(--paper) 70%,transparent) 40%,var(--paper))}
-.p-live{position:absolute;z-index:3;top:9px;left:9px;display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;
-  background:var(--paper);color:var(--ink);padding:5px 9px;text-transform:uppercase;border:1px solid var(--ink)}
-.p-live i{width:5px;height:5px;border-radius:50%;background:#12B76A;display:block}
-.p-name{font-family:var(--disp);font-weight:400;font-size:clamp(30px,4.4vw,58px);letter-spacing:.01em;line-height:.98;text-transform:uppercase}
-.p-why{font-family:var(--mono);font-size:clamp(12px,1.4vw,14px);color:var(--mag-t);margin-top:10px;letter-spacing:.01em}
-.p-desc{font-size:14.5px;line-height:1.72;color:var(--dim);margin-top:16px;max-width:54ch}
-.p-desc b{color:var(--ink);font-weight:500}
-.p-own{font-family:var(--mono);font-size:11.5px;color:var(--grey);margin-top:11px}
-.p-flow{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:16px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--grey)}
-.p-flow b{color:var(--ink);font-weight:500}
-.p-flow i{color:var(--mag-t);font-style:normal}
-.p-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
-.p-figs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line2);border:1px solid var(--line2);margin-top:clamp(20px,2.6vw,30px)}
-@media(max-width:700px){.p-figs{grid-template-columns:1fr}}
-.p-figs .f{background:var(--paper);padding:13px 15px}
-.p-figs .fn{font-family:var(--disp);font-weight:400;font-size:clamp(20px,2.4vw,28px);letter-spacing:.01em;line-height:1}
-.p-figs .fl{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--grey);margin-top:6px;text-transform:uppercase;line-height:1.5}
-.plates{position:relative}
-.pl{display:none}
-.pl.on{display:block;animation:pin .42s cubic-bezier(.2,.7,.3,1)}
-@keyframes pin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.pl.on{animation:none}}
-.pl-top{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;padding-bottom:clamp(16px,2.4vw,24px);border-bottom:1px solid var(--ink)}
-.pl-title{font-family:var(--disp);font-weight:900;font-size:clamp(34px,7vw,90px);line-height:.86;letter-spacing:-.05em;text-transform:uppercase}
-.pl-title .nw{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--ink);background:var(--mag);padding:4px 7px;vertical-align:middle;margin-left:12px;text-transform:uppercase;font-weight:400}
-.pl-why{font-family:var(--jp);font-size:clamp(13px,1.7vw,17px);color:var(--mag-t);margin-top:12px;letter-spacing:.02em}
-.pl-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase;text-align:right;white-space:nowrap}
-.pl-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,56px);padding:clamp(20px,3vw,30px) 0}
-@media(max-width:860px){.pl-grid{grid-template-columns:1fr;gap:24px}.pl-top{grid-template-columns:1fr}.pl-tag{text-align:left}}
-.pipe{border-top:1px solid var(--rule)}
-.pipe .pr{display:grid;grid-template-columns:36px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule2);font-size:13.5px}
-.pipe .pn{font-family:var(--mono);font-size:10px;color:var(--faint)}
-.pipe .pt b{font-weight:700}
-.pipe .pt span{color:var(--grey)}
-.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:clamp(20px,3vw,28px)}
-.figs .f{background:var(--paper);padding:15px 14px}
-.figs .fn{font-family:var(--disp);font-weight:900;font-size:clamp(26px,3.6vw,40px);letter-spacing:-.04em;line-height:1}
-.figs .fl{font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:7px;text-transform:uppercase;line-height:1.5}
-.plfoot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:clamp(20px,3vw,28px)}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;border:1px solid var(--rule);padding:6px 9px;color:var(--ink2)}
-
-/* ─ RUNTIME ─────────────────────────────────── */
-.tblwrap{overflow-x:auto;border-top:1px solid var(--ink)}
-[data-swipe-hint]{display:none}
-@media(max-width:760px){[data-swipe-hint]{display:block}}
-table.rt{width:100%;border-collapse:collapse;min-width:660px}
-.rt th{font-family:var(--mono);font-size:8.5px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase;text-align:left;font-weight:400;padding:10px 12px 10px 0;border-bottom:1px solid var(--rule)}
-.rt td{padding:15px 12px 15px 0;border-bottom:1px solid var(--rule2);font-size:13.5px;color:var(--ink2);vertical-align:top}
-.rt tbody tr:hover{background:var(--paper2)}
-.rt .nm{font-family:var(--disp);font-weight:900;font-size:16px;letter-spacing:-.02em;color:var(--ink);text-transform:uppercase}
-.rt .sb{display:block;font-family:var(--mono);font-size:10.5px;color:var(--grey);margin-top:4px;letter-spacing:.02em}
-.st{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;white-space:nowrap}
-.st.run{color:var(--mag-t)}.st.run::before{content:"● "}
-.st.done{color:var(--grey)}.st.done::before{content:"○ "}
-.st.q{color:var(--cy)}.st.q::before{content:"◐ "}
+/* panels */
+.panels{display:grid;grid-template-columns:1.35fr 1fr;gap:clamp(18px,2.4vw,26px);margin-top:clamp(26px,3.4vw,40px);align-items:start}
+@media(max-width:940px){.panels{grid-template-columns:1fr}}
+.panel{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.028),transparent);padding:clamp(20px,2.6vw,28px)}
+.panel h3{font-size:16px;font-weight:600;letter-spacing:-.02em}
+.panel p{color:var(--t2);font-size:14.5px;line-height:1.72;margin-top:12px}
+.panel p b{color:var(--t1);font-weight:500}
+.panel code{font-family:var(--m);font-size:12.5px;background:rgba(255,255,255,.06);border:1px solid var(--line);padding:2px 7px;border-radius:6px;color:var(--t1)}
+.pill{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.pill span{font-family:var(--m);font-size:11.5px;color:var(--t3);border:1px solid var(--line);padding:5px 10px;border-radius:7px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;margin-top:14px;font-size:14px}
+.kv dt{font-family:var(--m);font-size:11px;letter-spacing:.06em;color:var(--t4);text-transform:uppercase;padding-top:3px}
+.kv dd{color:var(--t2)}.kv dd b{color:var(--t1);font-weight:500}
 
 /* commit map */
-.heat{border:1px solid var(--ink);margin-top:clamp(26px,4vw,40px)}
-.heat-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 13px;border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase}
-.heat-h b{color:var(--mag-t);font-weight:400}
-.heat-h .rd{color:var(--ink);letter-spacing:.06em;min-height:1em}
-.heat-w{padding:16px 13px 6px;overflow-x:auto}
-.hg{--c:11px;--g:3px;display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,var(--c));grid-auto-columns:var(--c);gap:var(--g);width:max-content}
-.hc{width:var(--c);height:var(--c);background:var(--paper2);border:1px solid rgba(20,20,28,.05);transition:opacity .3s steps(3),transform .3s steps(3)}
-.hc.l1{background:rgba(255,45,111,.28);border-color:transparent}
-.hc.l2{background:rgba(255,45,111,.55);border-color:transparent}
-.hc.l3{background:rgba(255,45,111,.8);border-color:transparent}
-.hc.l4{background:var(--mag);border-color:transparent}
-.hc:hover{outline:1px solid var(--ink)}
+.heat{border:1px solid var(--line);border-radius:14px;padding:clamp(18px,2.4vw,24px);background:linear-gradient(180deg,rgba(255,255,255,.028),transparent);margin-top:clamp(18px,2.4vw,26px)}
+.hh{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--t3)}
+.hh a{color:var(--t3)}.hh a:hover{color:var(--t1)}
+.hh .rd{font-family:var(--m);font-size:12px;color:var(--t2)}
+.hw{overflow-x:auto;margin-top:16px;padding-bottom:4px}
+.hg{--c:11px;--g:3px;display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,var(--c));grid-auto-columns:var(--c);gap:var(--g);width:max-content;min-height:calc(var(--c)*7 + var(--g)*6)}
+.hc{width:var(--c);height:var(--c);border-radius:2.5px;background:rgba(255,255,255,.045);transition:opacity .3s,transform .3s}
+.hc.l1{background:rgba(124,135,255,.32)}.hc.l2{background:rgba(124,135,255,.55)}.hc.l3{background:rgba(124,135,255,.78)}.hc.l4{background:var(--acc);box-shadow:0 0 8px rgba(124,135,255,.5)}
+.hc:hover{outline:1px solid var(--t2);outline-offset:1px}
 .hc.hid{opacity:0;transform:scale(.4)}
-.heat-s{display:flex;gap:clamp(16px,4vw,44px);flex-wrap:wrap;padding:14px 13px 16px;border-top:1px solid var(--rule)}
-.heat-down{padding:20px 13px;font-size:13px;color:var(--grey);line-height:1.7}
-.heat-down b{color:var(--mag-t)}
-.heat-down a{border-bottom:1px solid var(--mag)}
-@media(max-width:700px){.hg{--c:4px;--g:2px}}
-@media(prefers-reduced-motion:reduce){.hc.hid{opacity:1!important;transform:none!important}}
+.hs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:clamp(16px,2vw,28px);margin-top:18px;padding-top:16px;border-top:1px solid var(--line2)}
+.hs .n{font-size:19px;font-weight:600;letter-spacing:-.02em}
+.hs .l{font-family:var(--m);font-size:10.5px;color:var(--t4);letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
+.hdown{color:var(--t3);font-size:14px;margin-top:14px}
+.hdown a{color:var(--acc)}
+@media(max-width:700px){.hg{--c:5px;--g:2px}}
+/* On a wide card the map should fill it, not float in the corner. */
+@media(min-width:1000px){.hg{--c:14px;--g:3px}}
 
-/* ─ LOG ─────────────────────────────────────── */
-.log{border:1px solid var(--ink);max-width:940px}
-.log-h{display:flex;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase}
-.log-b{padding:clamp(14px,2.2vw,22px) clamp(14px,2.4vw,24px)}
-.ll{display:grid;grid-template-columns:82px 12px 1fr;column-gap:12px;align-items:baseline;font-family:var(--mono);font-size:clamp(11.5px,1.3vw,13px);line-height:2.05;color:var(--ink2)}
-.ll .ts{color:var(--faint)}
-.ll .m{color:var(--mag-t)}
-.ll b{color:var(--ink);font-weight:500}
-.ll.hi{background:linear-gradient(90deg,rgba(255,45,111,.09),transparent 70%)}
-.ll .cur{display:inline-block;width:7px;height:12px;background:var(--ink);margin-left:7px;vertical-align:middle;animation:bl 1.05s steps(1) infinite}
-@keyframes bl{50%{opacity:0}}
-@media(prefers-reduced-motion:reduce){.ll .cur{animation:none}}
-.guest{border-top:1px solid var(--rule);padding:12px clamp(14px,2.4vw,24px) 16px}
-.guest .gb{display:grid;grid-template-columns:82px 12px 1fr;column-gap:12px;width:100%;text-align:left;font-family:var(--mono);font-size:clamp(11.5px,1.3vw,13px);line-height:2.05;color:var(--grey)}
-.guest .gb:hover .gl{color:var(--mag-t)}
-.guest input{font-family:var(--mono);font-size:inherit;background:transparent;border:none;border-bottom:1px solid var(--rule);color:var(--ink);padding:2px;outline:none;width:min(100%,300px)}
-.guest .fg{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--faint);padding:2px 5px}
-.guest .fg:hover{color:var(--mag-t)}
-
-/* ─ BRAIN ───────────────────────────────────── */
-.organ{display:grid;grid-template-columns:76px 1fr;gap:16px;padding:13px 0;border-bottom:1px solid var(--rule2)}
-.organ .ok{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--mag-t);text-transform:uppercase;padding-top:4px}
-.organ .ov{font-size:14px;line-height:1.65;color:var(--ink2)}
-.organ .ov b{color:var(--ink);font-weight:700}
-.cap{font-family:var(--mono);font-size:12px;color:var(--grey);margin-top:20px;line-height:1.7}
-.cap code{background:var(--ink);color:var(--paper);padding:2px 7px;font-size:11.5px}
-.term{border:1px solid var(--ink);background:var(--ink);color:var(--paper);align-self:start}
-.term-h{display:flex;justify-content:space-between;padding:9px 13px;border-bottom:1px solid rgba(244,242,236,.18);font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;color:rgba(244,242,236,.5);text-transform:uppercase}
-.term-b{padding:15px 14px;font-family:var(--mono);font-size:11.5px;line-height:1.95;min-height:236px}
-.term-b .q{color:var(--mag)}
-.term-b .o{color:rgba(244,242,236,.62)}
-.term-b .hl{color:var(--paper)}
-
-/* ─ MODULES ─────────────────────────────────── */
-.mods{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
-@media(max-width:900px){.mods{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:520px){.mods{grid-template-columns:1fr}}
-.mod{background:var(--paper);padding:clamp(15px,2.2vw,22px)}
-.mod h3{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--mag-t);text-transform:uppercase;font-weight:400;margin-bottom:13px}
-.mod .jpx{font-family:var(--jp);font-size:11px;color:var(--faint);letter-spacing:.1em;margin-bottom:11px}
-.mod ul{list-style:none}
-.mod li{font-size:13.5px;color:var(--ink2);padding:6px 0;border-bottom:1px solid var(--rule2)}
-.mod li:last-child{border-bottom:none}
-.mod li i{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--faint)}
-
-/* ─ COLOPHON / CONTACT ──────────────────────── */
-#colo{border-bottom:none}
-.sayhi{font-family:var(--disp);font-weight:900;font-size:clamp(46px,12vw,168px);line-height:.83;letter-spacing:-.055em;text-transform:uppercase}
-.sayhi .mg{color:var(--mag)}
-.mail{font-family:var(--disp);font-weight:700;font-size:clamp(17px,3.2vw,38px);letter-spacing:-.03em;border-bottom:3px solid var(--mag);padding-bottom:5px;word-break:break-all;text-align:left;margin-top:clamp(22px,3vw,34px)}
-.mail:hover{color:var(--mag-t)}
-.mailhint{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--grey);margin-top:11px;text-transform:uppercase}
-.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(22px,3vw,32px)}
-.colo{margin-top:clamp(40px,6vw,72px);border-top:1px solid var(--ink);padding-top:clamp(20px,3vw,28px);display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:clamp(18px,3vw,34px)}
-.colo dt{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase;margin-bottom:7px}
-.colo dd{font-size:13px;color:var(--ink2);line-height:1.7}
-.colo dd b{color:var(--ink);font-weight:700}
-.imprint{margin-top:clamp(34px,5vw,56px);padding-top:16px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase}
-
-/* ─ command palette ─────────────────────────── */
-.ov{position:fixed;inset:0;z-index:1500;background:rgba(20,20,28,.42);display:none}
-.ov.on{display:block}
-.pal{position:absolute;left:50%;top:13vh;transform:translateX(-50%);width:min(94vw,560px);background:var(--paper);border:1px solid var(--ink);box-shadow:14px 14px 0 rgba(20,20,28,.14)}
-.pal input{width:100%;font-family:var(--mono);font-size:13px;padding:15px 17px;border:none;border-bottom:1px solid var(--ink);background:transparent;color:var(--ink);outline:none}
-.pal .list{max-height:48vh;overflow-y:auto}
-.pal .g{font-family:var(--mono);font-size:8.5px;letter-spacing:.22em;color:var(--grey);padding:11px 17px 4px;text-transform:uppercase}
-.pal .it{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:10px 17px;font-size:13.5px;color:var(--ink2)}
-.pal .it .d{width:6px;height:6px;background:var(--mag);flex:none}
-.pal .it.sel{background:var(--ink);color:var(--paper)}
-.pal .it .kb{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.1em}
-.pal .it.sel .kb{color:rgba(244,242,236,.5)}
-
-.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:1400;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;background:var(--ink);color:var(--paper);padding:12px 17px;text-transform:uppercase}
-.toast:hover{background:var(--mag)}
-
-/* ─ mobile / motion / print ─────────────────── */
-@media(max-width:700px){
-  .btn,.navlinks a{min-height:44px;display:inline-flex;align-items:center}
-  .workhead button{min-height:56px}
+/* Thumbs need 44px even where the ink is smaller — invisible hit area, no visual change. */
+@media(max-width:640px){
+  .brand,.hh a,.cmail{position:relative}
+  .brand::after,.hh a::after,.cmail::after{content:'';position:absolute;left:0;right:0;top:50%;height:44px;transform:translateY(-50%)}
 }
-@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
-@media print{
-  body::before,.marks,.reg,.cbar,.rhead,.folio,nav.top,#press,.ov,.toast,#plate,.pf-ctl{display:none!important}
-  body{background:#fff}
-  .spread{padding:20px 0;break-inside:avoid}
-  .pl{display:block!important}
-  .workhead{display:none}
-  *{color:#000!important;border-color:#999!important;background:transparent!important}
-}
+
+/* contact */
+#contact{padding-bottom:clamp(60px,8vh,96px)}
+.cbig{font-size:clamp(30px,4.6vw,54px);font-weight:600;letter-spacing:-.038em;line-height:1.1;max-width:18ch}
+.cmail{display:inline-flex;align-items:center;gap:10px;font-size:clamp(17px,2.2vw,24px);font-weight:500;letter-spacing:-.025em;
+  margin-top:clamp(22px,2.8vw,30px);padding-bottom:5px;border-bottom:1px solid var(--line);transition:border-color .25s,color .25s}
+.cmail:hover{color:var(--acc);border-bottom-color:var(--acc)}
+.chint{font-family:var(--m);font-size:11.5px;color:var(--t4);margin-top:12px}
+footer{border-top:1px solid var(--line2);margin-top:clamp(48px,6vw,76px);padding:26px 0 0;display:flex;justify-content:space-between;
+  gap:14px;flex-wrap:wrap;font-size:13px;color:var(--t4)}
+footer a:hover{color:var(--t1)}
+footer .fl{display:flex;gap:18px}
+
+.rv{opacity:0;transform:translateY(16px)}
+.rv.in{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1!important;transform:none!important}.avail .d::after{animation:none}.hc.hid{opacity:1!important;transform:none!important}}
+@media(max-width:700px){.btn,.ncta{min-height:44px}}
+@media print{.glow,body::after,nav,.skip{display:none}body{background:#fff;color:#000}*{color:#000!important;border-color:#ccc!important}}
 </style>
 </head>
 <body>
-<a class="skip" href="#works">skip to works</a>
+<a class="skip" href="#work">Skip to work</a>
+<div class="glow" aria-hidden="true"><i></i><i></i></div>
 
-<div class="marks" aria-hidden="true"><i class="cm tl"></i><i class="cm tr"></i><i class="cm bl"></i><i class="cm br"></i></div>
-<div class="reg" aria-hidden="true"><svg viewBox="0 0 26 26" fill="none" stroke="#14141C" stroke-width="1"><circle cx="13" cy="13" r="8"/><circle cx="13" cy="13" r="3"/><path d="M13 0v26M0 13h26"/></svg></div>
-<div class="cbar" aria-hidden="true"><i style="background:#00B3C7"></i><i style="background:#FF2D6F"></i><i style="background:#FFCE00"></i><i style="background:#14141C"></i></div>
-
-<div class="band" aria-hidden="true"></div>
-<div class="rhead" aria-hidden="true"><span>KUNAL KUMAR — ISSUE Ø1</span><span data-rh>記憶 / MEMORY — BENGALURU</span></div>
-<div class="folio" aria-hidden="true"><b data-folio>00</b><span data-folio-name>COVER</span></div>
-
-<nav class="top" aria-label="primary">
-  <a class="brand" href="#cover">KUNAL KUMAR<i>.</i></a>
-  <div class="navlinks">
-    <a href="#profile">PROFILE</a><a href="#works">WORKS</a><a href="#runtime">RUNTIME</a><a href="#brain">BRAIN</a><a href="#log">LOG</a><a href="#modules">MODULES</a><a href="#colo">CONTACT</a>
+<nav>
+  <a class="brand" href="#top"><span class="av">K</span>Kunal Kumar</a>
+  <div class="nlinks">
+    <a href="#work">Work</a><a href="#experience">Experience</a><a href="#about">About</a><a href="#activity">Activity</a><a href="#contact">Contact</a>
   </div>
-  <div class="navr">
-    <button class="btn" data-cmdk aria-label="⌘K — command palette">⌘K</button>
-    <a class="btn fill" href="mailto:kunalsain0324@gmail.com">HIRE →</a>
-  </div>
+  <a class="ncta" href="mailto:kunalsain0324@gmail.com">Get in touch</a>
 </nav>
-
-<div id="press" hidden aria-hidden="true">
-  <div class="plate" style="color:#00B3C7" data-p="0">KUNAL<br>KUMAR</div>
-  <div class="plate" style="color:#FF2D6F" data-p="1">KUNAL<br>KUMAR</div>
-  <div class="plate" style="color:#FFCE00" data-p="2">KUNAL<br>KUMAR</div>
-  <div class="plate" style="color:#14141C" data-p="3">KUNAL<br>KUMAR</div>
-  <div class="pmeta">REGISTERING PLATES — C M Y K</div>
-</div>
 
 <main>
 
-<!-- ═══ 00 COVER ═══ -->
-<section class="spread" id="cover" data-spread="00" data-name="COVER" data-jp="表紙">
-  <div class="wrap">
-    <div class="masthead">
-      <span>ISSUE Ø1 · 記憶</span><span>KUNAL KUMAR — PORTFOLIO ANNUAL</span><span data-mast-clock>BENGALURU · --:--</span>
-    </div>
-    <div class="cov">
+<!-- HERO -->
+<section id="top"><div class="wrap">
+  <div class="avail"><span class="d"></span>Open to opportunities · Bengaluru, India</div>
+  <h1>AI &amp; systems engineer.<br><span class="muted">I ship things that stay running.</span></h1>
+  <p class="hlead">CS at <b>BITS Pilani</b>, frontend engineering intern at <b>Emergent (YC S24)</b>, going deep on AI safety — through to <b>round 2 at MATS</b>. Four systems shipped and live: a memory engine, moderation you can audit, a grounded PDF agent, and autonomous security review.</p>
+  <div class="hacts">
+    <a class="btn pri" href="#work">See the work</a>
+    <a class="btn" href="kunal-kumar-resume.pdf" target="_blank" rel="noopener">Résumé <span class="ar">↗</span></a>
+    <a class="btn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">GitHub <span class="ar">↗</span></a>
+  </div>
+  <div class="hmeta">
+    <div><div class="k">Now</div><div class="v">Emergent <span>· YC S24</span></div></div>
+    <div><div class="k">Study</div><div class="v">BITS Pilani <span>· CS '27</span></div></div>
+    <div><div class="k">Focus</div><div class="v">AI safety <span>· MATS R2</span></div></div>
+    <div><div class="k">Honours</div><div class="v">Activate AI Fellow <span>· 1 of 15</span></div></div>
+  </div>
+</div></section>
+
+<!-- WORK -->
+<section id="work"><div class="wrap">
+  <div class="rv"><div class="eyebrow">Selected work</div>
+  <h2 class="title">Four systems, shipped and running.</h2>
+  <p class="lead">Every one of these is live — click through and use it. Screenshots are the real thing, not mockups.</p></div>
+
+  <div class="proj rv">
+    <div class="pgrid">
       <div>
-        <h1 class="bigname"><span class="ln"><i>KUNAL</i></span><span class="ln"><i>KUMAR<span class="mg">.</span></i></span></h1>
-        <p class="subhead">Software <b>worth remembering</b> — a memory engine for unfinished work, an agent that refuses to hallucinate, an arena where machines learn to negotiate, and moderation you can actually audit.</p>
-        <div class="covmeta">
-          <div><div class="k">EDITION</div><div class="v">Ø1 / 2026</div></div>
-          <div><div class="k">NOW</div><div class="v">Emergent · YC S24</div></div>
-          <div><div class="k">STUDY</div><div class="v">BITS Pilani '27</div></div>
-          <div><div class="k">FOCUS</div><div class="v">AI Safety</div></div>
+        <div class="pnum">01 — Memory · local-first</div>
+        <h3 class="pname">Recall</h3>
+        <p class="pline">Work scatters — the tabs, the files, the half-finished chat. Recall reconstructs what you were working on and hands it back the moment you return. <b>One keystroke, 100% on your machine:</b> no cloud, no telemetry, plain files you can read and delete.</p>
+        <div class="pmeta"><span>Python</span><span>Qt</span><span>browser extension</span><span>daemon APIs</span><span>semantic search</span></div>
+        <div class="pfacts">
+          <div><div class="n" data-count="3">0</div><div class="l">signal streams</div></div>
+          <div><div class="n">Local</div><div class="l">nothing leaves the machine</div></div>
+          <div><div class="n">macOS</div><div class="l">download shipped</div></div>
         </div>
-        <div class="covcta">
-          <a class="btn fill" href="#works">READ THE WORK →</a>
-          <a class="btn" href="kunal-kumar-resume.pdf" target="_blank" rel="noopener">RÉSUMÉ.PDF ↗</a>
+        <div class="pacts">
+          <a class="btn pri" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">Visit site <span class="ar">↗</span></a>
+          <a class="btn" href="https://github.com/kunalKumar-13/Recall-me" target="_blank" rel="noopener">Code <span class="ar">↗</span></a>
         </div>
       </div>
+      <a class="shot" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">
+        <span class="bar"><i></i><i></i><i></i><span class="url">web-seven-puce-99.vercel.app</span></span>
+        <span class="live"><i></i>Live</span>
+        <img src="shots/recall.jpg" srcset="shots/recall-640.jpg 640w, shots/recall.jpg 1280w" sizes="(max-width:940px) 92vw, 46vw" width="1280" height="800" loading="lazy" decoding="async" alt="Recall's site: a memory graph beside the headline “Never lose the thread”.">
+      </a>
+    </div>
+  </div>
+
+  <div class="proj rv flip">
+    <div class="pgrid">
       <div>
-        <figure class="plateframe">
-          <figcaption class="pf-h"><span><b>PLATE Ø1</b> — RECALL · MEMORY GRAPH</span><span>実物</span></figcaption>
-          <a class="p-shot plate-shot" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">
-            <img id="plate" src="shots/plate.jpg" width="559" height="700" decoding="async" fetchpriority="high"
-                 alt="Recall's memory graph — nodes and a traced recovery path across events, sessions and threads.">
-            <span class="p-cap"><span>WEB-SEVEN-PUCE-99.VERCEL.APP</span><span>HOVER FOR COLOUR</span></span>
-          </a>
-          <div class="pf-cap"><span>記録 — THE FLAGSHIP, RUNNING</span><span data-plate-total>—</span></div>
-        </figure>
-        <div class="barcode">
-          <canvas id="barcode" aria-hidden="true"></canvas>
-          <div class="bmeta">KUNALKUMAR13<br>BENGALURU · IN<br>©2026 — MADE BY HAND</div>
+        <div class="pnum">02 — Trust &amp; safety</div>
+        <h3 class="pname">Aegis <span class="chipnew">New</span></h3>
+        <p class="pline">A kids' platform and an adult forum need different lines, and black-box calls can't be appealed. Aegis scores content across <b>7 harm categories</b>, applies a per-platform policy, then routes by calibrated confidence — <b>allow, review, or block</b> — keeping the offending span, the reasoning and the full trace for audit.</p>
+        <div class="pmeta"><span>Next.js 16</span><span>React 19</span><span>TypeScript</span><span>Prisma · SQLite</span><span>Vitest</span></div>
+        <div class="pfacts">
+          <div><div class="n" data-count="7">0</div><div class="l">harm categories</div></div>
+          <div><div class="n" data-count="3">0</div><div class="l">routing outcomes</div></div>
+          <div><div class="n">Full</div><div class="l">audit trail</div></div>
+        </div>
+        <div class="pacts">
+          <a class="btn pri" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener">Open dashboard <span class="ar">↗</span></a>
+          <a class="btn" href="https://github.com/kunalKumar-13/aegis" target="_blank" rel="noopener">Code <span class="ar">↗</span></a>
         </div>
       </div>
+      <a class="shot" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener">
+        <span class="bar"><i></i><i></i><i></i><span class="url">aegis-one-livid.vercel.app</span></span>
+        <span class="live"><i></i>Live</span>
+        <img src="shots/aegis.jpg" srcset="shots/aegis-640.jpg 640w, shots/aegis.jpg 1280w" sizes="(max-width:940px) 92vw, 46vw" width="1280" height="800" loading="lazy" decoding="async" alt="Aegis dashboard: decisions processed, routing donut and flagged harm categories.">
+      </a>
     </div>
   </div>
-</section>
 
-<!-- ═══ 01 PROFILE ═══ -->
-<section class="spread" id="profile" data-spread="01" data-name="PROFILE" data-jp="識別">
-  <div class="wrap">
-    <div class="shead"><span class="no">Ø1</span><h2>Profile</h2><span class="jp">識別</span></div>
-    <div class="two">
+  <div class="proj rv">
+    <div class="pgrid">
       <div>
-        <p class="lede">I build systems that reach <span class="mg">production</span> — <b>not demos.</b></p>
-        <div class="hair"></div>
-        <div class="body">
-          <p>A <b>memory engine</b> for unfinished work. An agent that <b>refuses to hallucinate</b>. An arena where machines <b>learn to negotiate</b>. A moderation pipeline whose every decision you can <b>open up and audit</b>.</p>
-          <p>I work where memory, retrieval and reinforcement learning meet things that actually ship — and stay running long after the demo. Lately I'm chasing what makes them <b>safe</b>: I'm through to round 2 at MATS, and I read alignment work the way other people read the news.</p>
-          <p>Before the AI work there were two years of community: Hack Club Bengaluru, 500+ participants fed and online, and a teaching assistantship that put 50+ students through algorithms. The through-line is the same — <b>build the thing that remembers, then hand it to people.</b></p>
+        <div class="pnum">03 — Grounding · refusal</div>
+        <h3 class="pname">PDFChat</h3>
+        <p class="pline">Agents lie when retrieval gets messy, and a confident wrong answer costs more than no answer. PDFChat indexes locally, rewrites queries against the relevant chunks, and every response either <b>cites its pages or refuses clearly</b> — with multilingual grounding that still treats the document as the only evidence.</p>
+        <div class="pmeta"><span>Python</span><span>retrieval</span><span>citations</span><span>refusal policy</span><span>multilingual</span></div>
+        <div class="pfacts">
+          <div><div class="n">Cited</div><div class="l">every answer</div></div>
+          <div><div class="n">Multi</div><div class="l">lingual grounding</div></div>
+          <div><div class="n">50MB</div><div class="l">per document</div></div>
         </div>
-        <div class="pull"><b>「作ったものが、なぜ作られたかを覚えている」</b>Systems that remember why they were built.</div>
+        <div class="pacts">
+          <a class="btn pri" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener">Try it <span class="ar">↗</span></a>
+          <a class="btn" href="https://github.com/kunalKumar-13/PDF-Reviewer" target="_blank" rel="noopener">Code <span class="ar">↗</span></a>
+        </div>
       </div>
+      <a class="shot" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener">
+        <span class="bar"><i></i><i></i><i></i><span class="url">pdf-reviewer-ten.vercel.app</span></span>
+        <span class="live"><i></i>Live</span>
+        <img src="shots/pdfchat.jpg" srcset="shots/pdfchat-640.jpg 640w, shots/pdfchat.jpg 1280w" sizes="(max-width:940px) 92vw, 46vw" width="1280" height="800" loading="lazy" decoding="async" alt="PDFChat: upload a PDF, with the upload / retrieve / answer pipeline explained.">
+      </a>
+    </div>
+  </div>
+
+  <div class="proj rv flip">
+    <div class="pgrid">
       <div>
-        <div class="lbl" style="margin-bottom:11px"><b>◆</b> SPECIFICATION / 仕様</div>
-        <div class="spec">
-          <div class="r"><span class="k">host</span><span class="v">Bengaluru, India</span></div>
-          <div class="r"><span class="k">process</span><span class="v">Frontend Engineering Intern — Emergent (YC S24)</span></div>
-          <div class="r"><span class="k">study</span><span class="v">CS @ BITS Pilani — class of 2027</span></div>
-          <div class="r"><span class="k">focus</span><span class="v">AI safety · MATS round 2</span></div>
-          <div class="r"><span class="k">honours</span><span class="v">Activate AI Fellowship — India's first cohort, 1 of 15 · HPAIR delegate, Harvard</span></div>
-          <div class="r"><span class="k">state</span><span class="v"><span class="dot"></span>open to opportunities</span></div>
-          <div class="r"><span class="k">local time</span><span class="v" data-spec-clock>--:--:-- IST</span></div>
+        <div class="pnum">04 — Agents · security</div>
+        <h3 class="pname">Code-Guardian</h3>
+        <p class="pline">Security tooling buries teams in findings; the hard part is <b>judging what matters and doing something about it.</b> An agentic system built on <b>OpenEnv</b> — agents investigate the repository, reason about risk in context, and propose concrete changes instead of dumping a list.</p>
+        <div class="pmeta"><span>agents</span><span>OpenEnv</span><span>Python</span><span>HF Spaces</span></div>
+        <div class="pfacts">
+          <div><div class="n">Agentic</div><div class="l">not static scanning</div></div>
+          <div><div class="n">OpenEnv</div><div class="l">agent environment</div></div>
+          <div><div class="n">Public</div><div class="l">demo deployed</div></div>
+        </div>
+        <div class="pacts">
+          <a class="btn pri" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener">Open demo <span class="ar">↗</span></a>
+          <a class="btn" href="https://github.com/kunalKumar-13/codeguardian-ai-" target="_blank" rel="noopener">Code <span class="ar">↗</span></a>
         </div>
       </div>
+      <a class="shot" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener">
+        <span class="bar"><i></i><i></i><i></i><span class="url">zeus1205-codeguardian-ai.hf.space</span></span>
+        <span class="live"><i></i>Live</span>
+        <img src="shots/codeguardian.jpg" srcset="shots/codeguardian-640.jpg 640w, shots/codeguardian.jpg 1280w" sizes="(max-width:940px) 92vw, 46vw" width="1280" height="800" loading="lazy" decoding="async" alt="Code-Guardian landing page — “Autonomous Security Engineering”.">
+      </a>
     </div>
   </div>
-</section>
 
-<!-- ═══ 02 WORKS ═══ -->
-    <section class="spread" id="works" data-spread="02" data-name="WORKS" data-jp="作品">
-      <div class="wrap">
-        <div class="shead"><span class="no">Ø2</span><h2>Works</h2><span class="jp">作品 — 4 SHIPPED, ALL LIVE</span></div>
-        <div class="railbar">
-          <span class="railcount"><b data-rail-i>Ø1</b> / Ø4 — <span data-rail-name>RECALL</span></span>
-          <span>ドラッグ — DRAG, SWIPE OR USE ← →</span>
-          <span class="railnav"><button data-rail-prev aria-label="previous project" disabled>←</button><button data-rail-next aria-label="next project">→</button></span>
-        </div>
-        <div class="rail" data-rail tabindex="0" role="group" aria-label="projects, scroll horizontally">
-      <article class="proj">
-        <div class="p-head"><span class="p-no">PLATE Ø1</span><span class="p-jp">記憶 · 継続 / MEMORY · CONTINUITY</span></div>
-        <div class="p-body">
-          <a class="p-shot" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">
-            <span class="p-live"><i></i>LIVE</span>
-            <img src="shots/recall.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Recall’s live site: a memory-graph visualisation beside the headline “Never lose the thread”.">
-            <span class="p-cap"><span>web-seven-puce-99.vercel.app</span><span>実物 — HOVER FOR COLOUR</span></span>
-          </a>
-          <div class="p-txt">
-            <h3 class="p-name">Recall</h3>
-            <p class="p-why">// because I kept losing my own unfinished work.</p>
-            <p class="p-desc">Work scatters — the tabs, the files, the half-finished chat — and the context evaporates between sessions. Recall is a <b>local-first continuity engine</b>: a browser extension and watchers stream activity into a daemon that stores events, scores recovery and ranks what mattered, with semantic search across all of it. A Qt launcher hands the thread back — <b>one keystroke, 100% on your machine.</b> No cloud, no telemetry, plain files you can read and delete.</p>
-            <p class="p-own">↳ solo build — extension → daemon → recovery interface, end to end.</p>
-            <div class="p-flow"><b>ingest</b> <i>→</i> <b>store</b> <i>→</i> <b>score</b> <i>→</i> <b>recall</b> <i>→</i> <b>resume</b></div>
-            <div class="chips" style="margin-top:16px"><span class="chip">python</span><span class="chip">qt</span><span class="chip">browser extension</span><span class="chip">daemon apis</span><span class="chip">semantic search</span></div>
-            <div class="p-links"><a class="btn fill" href="https://web-seven-puce-99.vercel.app" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/Recall-me" target="_blank" rel="noopener">CODE ↗</a></div>
-          </div>
-        </div>
-        <div class="p-figs">
-        <div class="f"><div class="fn"><span data-count="3">0</span></div><div class="fl">signal streams — browser · file · dev</div></div>
-        <div class="f"><div class="fn">LOCAL</div><div class="fl">first — nothing leaves the machine</div></div>
-        <div class="f"><div class="fn">macOS</div><div class="fl">site &amp; download shipped</div></div>
-        </div>
-      </article>
-      <article class="proj">
-        <div class="p-head"><span class="p-no">PLATE Ø2</span><span class="p-jp">信頼 · 安全 / TRUST &amp; SAFETY</span></div>
-        <div class="p-body">
-          <a class="p-shot" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener">
-            <span class="p-live"><i></i>LIVE</span>
-            <img src="shots/aegis.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Aegis dashboard: decisions processed, routing outcomes donut and flagged harm categories.">
-            <span class="p-cap"><span>aegis-one-livid.vercel.app</span><span>実物 — HOVER FOR COLOUR</span></span>
-          </a>
-          <div class="p-txt">
-            <h3 class="p-name">Aegis</h3>
-            <p class="p-why">// scaling trust shouldn’t mean scaling the moderation team.</p>
-            <p class="p-desc">A kids’ platform and an adult forum need different lines, and black-box calls can’t be appealed. Aegis scores content across <b>7 harm categories</b>, applies a <b>per-platform policy</b> of thresholds and custom rules, then routes by calibrated confidence — <b>allow, review, or block</b>. Every decision keeps the offending span, the reasoning and the full routing trace, so it can be audited.</p>
-            <p class="p-own">↳ solo — engine interface, policy system, review queue, dashboard.</p>
-            <div class="p-flow"><b>classify</b> <i>→</i> <b>apply policy</b> <i>→</i> <b>route</b> <i>→</i> <b>human review</b></div>
-            <div class="chips" style="margin-top:16px"><span class="chip">next.js 16</span><span class="chip">react 19</span><span class="chip">typescript</span><span class="chip">prisma · sqlite</span><span class="chip">vitest</span></div>
-            <div class="p-links"><a class="btn fill" href="https://aegis-one-livid.vercel.app/" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/aegis" target="_blank" rel="noopener">CODE ↗</a></div>
-          </div>
-        </div>
-        <div class="p-figs">
-        <div class="f"><div class="fn"><span data-count="7">0</span></div><div class="fl">harm categories, scored 0–1</div></div>
-        <div class="f"><div class="fn"><span data-count="3">0</span></div><div class="fl">routes — allow / review / block</div></div>
-        <div class="f"><div class="fn">FULL</div><div class="fl">audit trail — span · reasoning · trace</div></div>
-        </div>
-      </article>
-      <article class="proj">
-        <div class="p-head"><span class="p-no">PLATE Ø3</span><span class="p-jp">接地 · 拒否 / GROUNDING · REFUSAL</span></div>
-        <div class="p-body">
-          <a class="p-shot" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener">
-            <span class="p-live"><i></i>LIVE</span>
-            <img src="shots/pdfchat.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="PDFChat: upload a PDF, with the upload / retrieve / answer pipeline explained.">
-            <span class="p-cap"><span>pdf-reviewer-ten.vercel.app</span><span>実物 — HOVER FOR COLOUR</span></span>
-          </a>
-          <div class="p-txt">
-            <h3 class="p-name">PDFChat</h3>
-            <p class="p-why">// agents lie when retrieval gets messy.</p>
-            <p class="p-desc">A confident wrong answer costs more than no answer. PDFChat extracts, chunks and <b>indexes locally</b>, rewrites queries against the relevant chunks, and every response either <b>cites its pages or refuses clearly</b>. Multi-turn chat keeps session context for retrieval only, and <b>multilingual grounding</b> answers in your language while still treating the document as the sole evidence.</p>
-            <p class="p-own">↳ built the full retrieval → citation → refusal path.</p>
-            <div class="p-flow"><b>upload</b> <i>→</i> <b>retrieve</b> <i>→</i> <b>ground</b> <i>→</i> <b>answer / refuse</b></div>
-            <div class="chips" style="margin-top:16px"><span class="chip">python</span><span class="chip">retrieval</span><span class="chip">citations</span><span class="chip">refusal policy</span><span class="chip">multilingual</span></div>
-            <div class="p-links"><a class="btn fill" href="https://pdf-reviewer-ten.vercel.app" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/PDF-Reviewer" target="_blank" rel="noopener">CODE ↗</a></div>
-          </div>
-        </div>
-        <div class="p-figs">
-        <div class="f"><div class="fn">CITED</div><div class="fl">every answer points at its pages</div></div>
-        <div class="f"><div class="fn">MULTI</div><div class="fl">lingual — one source of truth</div></div>
-        <div class="f"><div class="fn">50MB</div><div class="fl">per document upload</div></div>
-        </div>
-      </article>
-      <article class="proj">
-        <div class="p-head"><span class="p-no">PLATE Ø4</span><span class="p-jp">警備 · 自律 / AGENTS · SECURITY</span></div>
-        <div class="p-body">
-          <a class="p-shot" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener">
-            <span class="p-live"><i></i>LIVE</span>
-            <img src="shots/codeguardian.jpg" width="1280" height="800" loading="lazy" decoding="async" alt="Code-Guardian landing page — “Autonomous Security Engineering”.">
-            <span class="p-cap"><span>zeus1205-codeguardian-ai.hf.space</span><span>実物 — HOVER FOR COLOUR</span></span>
-          </a>
-          <div class="p-txt">
-            <h3 class="p-name">Code-Guardian</h3>
-            <p class="p-why">// a scanner report is not a fix.</p>
-            <p class="p-desc">Security tooling buries teams in findings; the hard part is <b>judging what matters and doing something about it.</b> Code-Guardian is an agentic system for security and maintenance work on real codebases, built on <b>OpenEnv</b> — agents investigate the repository, reason about risk in context, and propose concrete changes instead of dumping a list. Public demo on Hugging Face Spaces.</p>
-            <p class="p-own">↳ agent design, environment and the demo deployment.</p>
-            <div class="p-flow"><b>ingest</b> <i>→</i> <b>investigate</b> <i>→</i> <b>reason</b> <i>→</i> <b>propose</b></div>
-            <div class="chips" style="margin-top:16px"><span class="chip">agents</span><span class="chip">openenv</span><span class="chip">python</span><span class="chip">hf spaces</span></div>
-            <div class="p-links"><a class="btn fill" href="https://zeus1205-codeguardian-ai.hf.space/demo" target="_blank" rel="noopener">LIVE ↗</a><a class="btn" href="https://github.com/kunalKumar-13/codeguardian-ai-" target="_blank" rel="noopener">CODE ↗</a></div>
-          </div>
-        </div>
-        <div class="p-figs">
-        <div class="f"><div class="fn">AGENTIC</div><div class="fl">investigation over static scanning</div></div>
-        <div class="f"><div class="fn">OPENENV</div><div class="fl">the environment agents act in</div></div>
-        <div class="f"><div class="fn">DEMO</div><div class="fl">public, on HF Spaces</div></div>
-        </div>
-      </article>
-
-        </div>
-
-        <div class="lbl" style="margin:clamp(30px,4vw,44px) 0 14px"><b>◆</b> ALSO BUILT / その他 — no public artefact</div>
-        <div class="p-body" style="align-items:start">
-          <div><div class="p-name" style="font-size:clamp(22px,2.8vw,32px)">Watershed</div><p class="p-desc">A multi-agent RL arena for scarce resources — <b>GRPO over 100k+ self-play episodes</b>, with trust dynamics and coalition formation modelled into the reward, served behind FastAPI. Run it long enough and the agents stopped simply competing: <b>alliances formed.</b></p><div class="chips" style="margin-top:14px"><span class="chip">rl · grpo</span><span class="chip">trl</span><span class="chip">fastapi</span><span class="chip">multi-agent</span></div><p class="p-own" style="margin-top:12px">private repository</p></div>
-          <div><div class="p-name" style="font-size:clamp(22px,2.8vw,32px)">Support Triage</div><p class="p-desc">A deterministic support agent that answers from the docs or refuses, every time — hybrid <b>BM25 + TF-IDF retrieval with reranking</b>, multilingual injection and retrieval-poisoning defense, PII redaction and calibrated confidence. <b>132/132 evaluation tests passing.</b></p><div class="chips" style="margin-top:14px"><span class="chip">llamaindex</span><span class="chip">bm25 · tf-idf</span><span class="chip">reranking</span><span class="chip">prompt defense</span></div><div class="p-links"><a class="btn" href="https://github.com/kunalKumar-13/deterministic-support-triage" target="_blank" rel="noopener">CODE ↗</a></div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ 03 RUNTIME ═══ -->
-<section class="spread" id="runtime" data-spread="03" data-name="RUNTIME" data-jp="経歴">
-  <div class="wrap">
-    <div class="shead"><span class="no">Ø3</span><h2>Runtime</h2><span class="jp">経歴 — 7 PROCESSES</span></div>
-    <div class="lbl" style="margin-bottom:8px" data-swipe-hint><b>◆</b> SWIPE THE TABLE →</div>
-    <div class="tblwrap">
-      <table class="rt">
-        <thead><tr><th>pid</th><th>process</th><th>role</th><th>since</th><th>state</th></tr></thead>
-        <tbody>
-          <tr><td>001</td><td><span class="nm">Emergent</span><span class="sb">yc s24 · ai startup</span></td><td>frontend engineering intern</td><td>jun 2026 —</td><td><span class="st run">RUNNING</span></td></tr>
-          <tr><td>002</td><td><span class="nm">Open Source Club</span><span class="sb">scaler school of technology</span></td><td>operations lead</td><td>2026 —</td><td><span class="st run">RUNNING</span></td></tr>
-          <tr><td>003</td><td><span class="nm">Aspirants Relations</span><span class="sb">scaler school of technology</span></td><td>head of immersions</td><td>2026 —</td><td><span class="st run">RUNNING</span></td></tr>
-          <tr><td>004</td><td><span class="nm">Ostrius AI</span><span class="sb">shipped auth &amp; verification end to end</span></td><td>swe intern</td><td>apr–jun 2026</td><td><span class="st done">EXIT Ø</span></td></tr>
-          <tr><td>005</td><td><span class="nm">Hack Club</span><span class="sb">campfire · daydream · codeday bengaluru — 500+ participants</span></td><td>growth &amp; ops lead</td><td>nov 2024 – mar 2026</td><td><span class="st done">EXIT Ø</span></td></tr>
-          <tr><td>006</td><td><span class="nm">DSA Teaching</span><span class="sb">50+ students mentored — algorithms &amp; structured thinking</span></td><td>teaching assistant</td><td>may–jun 2026</td><td><span class="st done">EXIT Ø</span></td></tr>
-          <tr><td>007</td><td><span class="nm">Apple Dev Academy</span><span class="sb">application in progress</span></td><td>applicant</td><td>2027 cohort</td><td><span class="st q">QUEUED</span></td></tr>
-        </tbody>
-      </table>
+  <div class="more rv">
+    <div class="mcard">
+      <h3>Watershed</h3>
+      <p>A multi-agent RL arena for scarce resources — <b>GRPO over 100k+ self-play episodes</b>, trust dynamics and coalition formation modelled into the reward. Run it long enough and the agents stopped competing: alliances formed.</p>
+      <div class="tags">RL · GRPO · TRL · FastAPI — private repo</div>
     </div>
+    <a class="mcard" href="https://github.com/kunalKumar-13/deterministic-support-triage" target="_blank" rel="noopener">
+      <h3>Support Triage <span class="ar">↗</span></h3>
+      <p>A support agent that answers from the docs or refuses, every time — hybrid BM25 + TF-IDF retrieval with reranking, injection and poisoning defense, PII redaction. <b>132/132 evaluation tests passing.</b></p>
+      <div class="tags">LlamaIndex · BM25 · prompt defense</div>
+    </a>
+  </div>
+</div></section>
 
-    <div class="heat" data-heat>
-      <div class="heat-h"><span><b>◆</b> COMMIT MAP — LAST 12 MONTHS / 記録</span><span class="rd" data-hm-read aria-live="polite"></span><a href="https://github.com/kunalKumar-13" target="_blank" rel="noopener" style="border-bottom:1px solid var(--rule)">GITHUB / KUNALKUMAR-13 ↗</a></div>
-      <div class="heat-w"><div class="hg" data-hm-grid role="img" aria-label="GitHub contribution heatmap — loading"></div></div>
-      <div class="heat-s" data-hm-stats hidden>
-        <div class="f"><div class="fn" data-hm-total style="font-family:var(--disp);font-weight:900;font-size:30px;letter-spacing:-.04em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">contributions — last year</div></div>
-        <div class="f"><div class="fn" data-hm-cur style="font-family:var(--disp);font-weight:900;font-size:30px;letter-spacing:-.04em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">current streak — days</div></div>
-        <div class="f"><div class="fn" data-hm-max style="font-family:var(--disp);font-weight:900;font-size:30px;letter-spacing:-.04em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">longest streak — days</div></div>
-        <div class="f"><div class="fn" data-hm-busy style="font-family:var(--disp);font-weight:900;font-size:30px;letter-spacing:-.04em">·</div><div class="fl" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--grey);margin-top:5px;text-transform:uppercase">busiest day</div></div>
-      </div>
+<!-- EXPERIENCE -->
+<section id="experience"><div class="wrap">
+  <div class="rv"><div class="eyebrow">Experience</div><h2 class="title">Where I've been.</h2></div>
+  <div class="xp rv">
+    <div class="row now"><div class="per">Jun 2026 — now</div><div class="org">Emergent<span class="sub">Frontend engineering intern · YC S24 AI startup</span></div><div class="st"><i></i>Current</div></div>
+    <div class="row now"><div class="per">2026 — now</div><div class="org">Open Source Club<span class="sub">Operations lead · Scaler School of Technology</span></div><div class="st"><i></i>Current</div></div>
+    <div class="row now"><div class="per">2026 — now</div><div class="org">Aspirants Relations<span class="sub">Head of immersions · Scaler School of Technology</span></div><div class="st"><i></i>Current</div></div>
+    <div class="row"><div class="per">Apr — Jun 2026</div><div class="org">Ostrius AI<span class="sub">SWE intern · shipped auth &amp; verification end to end</span></div><div class="st"><i></i>Completed</div></div>
+    <div class="row"><div class="per">May — Jun 2026</div><div class="org">Teaching Assistant<span class="sub">Data structures &amp; algorithms · 50+ students mentored</span></div><div class="st"><i></i>Completed</div></div>
+    <div class="row"><div class="per">Nov 2024 — Mar 2026</div><div class="org">Hack Club<span class="sub">Growth &amp; ops lead · Campfire, Daydream, CodeDay Bengaluru — 500+ participants</span></div><div class="st"><i></i>Completed</div></div>
+    <div class="row"><div class="per">2027 cohort</div><div class="org">Apple Developer Academy<span class="sub">Application in progress</span></div><div class="st"><i></i>Applying</div></div>
+  </div>
+</div></section>
+
+<!-- ABOUT -->
+<section id="about"><div class="wrap">
+  <div class="rv"><div class="eyebrow">About</div><h2 class="title">Memory, retrieval, and things that actually ship.</h2>
+  <p class="lead">I work where memory, retrieval and reinforcement learning meet software that stays running long after the demo. Lately I'm chasing what makes those systems safe.</p></div>
+  <div class="panels rv">
+    <div class="panel">
+      <h3>Second brain — kunal_hq</h3>
+      <p>An internship, college, three applications and a life, all carried in working memory. The fix wasn't discipline, it was a place. So I built one: a <b>plain-text vault</b>, an agent that reads and writes it, and a morning pulse at 8:23 that pulls in weather, calendar, GitHub and LeetCode — feeding one dashboard that always opens to exactly one thing.</p>
+      <p>Capture from any terminal: <code>$ brain &lt;thought&gt;</code> — two seconds, zero judgment, sorted later. The game layer earns XP <b>only from real, verified data</b> — never invented.</p>
+      <div class="pill"><span>plain-text vault</span><span>agent</span><span>daily pulse</span><span>dashboard</span></div>
+    </div>
+    <div class="panel">
+      <h3>Details</h3>
+      <dl class="kv">
+        <dt>Based</dt><dd>Bengaluru, India · <b data-clock>--:--:--</b></dd>
+        <dt>Study</dt><dd><b>BITS Pilani</b> — CS, class of 2027</dd>
+        <dt>Honours</dt><dd><b>Activate AI Fellowship</b> — India's first cohort, 1 of 15 · <b>HPAIR</b> delegate, Harvard</dd>
+        <dt>Stack</dt><dd>React · TypeScript · Next.js · FastAPI · Python · PyTorch · LlamaIndex · Docker · AWS</dd>
+      </dl>
     </div>
   </div>
-</section>
+</div></section>
 
-<!-- ═══ 04 SECOND BRAIN ═══ -->
-<section class="spread" id="brain" data-spread="04" data-name="SECOND BRAIN" data-jp="第二の脳">
-  <div class="wrap">
-    <div class="shead"><span class="no">Ø4</span><h2>Second Brain</h2><span class="jp">第二の脳 — KUNAL_HQ v10</span></div>
-    <div class="two">
-      <div>
-        <div class="body"><p><b>July 2026:</b> an internship, college, three applications and a life — all carried in working memory. The result was fog. The fix wasn't discipline; <b>it was a place.</b> So I built one: an external brain that sorts, remembers, and shows only what matters now.</p></div>
-        <div style="margin-top:24px">
-          <div class="organ"><span class="ok">vault</span><span class="ov"><b>plain-text files</b> on my machine — the single source of truth. journal, habits, goals, projects, reviews.</span></div>
-          <div class="organ"><span class="ok">agent</span><span class="ov"><b>an AI that reads and writes the vault</b> — plus a silent pulse at 8:23 every morning that pulls the world in: weather, calendar, GitHub ×2, LeetCode.</span></div>
-          <div class="organ"><span class="ok">page</span><span class="ov"><b>one dashboard</b> that mirrors it all — and always opens to exactly one thing.</span></div>
-        </div>
-        <p class="cap">capture from any terminal: <code>$ brain &lt;thought&gt;</code> — two seconds, zero judgment, sorted later.</p>
-        <p class="cap" style="margin-top:9px">the game layer earns XP <b style="color:var(--mag-t)">only from real, verified data</b> — never invented. it runs my mornings; this section is just its shadow.</p>
-      </div>
-      <div class="term" aria-label="neural link demo">
-        <div class="term-h"><span>◆ NEURAL LINK — kunal_hq</span><span>LOCAL DEMO</span></div>
-        <div class="term-b" data-bterm></div>
-      </div>
+<!-- ACTIVITY -->
+<section id="activity"><div class="wrap">
+  <div class="rv"><div class="eyebrow">Activity</div><h2 class="title">Still shipping.</h2></div>
+  <div class="heat rv" data-heat>
+    <div class="hh"><span>Contributions — last 12 months</span><span class="rd" data-hm-read aria-live="polite"></span>
+      <a href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">github.com/kunalKumar-13 ↗</a></div>
+    <div class="hw"><div class="hg" data-hm-grid role="img" aria-label="GitHub contribution heatmap — loading"></div></div>
+    <div class="hs" data-hm-stats>
+      <div><div class="n" data-hm-total>·</div><div class="l">contributions</div></div>
+      <div><div class="n" data-hm-cur>·</div><div class="l">current streak</div></div>
+      <div><div class="n" data-hm-max>·</div><div class="l">longest streak</div></div>
+      <div><div class="n" data-hm-busy>·</div><div class="l">busiest day</div></div>
     </div>
   </div>
-</section>
+</div></section>
 
-<!-- ═══ 06 LOG ═══ -->
-<section class="spread" id="log" data-spread="05" data-name="LIFE.LOG" data-jp="記録">
-  <div class="wrap">
-    <div class="shead"><span class="no">Ø5</span><h2>Life.log</h2><span class="jp">記録 — APPEND-ONLY</span></div>
-    <div class="log">
-      <div class="log-h"><span>◆ ~/kunal — tail -f life.log</span><span>8 LINES</span></div>
-      <div class="log-b">
-        <div class="ll"><span class="ts">[2024-11]</span><span class="m">▪</span><span class="tx">joined hack club — bengaluru ops</span></div>
-        <div class="ll"><span class="ts">[2026-01]</span><span class="m">▪</span><span class="tx">hpair delegate — <b>harvard university</b></span></div>
-        <div class="ll hi"><span class="ts">[2026]</span><span class="m">▪</span><span class="tx">selected — <b>activate ai fellowship · india's first cohort, 1 of 15</b></span></div>
-        <div class="ll"><span class="ts">[2026-04]</span><span class="m">▪</span><span class="tx">joined ostrius ai — swe intern</span></div>
-        <div class="ll"><span class="ts">[2026-06]</span><span class="m">▪</span><span class="tx">joined <b>emergent (yc s24)</b> — frontend</span></div>
-        <div class="ll"><span class="ts">[2026]</span><span class="m">▪</span><span class="tx">operations lead — open source club, scaler</span></div>
-        <div class="ll"><span class="ts">[2026]</span><span class="m">▪</span><span class="tx">advanced to <b>round 2 — mats</b> (ml alignment theory scholars)</span></div>
-        <div class="ll"><span class="ts">[ now ]</span><span class="m">▪</span><span class="tx">reading: you, on this page<span class="cur" aria-hidden="true"></span></span></div>
-      </div>
-      <div class="guest" data-guest></div>
-    </div>
+<!-- CONTACT -->
+<section id="contact"><div class="wrap">
+  <div class="rv"><div class="eyebrow">Contact</div>
+  <h2 class="cbig">Let's build something worth remembering.</h2>
+  <button class="cmail" data-mail>kunalsain0324@gmail.com</button>
+  <div class="chint" data-mail-hint>Click to copy · click again to open mail</div>
+  <div class="hacts">
+    <a class="btn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">GitHub <span class="ar">↗</span></a>
+    <a class="btn" href="https://linkedin.com/in/sainkunal" target="_blank" rel="noopener">LinkedIn <span class="ar">↗</span></a>
+    <a class="btn" href="kunal-kumar-resume.pdf" target="_blank" rel="noopener">Résumé <span class="ar">↗</span></a>
   </div>
-</section>
-
-<!-- ═══ 06 MODULES ═══ -->
-<section class="spread" id="modules" data-spread="06" data-name="MODULES" data-jp="道具">
-  <div class="wrap">
-    <div class="shead"><span class="no">Ø6</span><h2>Modules</h2><span class="jp">道具 — WHAT I REACH FOR</span></div>
-    <div class="mods">
-      <div class="mod"><h3>interface</h3><div class="jpx">界面</div><ul><li>react</li><li>typescript</li><li>next.js</li></ul></div>
-      <div class="mod"><h3>api</h3><div class="jpx">通信</div><ul><li>fastapi · node</li><li>pydantic · sql</li><li>go <i>— learning</i></li><li>java</li></ul></div>
-      <div class="mod"><h3>intelligence</h3><div class="jpx">知能</div><ul><li>llm orchestration</li><li>rag · retrieval</li><li>rl · agents · faiss</li><li>pytorch · llamaindex <i>— daily</i></li></ul></div>
-      <div class="mod"><h3>infra</h3><div class="jpx">基盤</div><ul><li>docker · k8s <i>— when it matters</i></li><li>aws · linux</li><li>cloudflare · git</li></ul></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ 07 COLOPHON ═══ -->
-<section class="spread" id="colo" data-spread="07" data-name="COLOPHON" data-jp="奥付">
-  <div class="wrap">
-    <div class="shead"><span class="no">Ø7</span><h2>Colophon</h2><span class="jp">奥付</span></div>
-    <h2 class="sayhi">SAY<br>HELLO<span class="mg">.</span></h2>
-    <button class="mail" data-mail>kunalsain0324@gmail.com</button>
-    <div class="mailhint" data-mail-hint>click to copy · click again to open mail</div>
-    <div class="links">
-      <a class="btn" href="https://github.com/kunalKumar-13" target="_blank" rel="noopener">GITHUB ↗</a>
-      <a class="btn" href="https://linkedin.com/in/sainkunal" target="_blank" rel="noopener">LINKEDIN ↗</a>
-      <a class="btn" href="kunal-kumar-resume.pdf" target="_blank" rel="noopener">RÉSUMÉ.PDF ↗</a>
-      <button class="btn" data-print>PRINT ISSUE</button>
-    </div>
-    <div style="font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--mag-t);text-transform:uppercase;margin-top:26px">● available for 2026 — full-time &amp; collabs</div>
-
-    <dl class="colo">
-      <div><dt>Typeface / 書体</dt><dd><b>Archivo</b> — display &amp; text<br><b>JetBrains Mono</b> — labels<br><b>Noto Sans JP</b> — 日本語</dd></div>
-      <div><dt>Built with / 制作</dt><dd>Hand-written <b>HTML, CSS &amp; vanilla JS</b>.<br>No framework. No build step.<br>One page, one script.</dd></div>
-      <div><dt>Plate / 図版</dt><dd>A live <b>1-bit dither engine</b> — Atkinson, Floyd–Steinberg and Bayer ordered — rendering a topography of real commit data. It develops under your cursor. Point <code style="font-family:var(--mono);font-size:11px">data-photo</code> at an image and it dithers that instead.</dd></div>
-      <div><dt>Live data / 実データ</dt><dd>Bengaluru clock, GitHub commit map and streaks are <b>fetched, not typed</b>. If a feed is down it says so.</dd></div>
-      <div><dt>Field guide / 秘密</dt><dd><b>⌘K</b> — command palette<br><b>1–4</b> — switch plates<br><b>D</b> — cycle dither<br><b>G</b> — sign the log</dd></div>
-      <div><dt>Imprint / 奥付</dt><dd>Edition Ø1, 2026.<br>Set in Bengaluru, India.<br>© Kunal Kumar — made by hand.</dd></div>
-    </dl>
-
-    <div class="imprint"><span>KUNAL KUMAR — ISSUE Ø1</span><span data-signoff>NOTHING FORGOTTEN</span><span>© 2026 · 記憶</span></div>
-  </div>
-</section>
+  <footer><span>© 2026 Kunal Kumar</span><span class="fl" data-signoff>Built by hand · Bengaluru</span></footer></div>
+</div></section>
 
 </main>
-
-<div class="ov" data-pal-ov><div class="pal" role="dialog" aria-modal="true" aria-label="command palette"><input data-pal-in placeholder="type a command…" aria-label="command"><div class="list" data-pal-list></div></div></div>
-
 <script defer src="script.js"></script>
 </body>
 </html>

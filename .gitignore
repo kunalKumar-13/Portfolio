@@ -1,3 +1,5 @@
 .claude/
 .DS_Store
 aegis/
+_versions/
+compare.html
