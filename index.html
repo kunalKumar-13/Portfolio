@@ -24,10 +24,11 @@
    in without moving a single line. */
 @font-face{font-family:'Archivo Fallback';src:local('Arial'),local('Helvetica');
   size-adjust:98.22%;ascent-override:89.6%;descent-override:21.38%;line-gap-override:0%}
-/* Oswald is condensed, so matching its advance width would shrink the stand-in vertically
-   and resize every headline on swap. Match the vertical box instead and let width differ. */
+/* Width-matched to Oswald (measured on the cover headline: Arial runs 23.7% wide), so a
+   cold load breaks the lines exactly where the real font will. ascent/descent are divided
+   by the same factor, which keeps the vertical box identical: 1.1132+0.3092 x .8085 = 1.15. */
 @font-face{font-family:'Oswald Fallback';src:local('Arial'),local('Liberation Sans'),local('Helvetica');
-  size-adjust:100%;ascent-override:90%;descent-override:25%;line-gap-override:0%}
+  size-adjust:80.85%;ascent-override:111.32%;descent-override:30.92%;line-gap-override:0%}
 @font-face{font-family:'Mono Fallback';src:local('Menlo'),local('Monaco'),local('Courier New');
   size-adjust:99.66%;ascent-override:102.35%;descent-override:30.1%;line-gap-override:0%}
 :root{
@@ -119,22 +120,26 @@ main{position:relative;z-index:1}
 .hair{border-top:1px solid var(--rule);margin:clamp(22px,3vw,34px) 0}
 
 /* ─ COVER ───────────────────────────────────── */
-#cover{min-height:100vh;display:flex;align-items:center;padding-top:clamp(92px,11vh,124px);padding-bottom:clamp(90px,13vh,150px);border-bottom:2px solid var(--ink)}
+#cover{min-height:100vh;display:flex;align-items:center;padding-top:clamp(88px,10vh,116px);padding-bottom:clamp(40px,5vh,62px);border-bottom:2px solid var(--ink)}
 #cover > .wrap{width:100%}   /* flex item: without this it shrink-wraps off the measure */
 .cov{width:100%;display:flex;flex-direction:column;min-height:calc(100vh - clamp(150px,18vh,208px))}
 .masthead{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--grey);display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid var(--ink);padding-bottom:9px;margin-bottom:clamp(16px,2.2vw,26px);text-transform:uppercase}
 @media(max-width:760px){.masthead span:nth-child(2){display:none}}
 
 /* The cover is a statement on mostly-empty paper. Not the name, not a project. */
-.cs-say{font-family:var(--disp);font-weight:700;font-size:clamp(46px,7.4vw,112px);line-height:.92;min-height:1.84em;
-  letter-spacing:-.005em;text-transform:uppercase;margin-top:clamp(28px,7vh,86px)}
+.cs-say{font-family:var(--disp);font-weight:700;line-height:.92;min-height:1.84em;
+  /* Set to the measure. Measured in situ with the real font, the longer line needs
+     7.0985em; 7.25 leaves ~2% of slack so it fills the column without ever tipping
+     onto a third line. */
+  font-size:min(193px, calc((100vw - 2 * var(--gut)) / 7.25));
+  letter-spacing:-.005em;text-transform:uppercase;margin-top:clamp(20px,5vh,58px)}
 .cs-say .mg{color:var(--mag)}
-.cs-sub{margin-top:clamp(18px,2.6vw,30px);max-width:46ch;font-size:clamp(15px,1.35vw,18px);
-  line-height:1.66;color:var(--ink2)}
+.cs-sub{margin-top:clamp(16px,2.2vw,24px);max-width:74ch;font-size:clamp(15px,1.2vw,17px);
+  line-height:1.6;color:var(--ink2)}
 .cs-sub b{color:var(--ink);font-weight:700}
 
 /* The work, named but not shown — the promise of what is below. */
-.cs-index{display:flex;flex-wrap:wrap;gap:0 clamp(20px,3.2vw,46px);margin-top:clamp(30px,6vh,74px);
+.cs-index{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 clamp(16px,2.4vw,32px);margin-top:clamp(24px,5vh,60px);
   border-top:1px solid var(--ink);padding-top:14px}
 .cs-index a{display:flex;align-items:center;gap:9px;font-family:var(--disp);font-weight:600;
   font-size:clamp(17px,1.9vw,25px);letter-spacing:.005em;text-transform:uppercase;
@@ -148,14 +153,17 @@ main{position:relative;z-index:1}
 .wi-name{font-family:var(--disp);font-weight:700;font-size:clamp(20px,2.2vw,30px);letter-spacing:.005em;line-height:.95;text-transform:uppercase;white-space:nowrap}
 .wi-name .mg{color:var(--mag)}
 .wi-line{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;color:var(--grey);text-transform:uppercase;line-height:1.7}
-@media(max-width:940px){.whois{grid-template-columns:1fr;gap:13px;justify-items:start}.cs-index{gap:0 22px}}
+@media(max-width:940px){.whois{grid-template-columns:1fr;gap:13px;justify-items:start}}
+/* space-between left one name stranded on a second row; a 2x2 grid reads as intended */
+@media(max-width:700px){.cs-index{display:grid;grid-template-columns:1fr 1fr;gap:2px clamp(14px,4vw,26px)}}
+@media(max-width:420px){#cover{padding-bottom:clamp(26px,3.5vh,40px)}.cs-index{margin-top:clamp(14px,3vh,28px)}}
 .covcta{display:flex;flex-wrap:wrap;gap:9px;margin-top:clamp(16px,2.2vw,24px)}
 .covcta .btn{font-size:10.5px;padding:13px 20px}
 /* short laptop viewports — keep the whole cover above the fold */
 @media(max-height:870px) and (min-width:940px){
-  .cs-say{font-size:clamp(42px,6vw,84px);margin-top:clamp(18px,4vh,40px)}
-  .cs-sub{margin-top:16px;font-size:16px}
-  .cs-index{margin-top:clamp(18px,4vh,38px)}
+  .cs-say{font-size:min(193px, calc((100vw - 2 * var(--gut)) / 7.25));margin-top:clamp(12px,2.5vh,24px)}
+  .cs-sub{margin-top:15px;font-size:16px}
+  .cs-index{margin-top:clamp(14px,3vh,30px)}
   #cover{padding-top:clamp(84px,10vh,104px)}
 }
 
@@ -408,9 +416,8 @@ table.rt{width:100%;border-collapse:collapse;min-width:660px}
     </div>
     <div class="cov">
       <p class="cs-say">I build systems<br>that <span class="mg">remember</span>.</p>
-      <p class="cs-sub">A memory engine for unfinished work. An agent that refuses to
-        hallucinate. Moderation you can audit. <b>Four of them are running right now</b> —
-        every screenshot below is the live thing.</p>
+      <p class="cs-sub">A memory engine, an agent that refuses to guess, moderation you can audit.
+        <b>Four of them are running right now</b> — every screenshot below is the live thing.</p>
 
       <div class="cs-index">
         <a href="#p1"><span class="n">Ø1</span>Recall</a>
