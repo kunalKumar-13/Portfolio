@@ -301,14 +301,13 @@ class Issue {
       ['go','works — 作品','',()=>go('#works')],
       ['go','runtime — 経歴','',()=>go('#runtime')],
       ['go','second brain — 第二の脳','',()=>go('#brain')],
-      ['go','life.log — 記録','',()=>go('#log')],
       ['go','colophon — 奥付','',()=>go('#colo')],
       ['plate','recall — memory engine','1',()=>this.showWork(1)],
       ['plate','aegis — moderation','2',()=>this.showWork(2)],
       ['plate','pdfchat — grounded agent','3',()=>this.showWork(3)],
       ['plate','code-guardian — security review','4',()=>this.showWork(4)],
       ['do','copy email','',()=>this.copyMail()],
-      ['do','sign the log','G',()=>{ go('#log'); setTimeout(()=>this.signLog(), 700); }],
+      ['do','leave a mark','G',()=>{ go('#colo'); setTimeout(()=>this.signLog(), 700); }],
       ['do','open résumé','',()=>window.open('kunal-kumar-resume.pdf','_blank','noopener')],
       ['do','open github','',()=>window.open('https://github.com/kunalKumar-13','_blank','noopener')],
       ['do','open linkedin','',()=>window.open('https://linkedin.com/in/sainkunal','_blank','noopener')],
@@ -409,7 +408,7 @@ class Issue {
       if (tag === 'INPUT' || tag === 'TEXTAREA') return;
       const k = e.key.toLowerCase();
       if (k >= '1' && k <= '4'){ this.showWork(k); }   // showWork scrolls to that project
-      else if (k === 'g'){ $('#log').scrollIntoView({ behavior: RM?'auto':'smooth', block:'start' }); setTimeout(() => this.signLog(), 700); }
+      else if (k === 'g'){ $('#colo').scrollIntoView({ behavior: RM?'auto':'smooth', block:'start' }); setTimeout(() => this.signLog(), 700); }
     });
   }
 
