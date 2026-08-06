@@ -15,7 +15,6 @@ class Issue {
   constructor(){
     this.dead = false;
     this.commit = null;
-    this.press();
     this.clocks();
     this.barcode();
     this.folio();
@@ -31,42 +30,6 @@ class Issue {
     this.keys();
     this.returning();
     const pb = $('[data-print]'); if (pb) pb.addEventListener('click', () => window.print());
-  }
-
-  /* ── 00 · press run ─────────────────────────────────────── */
-  press(){
-    const el = $('#press'); if (!el) return;
-    try { if (sessionStorage.getItem('kk_pressed')) { el.remove(); return; } } catch(e){}
-    if (RM){ el.remove(); return; }
-    el.hidden = false;
-    document.documentElement.style.overflow = 'hidden';
-    const plates = $$('.plate', el);
-    const off = [[-34,-20],[28,16],[-18,26],[0,0]];
-    plates.forEach((p,i) => {
-      p.style.transform = `translate(${off[i][0]}px, ${off[i][1]}px)`;
-      p.style.opacity = '0';
-    });
-    const done = () => {
-      try { sessionStorage.setItem('kk_pressed','1'); } catch(e){}
-      document.documentElement.style.overflow = '';
-      el.style.transition = 'opacity .42s ease';
-      el.style.opacity = '0';
-      setTimeout(() => el.remove(), 440);
-    };
-    plates.forEach((p,i) => setTimeout(() => {
-      p.style.transition = 'opacity .3s ease';
-      p.style.opacity = '1';
-    }, 90 + i * 110));
-    setTimeout(() => {
-      plates.forEach(p => {
-        p.style.transition = 'transform .62s cubic-bezier(.16,.9,.24,1)';
-        p.style.transform = 'translate(0,0)';
-      });
-    }, 620);
-    setTimeout(done, 1520);
-    const skip = () => { document.removeEventListener('keydown', skip); done(); };
-    el.addEventListener('click', skip);
-    document.addEventListener('keydown', skip, { once:true });
   }
 
   /* ── clocks ─────────────────────────────────────────────── */
@@ -145,68 +108,12 @@ class Issue {
 
   /* ── works ──────────────────────────────────────────────── */
   works(){
-    const rail = $('[data-rail]');
-    const projs = $$('.proj', rail || document);
-    const iEl = $('[data-rail-i]'), nEl = $('[data-rail-name]');
-    const prev = $('[data-rail-prev]'), next = $('[data-rail-next]');
-    if (!rail || !projs.length){ this.showWork = () => {}; return; }
-
-    const names = projs.map(p => { const n = p.querySelector('.p-name'); return n ? n.textContent.trim().toUpperCase() : ''; });
-    const index = () => Math.round(rail.scrollLeft / Math.max(1, rail.clientWidth));
-    const paint = () => {
-      const i = Math.min(projs.length-1, Math.max(0, index()));
-      if (iEl) iEl.textContent = 'Ø' + (i+1);
-      if (nEl) nEl.textContent = names[i];
-      if (prev) prev.disabled = rail.scrollLeft < 8;
-      if (next) next.disabled = rail.scrollLeft > rail.scrollWidth - rail.clientWidth - 8;
-    };
-    const go = (i) => {
-      i = Math.min(projs.length-1, Math.max(0, i));
-      rail.scrollTo({ left: i * rail.clientWidth, behavior: RM ? 'auto' : 'smooth' });
-    };
+    /* The plates stack vertically now — jumping to one is just a scroll. */
+    const projs = $$('.proj');
     this.showWork = (n) => {
-      const sec = $('#works'); if (sec) sec.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block:'start' });
-      setTimeout(() => go((+n)-1), RM ? 0 : 420);
+      const t = projs[Math.min(projs.length, Math.max(1, +n)) - 1];
+      if (t) t.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block:'start' });
     };
-
-    prev && prev.addEventListener('click', () => go(index()-1));
-    next && next.addEventListener('click', () => go(index()+1));
-    let raf = 0;
-    rail.addEventListener('scroll', () => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; paint(); }); }, { passive:true });
-    addEventListener('resize', paint, { passive:true });
-
-    /* arrows work while the rail is focused, or while it owns the screen */
-    addEventListener('keydown', e => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      const tag = (document.activeElement && document.activeElement.tagName) || '';
-      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
-      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-      const r = rail.getBoundingClientRect();
-      const owns = rail.contains(document.activeElement) || (r.top < innerHeight*0.6 && r.bottom > innerHeight*0.4);
-      if (!owns) return;
-      e.preventDefault();
-      go(index() + (e.key === 'ArrowRight' ? 1 : -1));
-    });
-
-    /* drag to flip through — pointer events, so trackpad + touch both work */
-    if (!TOUCH){
-      let down = false, sx = 0, sl = 0, moved = 0;
-      rail.addEventListener('pointerdown', e => { down = true; moved = 0; sx = e.clientX; sl = rail.scrollLeft; rail.classList.add('dragging'); });
-      rail.addEventListener('pointermove', e => {
-        if (!down) return;
-        const dx = e.clientX - sx; moved = Math.abs(dx);
-        rail.scrollLeft = sl - dx;
-      });
-      const up = () => {
-        if (!down) return; down = false;
-        rail.classList.remove('dragging');
-        go(Math.round(rail.scrollLeft / Math.max(1, rail.clientWidth)));   // snap to the nearest plate
-      };
-      rail.addEventListener('pointerup', up);
-      rail.addEventListener('pointerleave', up);
-      rail.addEventListener('click', e => { if (moved > 6){ e.preventDefault(); e.stopPropagation(); } }, true);
-    }
-    paint();
   }
 
   /* ── work plates ────────────────────────────────────────── */
@@ -275,7 +182,6 @@ class Issue {
       grid.appendChild(frag);
       const total = (d.total && d.total.lastYear) || cs.reduce((a,c)=>a+c.count,0);
       grid.setAttribute('aria-label', `GitHub contribution heatmap — ${total} contributions in the last year`);
-      const pt = $('[data-plate-total]'); if (pt) pt.textContent = total + ' COMMITS · LAST 12 MONTHS';
       const tEl = $('[data-hm-total]');
       $('[data-hm-cur]').textContent = cur;
       $('[data-hm-max]').textContent = maxs;
@@ -391,20 +297,18 @@ class Issue {
     const go = (sel) => { const t = $(sel); t && t.scrollIntoView({ behavior: RM?'auto':'smooth', block:'start' }); };
     const acts = [
       ['go','cover — 表紙','',()=>go('#cover')],
-      ['go','contents — 目次','',()=>go('#contents')],
       ['go','profile — 識別','',()=>go('#profile')],
       ['go','works — 作品','',()=>go('#works')],
       ['go','runtime — 経歴','',()=>go('#runtime')],
       ['go','second brain — 第二の脳','',()=>go('#brain')],
       ['go','life.log — 記録','',()=>go('#log')],
       ['go','colophon — 奥付','',()=>go('#colo')],
-      ['plate','recall.me','1',()=>{ go('#works'); this.showWork(1); }],
-      ['plate','triage agent','2',()=>{ go('#works'); this.showWork(2); }],
-      ['plate','watershed','3',()=>{ go('#works'); this.showWork(3); }],
-      ['plate','aegis','4',()=>{ go('#works'); this.showWork(4); }],
+      ['plate','recall — memory engine','1',()=>this.showWork(1)],
+      ['plate','aegis — moderation','2',()=>this.showWork(2)],
+      ['plate','pdfchat — grounded agent','3',()=>this.showWork(3)],
+      ['plate','code-guardian — security review','4',()=>this.showWork(4)],
       ['do','copy email','',()=>this.copyMail()],
       ['do','sign the log','G',()=>{ go('#log'); setTimeout(()=>this.signLog(), 700); }],
-      ['do','next project','→',()=>{ go('#works'); setTimeout(()=>{ const n=$('[data-rail-next]'); n && !n.disabled && n.click(); }, 500); }],
       ['do','open résumé','',()=>window.open('kunal-kumar-resume.pdf','_blank','noopener')],
       ['do','open github','',()=>window.open('https://github.com/kunalKumar-13','_blank','noopener')],
       ['do','open linkedin','',()=>window.open('https://linkedin.com/in/sainkunal','_blank','noopener')],
